@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Randrctl on 127.0.0.1</title>
-    <link>http://edio.github.io/tags/randrctl/</link>
+    <link>http://www.127001.me/tags/randrctl/</link>
     <description>Recent content in Randrctl on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 17 Sep 2014 18:45:22 +0300</lastBuildDate>
-    <atom:link href="http://edio.github.io/tags/randrctl/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://www.127001.me/tags/randrctl/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>randrctl — profile-based screen manager for X</title>
-      <link>http://edio.github.io/post/introducing-randrctl/</link>
+      <link>http://www.127001.me/post/introducing-randrctl/</link>
       <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
       
-      <guid>http://edio.github.io/post/introducing-randrctl/</guid>
+      <guid>http://www.127001.me/post/introducing-randrctl/</guid>
       <description>
 
 &lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
