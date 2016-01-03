@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Listen tracks from youtube in mpd | 127.0.0.1
+  </title>
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://127001.me/post/youtube-in-mpd/"/>
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon144.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic' rel='stylesheet'
+        type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin,cyrillic' rel='stylesheet'
+        type='text/css'>
+
+  
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/hljs/atelier-heath-light.css">
+  <link rel="stylesheet" href="/css/theme.css">
+
+  
+  <link href="http://127001.me/index.xml" rel="alternate" type="application/rss+xml" title="127.0.0.1"/>
+  <link href="http://127001.me/index.xml" rel="feed" type="application/rss+xml" title="127.0.0.1"/>
+</head>
+
+<body>
+<div class="container">
+  <header role="banner">
+    <div class="subtitle">
+      <a href="http://127001.me/">My localhost. Warm and cozy</a>
+    </div>
+
+    <div class="menubar">
+      <span class="title"><a href="http://127001.me/">127.0.0.1</a></span>
+      <span class="items">
+        
+        <a href="http://127001.me/index.xml" type="application/rss+xml" target="_blank" title="RSS">
+          <i class="fa fa-rss"></i>
+        </a>
+      </span>
+    </div>
+  </header>
+
+
+<main id="single" role="main">
+  <div class="single-header">
+  <h1><a href="http://127001.me/post/youtube-in-mpd/">Listen tracks from youtube in mpd </a></h1>
+
+  <div class="meta">
+    Sep 13, 2013
+  </div>
+</div>
+
+  <article>
+    <p>You&rsquo;ll need</p>
+
+<ul>
+<li>mpd with <code>curl</code> support</li>
+<li><a href="http://rg3.github.io/youtube-dl/">youtube-dl</a></li>
+</ul>
+
+<p>Suppose, you want to listen to some <a href="http://www.youtube.com/watch?v=HS5fHWmzqIg">vocal trance</a> on youtube.</p>
+
+<p>Use <code>youtube-dl</code> to determine what formats are available</p>
+
+<pre><code class="language-ruby">$ youtube-dl -f http://www.youtube.com/watch?v=HS5fHWmzqIg
+[youtube] Setting language
+[youtube] HS5fHWmzqIg: Downloading video webpage
+[youtube] HS5fHWmzqIg: Downloading video info webpage
+[youtube] HS5fHWmzqIg: Extracting video information
+Available formats:
+22      :       mp4     [720x1280]
+18      :       mp4     [360x640]
+43      :       webm    [360x640]
+5       :       flv     [240x400]
+36      :       3gp     [240x320]
+17      :       3gp     [144x176]
+136     :       mp4     [720p] (DASH Video)
+135     :       mp4     [480p] (DASH Video)
+134     :       mp4     [360p] (DASH Video)
+133     :       mp4     [240p] (DASH Video)
+160     :       mp4     [192p] (DASH Video)
+141     :       m4a     [256k] (DASH Audio)
+172     :       webm    [256k] (DASH Audio)
+140     :       m4a     [128k] (DASH Audio)
+171     :       webm    [128k] (DASH Audio)
+139     :       m4a     [48k] (DASH Audio)
+</code></pre>
+
+<p>There are 5 audio formats for this video. <strong>141</strong><sup>th</sup> has highest bitrate. So all we have to do, is to get real URL for this format and feed it to mpd</p>
+
+<pre><code>$ mpc add `youtube-dl -f141 -g http://www.youtube.com/watch?v=HS5fHWmzqIg`
+</code></pre>
+
+<p>That&rsquo;s all, track from youtube is already in your mpd playlist. Enjoy!</p>
+
+  </article>
+  
+<div class="tags">
+  <span class="label"><i class="fa fa-tags"></i></span>
+  
+  <a href="/tags/linux">linux</a>&nbsp;
+  
+  <a href="/tags/mpd">mpd</a>&nbsp;
+  
+  <a href="/tags/youtube">youtube</a>&nbsp;
+  
+</div>
+
+
+</main>
+
+<nav>
+  <div class="label">More reading</div>
+  
+  
+  <div class="item">
+    <span class="direction">Newer //</span>
+    <a href="http://127001.me/post/java-logging-caller-class-and-method/" rel="next">How Java logging frameworks determine caller class and method name</a>
+  </div>
+  
+</nav>
+
+<footer role="contentinfo">
+  
+  <div class="social">
+    
+    <a href="https://github.com/edio" title="GitHub"><i class="fa fa-github"></i></a>
+    
+    
+    
+    
+    
+  </div>
+  
+</footer>
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
+

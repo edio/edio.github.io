@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    randrctl — profile-based screen manager for X | 127.0.0.1
+  </title>
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://127001.me/post/introducing-randrctl/"/>
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon144.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic' rel='stylesheet'
+        type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin,cyrillic' rel='stylesheet'
+        type='text/css'>
+
+  
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/hljs/atelier-heath-light.css">
+  <link rel="stylesheet" href="/css/theme.css">
+
+  
+  <link href="http://127001.me/index.xml" rel="alternate" type="application/rss+xml" title="127.0.0.1"/>
+  <link href="http://127001.me/index.xml" rel="feed" type="application/rss+xml" title="127.0.0.1"/>
+</head>
+
+<body>
+<div class="container">
+  <header role="banner">
+    <div class="subtitle">
+      <a href="http://127001.me/">My localhost. Warm and cozy</a>
+    </div>
+
+    <div class="menubar">
+      <span class="title"><a href="http://127001.me/">127.0.0.1</a></span>
+      <span class="items">
+        
+        <a href="http://127001.me/index.xml" type="application/rss+xml" target="_blank" title="RSS">
+          <i class="fa fa-rss"></i>
+        </a>
+      </span>
+    </div>
+  </header>
+
+
+<main id="single" role="main">
+  <div class="single-header">
+  <h1><a href="http://127001.me/post/introducing-randrctl/">randrctl — profile-based screen manager for X </a></h1>
+
+  <div class="meta">
+    Sep 17, 2014
+  </div>
+</div>
+
+  <article>
+    
+
+<p>While having some free time, decided to automate one of my daily routines — setting up external display.</p>
+
+<p>Idea appeared long before I was told about famous (or not?) <a href="https://github.com/wertarbyte/autorandr">autorandr</a> project.
+So if you are familiar with autorandr, you are already familiar with randrctl idea.</p>
+
+<h1 id="idea:7ca82b84baa5fb70374970530ead3360">Idea</h1>
+
+<p>How often have you to plug external display to your laptop, how many different setups do you have? I have 3: no external display, office setup, where laptop stands below old 19&rdquo; external display and home setup, where laptop stands beside of my shiny 23&rdquo; fullhd display. To set them all up, I created 3 scripts in my home directory: <code>lvds.sh</code>, <code>office.sh</code>, <code>home.sh</code>.</p>
+
+<p>That couldn&rsquo;t be good. So I decided to develop an utility to manage my screen setup in the same way <a href="https://wiki.archlinux.org/index.php/Netctl">networks are managed in archlinux</a>. So instead of calling custom shell script, it would be possible to do something like</p>
+
+<pre><code>$ randrctl switch-to office
+</code></pre>
+
+<h1 id="randrctl:7ca82b84baa5fb70374970530ead3360">randrctl</h1>
+
+<p>And here it is: <a href="https://github.com/edio/randrctl">randrctl on github</a> (tah-dam!). Project has a descriptive readme (I believe), but here is a brief list of what is done already</p>
+
+<ul>
+<li>support for display mode (resolution), position, rotation and panning (the latter is not supported in autorandr afaik)</li>
+<li>switching between profiles</li>
+<li>executing custom commands before and after the switch or in the case randrctl fails</li>
+<li>profile creation from current screen setup</li>
+</ul>
+
+<p>Under the hood it performs calls to <code>xrandr</code> utility to get info about current setup and to apply new settings.</p>
+
+<h2 id="installation:7ca82b84baa5fb70374970530ead3360">Installation</h2>
+
+<p>Installation instructions are on <a href="https://github.com/edio/randrctl">github</a>. Basic idea is that you clone a git repo and allow python to install the module. And then you copy exemplary configs to specific locations and copy completion functions for bash and zsh if you need them.</p>
+
+<p>For archers there is a <a href="https://aur.archlinux.org/packages/randrctl-git">package on AUR</a>.</p>
+
+<h2 id="configuration:7ca82b84baa5fb70374970530ead3360">Configuration</h2>
+
+<p>All configuration is currently stored under <code>/etc/randrctl/</code> (which may be not such a good idea, because screen setup usually do not require root privileges, I know. I&rsquo;m working on it).</p>
+
+<p><code>/etc/randrctl/config.ini</code> allows to declare custom commands on profile switch or failure. The whole property value gets executed in a shell, so all these <code>&amp;&amp;</code>s, <code>||</code>s, pipes and redirections are supported. While composing your custom commands, you can get profile name from <code>$randr_profile</code> environment variable. Error, if it happens, is stored to <code>$randr_error</code>.</p>
+
+<p>Profiles are stored under <code>/etc/randrctl/profiles/</code> as plain text files in json format. Profile structure and property names are self-descriptive, I believe:</p>
+
+<pre><code class="language-json">{
+    &quot;outputs&quot;: {
+        &quot;LVDS1&quot;: {
+            &quot;mode&quot;: &quot;1366x768&quot;,
+            &quot;panning&quot;: &quot;1366x1080&quot;
+        },
+        &quot;DP1&quot;: {
+            &quot;mode&quot;: &quot;1920x1080&quot;,
+            &quot;pos&quot;: &quot;1366x0&quot;.
+            &quot;rotate&quot;: &quot;inverted&quot;
+        }
+    },
+    &quot;primary&quot;: &quot;DP1&quot;
+}
+</code></pre>
+
+<h2 id="usage:7ca82b84baa5fb70374970530ead3360">Usage</h2>
+
+<p>Running <code>randrctl</code> without parameters (or with canonical <code>-h</code> or <code>--help</code>) will tell you all you can do with it. And you can:</p>
+
+<ul>
+<li><p>check your current screen setup</p>
+
+<p><code>$ randrctl show</code></p></li>
+
+<li><p>dump it to file (note that root is required here)</p>
+
+<p><code># randrctl dump my_setup</code></p></li>
+
+<li><p>check stored profiles</p>
+
+<p><code>$ randrctl show my_setup</code></p></li>
+
+<li><p>list your profiles</p>
+
+<p><code>$ randrctl list</code></p></li>
+
+<li><p>and finally, apply profile settings</p>
+
+<p><code>$ randrctl switch-to my_setup</code></p></li>
+</ul>
+
+<h2 id="planned-features:7ca82b84baa5fb70374970530ead3360">Planned features</h2>
+
+<p>Right now I&rsquo;m thinking about 2 things:</p>
+
+<ol>
+<li>autodetecting when display is plugged via udev and applying profile, that matches display EDID (I come with this idea before knowing about autorandr, I swear ;))</li>
+<li>support for user profiles and configurations. This will allow to run randrctl without root</li>
+</ol>
+
+<p>Of course there is always a room for code and experience improvements, so these will take place also.</p>
+
+  </article>
+  
+<div class="tags">
+  <span class="label"><i class="fa fa-tags"></i></span>
+  
+  <a href="/tags/linux">linux</a>&nbsp;
+  
+  <a href="/tags/x">X</a>&nbsp;
+  
+  <a href="/tags/tools">tools</a>&nbsp;
+  
+  <a href="/tags/randrctl">randrctl</a>&nbsp;
+  
+</div>
+
+
+</main>
+
+<nav>
+  <div class="label">More reading</div>
+  
+  <div class="item">
+    <span class="direction">Older //</span>
+    <a href="http://127001.me/post/java-logging-caller-class-and-method/" rel="prev">How Java logging frameworks determine caller class and method name</a>
+  </div>
+  
+  
+</nav>
+
+<footer role="contentinfo">
+  
+  <div class="social">
+    
+    <a href="https://github.com/edio" title="GitHub"><i class="fa fa-github"></i></a>
+    
+    
+    
+    
+    
+  </div>
+  
+</footer>
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
+

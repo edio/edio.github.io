@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Youtube on 127.0.0.1</title>
+    <link>http://127001.me/tags/youtube/</link>
+    <description>Recent content in Youtube on 127.0.0.1</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 13 Sep 2013 14:18:07 +0300</lastBuildDate>
+    <atom:link href="http://127001.me/tags/youtube/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Listen tracks from youtube in mpd</title>
+      <link>http://127001.me/post/youtube-in-mpd/</link>
+      <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
+      
+      <guid>http://127001.me/post/youtube-in-mpd/</guid>
+      <description>&lt;p&gt;You&amp;rsquo;ll need&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;mpd with &lt;code&gt;curl&lt;/code&gt; support&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Suppose, you want to listen to some &lt;a href=&#34;http://www.youtube.com/watch?v=HS5fHWmzqIg&#34;&gt;vocal trance&lt;/a&gt; on youtube.&lt;/p&gt;
+
+&lt;p&gt;Use &lt;code&gt;youtube-dl&lt;/code&gt; to determine what formats are available&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;$ youtube-dl -f http://www.youtube.com/watch?v=HS5fHWmzqIg
+[youtube] Setting language
+[youtube] HS5fHWmzqIg: Downloading video webpage
+[youtube] HS5fHWmzqIg: Downloading video info webpage
+[youtube] HS5fHWmzqIg: Extracting video information
+Available formats:
+22      :       mp4     [720x1280]
+18      :       mp4     [360x640]
+43      :       webm    [360x640]
+5       :       flv     [240x400]
+36      :       3gp     [240x320]
+17      :       3gp     [144x176]
+136     :       mp4     [720p] (DASH Video)
+135     :       mp4     [480p] (DASH Video)
+134     :       mp4     [360p] (DASH Video)
+133     :       mp4     [240p] (DASH Video)
+160     :       mp4     [192p] (DASH Video)
+141     :       m4a     [256k] (DASH Audio)
+172     :       webm    [256k] (DASH Audio)
+140     :       m4a     [128k] (DASH Audio)
+171     :       webm    [128k] (DASH Audio)
+139     :       m4a     [48k] (DASH Audio)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are 5 audio formats for this video. &lt;strong&gt;141&lt;/strong&gt;&lt;sup&gt;th&lt;/sup&gt; has highest bitrate. So all we have to do, is to get real URL for this format and feed it to mpd&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ mpc add `youtube-dl -f141 -g http://www.youtube.com/watch?v=HS5fHWmzqIg`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s all, track from youtube is already in your mpd playlist. Enjoy!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
