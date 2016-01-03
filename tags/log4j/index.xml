@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Log4j on 127.0.0.1</title>
-    <link>http://www.127001.me/tags/log4j/</link>
+    <link>http://127001.me/tags/log4j/</link>
     <description>Recent content in Log4j on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 08 Apr 2014 23:54:49 +0200</lastBuildDate>
-    <atom:link href="http://www.127001.me/tags/log4j/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://127001.me/tags/log4j/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>How Java logging frameworks determine caller class and method name</title>
-      <link>http://www.127001.me/post/java-logging-caller-class-and-method/</link>
+      <link>http://127001.me/post/java-logging-caller-class-and-method/</link>
       <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
       
-      <guid>http://www.127001.me/post/java-logging-caller-class-and-method/</guid>
+      <guid>http://127001.me/post/java-logging-caller-class-and-method/</guid>
       <description>
 
 &lt;p&gt;This post describes how java logging frameworks (Log4j, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;

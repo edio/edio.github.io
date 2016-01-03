@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on 127.0.0.1</title>
-    <link>http://www.127001.me/tags/linux/</link>
+    <link>http://127001.me/tags/linux/</link>
     <description>Recent content in Linux on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 17 Sep 2014 18:45:22 +0300</lastBuildDate>
-    <atom:link href="http://www.127001.me/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://127001.me/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>randrctl — profile-based screen manager for X</title>
-      <link>http://www.127001.me/post/introducing-randrctl/</link>
+      <link>http://127001.me/post/introducing-randrctl/</link>
       <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
       
-      <guid>http://www.127001.me/post/introducing-randrctl/</guid>
+      <guid>http://127001.me/post/introducing-randrctl/</guid>
       <description>
 
 &lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
@@ -115,10 +115,10 @@ So if you are familiar with autorandr, you are already familiar with randrctl id
     
     <item>
       <title>Listen tracks from youtube in mpd</title>
-      <link>http://www.127001.me/post/youtube-in-mpd/</link>
+      <link>http://127001.me/post/youtube-in-mpd/</link>
       <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
       
-      <guid>http://www.127001.me/post/youtube-in-mpd/</guid>
+      <guid>http://127001.me/post/youtube-in-mpd/</guid>
       <description>&lt;p&gt;You&amp;rsquo;ll need&lt;/p&gt;
 
 &lt;ul&gt;
