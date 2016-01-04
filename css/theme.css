@@ -30,9 +30,13 @@ header .subtitle {
   padding-top: 1em;
   padding-bottom: 1em;
 }
-header .subtitle * {
+header .subtitle a {
   color: #868480;
   font-weight: normal;
+  text-decoration: none;
+}
+header .subtitle a:hover {
+  color: #a3a19c;
 }
 header .menubar {
   background-color: #6d8cc7;
