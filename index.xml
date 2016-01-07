@@ -92,7 +92,7 @@ Trust level to &lt;em&gt;Synology Inc. and trusted publishers&lt;/em&gt;&lt;/li&
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&#34;share-your-media-files-to-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Share your media files to Debian chroot&lt;/h2&gt;
+&lt;h2 id=&#34;share-media-files-to-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Share media files to Debian chroot&lt;/h2&gt;
 
 &lt;p&gt;By default Debian Chroot won&amp;rsquo;t get access to files stored on NAS (that&amp;rsquo;s the idea of chroot). We have to mount
 explicitly those directories, we want to expose.&lt;/p&gt;
@@ -186,7 +186,7 @@ esac
 &lt;pre&gt;&lt;code&gt;/usr/local/etc/rc.d/S01audiod.sh start
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Now if you chroot to Debian again and run &lt;code&gt;alsamixer&lt;/code&gt;, you should see usual mixer interface for connected soundcard.&lt;/p&gt;
+&lt;p&gt;Now if we chroot to Debian again and run &lt;code&gt;alsamixer&lt;/code&gt;, we should see usual mixer interface for connected soundcard.&lt;/p&gt;
 
 &lt;p&gt;Basically that&amp;rsquo;s it. For more experienced users it shouldn&amp;rsquo;t be hard to setup mpd or PulseAudio on Debian. Anyway, I&amp;rsquo;ll
 try to cover that in following posts for those, who are not well familiar with the topic.&lt;/p&gt;
