@@ -6,8 +6,192 @@
     <description>Recent content in Posts on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Sep 2014 18:45:22 +0300</lastBuildDate>
+    <lastBuildDate>Wed, 06 Jan 2016 01:51:40 +0100</lastBuildDate>
     <atom:link href="http://127001.me/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Turning Synology NAS into a geeky media server</title>
+      <link>http://127001.me/post/synology/mediaserver-p1/</link>
+      <pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate>
+      
+      <guid>http://127001.me/post/synology/mediaserver-p1/</guid>
+      <description>
+
+&lt;p&gt;I&amp;rsquo;m not a huge fan of Synology. I bought my DS214 by friend&amp;rsquo;s recommendation and became frustrated with it right after
+the purchase. Bundled software is limited and buggy, it feels like the worst Windows™®-like experience ever. Many people
+find Synology products great. But for me it just doesn&amp;rsquo;t work well because it forces its usecases on me instead of being
+a helpful tool for my own very specific usecases.&lt;/p&gt;
+
+&lt;!--
+&gt; I bought it to save some time on setting up something like ArchLinux on something like HP MicroServer, but instead I
+spent hours trying to compile software I need for lousy ARM processor and somewhat unusual OS. &gt; &gt; So after few
+sleepless nights with toolchains and cross-compilation in VM, I decided to sell it and bought... silly me... DS214Play.
+I thought, that my only problem is an ARM processor. &gt; &gt; Indeed, it worked better, but it was still the same device with
+the same OS, same set of built-in software with blows and whistles, 90% of which I probably never used.  &gt; &gt; So, for
+what it&#39;s worth, if you&#39;re, like me, a geek, who is used to Gentoo, ArchLinux or Debian, if you think installing music
+player on router and controlling it over wi-fi with wi-fi-capable kettle is fun, if you like to squeeze maximum from
+your HW, do yourself a favor — build custom server. It will save you tons of time. 
+--&gt;
+
+&lt;p&gt;Anyway, I wasn&amp;rsquo;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it.&lt;/p&gt;
+
+&lt;p&gt;So currently with my DS214Play I can:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Play virtually any sound via connected USB sound card.&lt;/li&gt;
+&lt;li&gt;Particularly, I can play my huge collection of high-resolution music in various formats (with replaygain tags
+respected). All that thanks to &lt;em&gt;mpd&lt;/em&gt;, which I can control from any decent phone, web-browser or even smart-watch and
+scrobble all statistics to Last.fm.&lt;/li&gt;
+&lt;li&gt;Stream sound from my laptop via &lt;em&gt;PulseAudio&lt;/em&gt;, while watching videos on YouTube or movies.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In this and few next posts I&amp;rsquo;m going to tell, what I have done to get all this.&lt;/p&gt;
+
+&lt;p&gt;Although everything here have been tried on DS214Play it should also work on any other x86-based (or theoretically, even
+some ARM-based) Synology product.&lt;/p&gt;
+
+&lt;p&gt;I do not expect anything bad, but, just in case, standard disclaimer: &lt;strong&gt;everything described here may contain mistakes
+and inaccuracies, cause data loss or even damage to your hardware.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;setup-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Setup Debian Chroot&lt;/h1&gt;
+
+&lt;p&gt;Thanks to &lt;a href=&#34;https://synocommunity.com&#34;&gt;SynoCommunity project&lt;/a&gt; it is possible to get access to thousands of applications
+from Debian repositories by installing &lt;a href=&#34;https://synocommunity.com/package/debian-chroot&#34;&gt;Debian Chroot&lt;/a&gt;. Unlike optware
+solutions, all packages are relatively fresh, easy to install, and more likely to work without issues.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Add SynoCommunity repo following &lt;a href=&#34;https://synocommunity.com/#easy-install&#34;&gt;official guide&lt;/a&gt;. Do not forget to set
+Trust level to &lt;em&gt;Synology Inc. and trusted publishers&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Install &lt;a href=&#34;https://synocommunity.com/package/debian-chroot&#34;&gt;Debian Chroot&lt;/a&gt; package&lt;/li&gt;
+&lt;li&gt;Start this package from &lt;em&gt;Package Center&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;configure-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Configure Debian chroot&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;SSH to NAS as &lt;em&gt;root&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Chroot to Debian
+&lt;code class=&#34;hljs&#34;&gt;
+/var/packages/debian-chroot/scripts/start-stop-status chroot
+&lt;/code&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Update package index and install locales to remove pesky warning about missing locales&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# apt-get update
+# apt-get install locales-all
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Install alsa utils as we&amp;rsquo;ll require them later&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# apt-get install alsa-utils
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Exit to return back to NAS terminal (or create another SSH session)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;share-your-media-files-to-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Share your media files to Debian chroot&lt;/h2&gt;
+
+&lt;p&gt;By default Debian Chroot won&amp;rsquo;t get access to files stored on NAS (that&amp;rsquo;s the idea of chroot). We have to mount
+explicitly those directories, we want to expose.&lt;/p&gt;
+
+&lt;p&gt;Fron NAS terminal (not Debian Chroot, exit from it or create another SSH session to NAS):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mount -o bind /path/to/dir/on/nas /var/packages/debian-chroot/target/var/chroottarget/path/to/dir/in/chroot
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I created a script under &lt;code&gt;/usr/local/etc/rc.d/&lt;/code&gt; to do that mounting automatically on startup. The script must be named
+&lt;code&gt;S[00-99]whatever.sh&lt;/code&gt; to be picked up by DSM init framework, where &lt;code&gt;[00-99]&lt;/code&gt; determines order of execution. Mine is
+named &lt;code&gt;S02chrootmount.sh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+. /etc.defaults/rc.subr
+
+CHROOTDIR=/var/packages/debian-chroot/target/var/chroottarget/media
+MEDIADIR=/volume1/media
+
+case $1 in
+        start)
+                mount -o bind $MEDIADIR $CHROOTDIR
+        ;;
+        stop)
+                umount $CHROOTDIR
+        ;;
+        restart)
+                $0 stop
+                sleep 1
+                $0 start
+        ;;
+        *)
+                echo &amp;quot;Usage: $0 start|stop|restart&amp;quot;
+        ;;
+esac
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To expose directory to chroot then, do&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/usr/local/etc/rc.d/S02chrootmount.sh start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After doing that, we can chroot to Debian again and check that mount worked as expected (&lt;code&gt;/media&lt;/code&gt; in chroot should
+corresponds to &lt;code&gt;/volume1/media&lt;/code&gt; on NAS for my case).&lt;/p&gt;
+
+&lt;h1 id=&#34;setup-sound-card:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Setup sound card&lt;/h1&gt;
+
+&lt;p&gt;Obviously, sound card should be supported in Linux. I own &lt;em&gt;Audinst USB HUD mini&lt;/em&gt; and it&amp;rsquo;s a real plug-n-play. You just
+plug it in, and if alsa is set up, it just works. For what it&amp;rsquo;s worth, I&amp;rsquo;m satsfied with the device, it sounds not as
+good as my beloved ESI Juli@, but still it is good for its price.&lt;/p&gt;
+
+&lt;h2 id=&#34;loading-kernel-modules:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Loading kernel modules&lt;/h2&gt;
+
+&lt;p&gt;For sound card to work we need to install required kernel modules in host system (not in Debian Chroot). By default
+those are loaded by &lt;em&gt;AudioStation&lt;/em&gt; application. I analyzed its scripts, and came up with the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+. /etc.defaults/rc.subr
+
+KERNELMODULE=&amp;quot;soundcore snd-page-alloc snd snd-seq-device snd-rawmidi snd-usbmidi-lib snd-usb-lib snd-hwdep snd-timer snd-pcm snd-usb-audio snd-mixer-oss snd-pcm-oss&amp;quot;
+COMPATMODULE=&amp;quot;snd-usb-hiface&amp;quot;
+
+case $1 in
+        start)
+                SYNOLoadModules $KERNELMODULE
+                SYNOLoadModules $COMPATMODULE
+        ;;
+        stop)
+                SYNOUnloadModules $COMPATMODULE
+                SYNOUnloadModules $KERNELMODULE
+        ;;
+        restart)
+                $0 stop
+                sleep 1
+                $0 start
+        ;;
+        *)
+                echo &amp;quot;Usage: $0 start|stop|restart&amp;quot;
+        ;;
+esac
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will load exactly the modules, that are loaded by &lt;em&gt;AudioStation&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;To do that automatically on NAS startup I saved the script as &lt;code&gt;/usr/local/etc/rc.d/S01audiod.sh&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Load modules without reboot:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/usr/local/etc/rc.d/S01audiod.sh start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now if you chroot to Debian again and run &lt;code&gt;alsamixer&lt;/code&gt;, you should see usual mixer interface for connected soundcard.&lt;/p&gt;
+
+&lt;p&gt;Basically that&amp;rsquo;s it. For more experienced users it shouldn&amp;rsquo;t be hard to setup mpd or PulseAudio on Debian. Anyway, I&amp;rsquo;ll
+try to cover that in following posts for those, who are not well familiar with the topic.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>randrctl — profile-based screen manager for X</title>

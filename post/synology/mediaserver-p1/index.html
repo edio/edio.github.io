@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Turning Synology NAS into a geeky media server | 127.0.0.1
+  </title>
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://127001.me/post/synology/mediaserver-p1/"/>
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon144.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic' rel='stylesheet'
+        type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin,cyrillic' rel='stylesheet'
+        type='text/css'>
+
+  
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/hljs/atelier-heath-light.css">
+  <link rel="stylesheet" href="/css/theme.css">
+
+  
+  <link href="http://127001.me/index.xml" rel="alternate" type="application/rss+xml" title="127.0.0.1"/>
+  <link href="http://127001.me/index.xml" rel="feed" type="application/rss+xml" title="127.0.0.1"/>
+</head>
+
+<body>
+<div class="container">
+  <header role="banner">
+    <div class="subtitle">
+      <a href="http://127001.me/">My localhost. Warm and cozy</a>
+    </div>
+
+    <div class="menubar">
+      <span class="title"><a href="http://127001.me/">127.0.0.1</a></span>
+      <span class="items">
+        
+        <a href="http://127001.me/index.xml" type="application/rss+xml" target="_blank" title="RSS">
+          <i class="fa fa-rss"></i>
+        </a>
+      </span>
+    </div>
+  </header>
+
+
+<main id="single" role="main">
+  <div class="single-header">
+  <h1><a href="http://127001.me/post/synology/mediaserver-p1/">Turning Synology NAS into a geeky media server </a></h1>
+
+  <div class="meta">
+    Jan 6, 2016
+  </div>
+</div>
+
+  <article>
+    
+
+<p>I&rsquo;m not a huge fan of Synology. I bought my DS214 by friend&rsquo;s recommendation and became frustrated with it right after
+the purchase. Bundled software is limited and buggy, it feels like the worst Windows™®-like experience ever. Many people
+find Synology products great. But for me it just doesn&rsquo;t work well because it forces its usecases on me instead of being
+a helpful tool for my own very specific usecases.</p>
+
+<!--
+> I bought it to save some time on setting up something like ArchLinux on something like HP MicroServer, but instead I
+spent hours trying to compile software I need for lousy ARM processor and somewhat unusual OS. > > So after few
+sleepless nights with toolchains and cross-compilation in VM, I decided to sell it and bought... silly me... DS214Play.
+I thought, that my only problem is an ARM processor. > > Indeed, it worked better, but it was still the same device with
+the same OS, same set of built-in software with blows and whistles, 90% of which I probably never used.  > > So, for
+what it's worth, if you're, like me, a geek, who is used to Gentoo, ArchLinux or Debian, if you think installing music
+player on router and controlling it over wi-fi with wi-fi-capable kettle is fun, if you like to squeeze maximum from
+your HW, do yourself a favor — build custom server. It will save you tons of time. 
+-->
+
+<p>Anyway, I wasn&rsquo;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it.</p>
+
+<p>So currently with my DS214Play I can:</p>
+
+<ol>
+<li>Play virtually any sound via connected USB sound card.</li>
+<li>Particularly, I can play my huge collection of high-resolution music in various formats (with replaygain tags
+respected). All that thanks to <em>mpd</em>, which I can control from any decent phone, web-browser or even smart-watch and
+scrobble all statistics to Last.fm.</li>
+<li>Stream sound from my laptop via <em>PulseAudio</em>, while watching videos on YouTube or movies.</li>
+</ol>
+
+<p>In this and few next posts I&rsquo;m going to tell, what I have done to get all this.</p>
+
+<p>Although everything here have been tried on DS214Play it should also work on any other x86-based (or theoretically, even
+some ARM-based) Synology product.</p>
+
+<p>I do not expect anything bad, but, just in case, standard disclaimer: <strong>everything described here may contain mistakes
+and inaccuracies, cause data loss or even damage to your hardware.</strong></p>
+
+<h1 id="setup-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec">Setup Debian Chroot</h1>
+
+<p>Thanks to <a href="https://synocommunity.com">SynoCommunity project</a> it is possible to get access to thousands of applications
+from Debian repositories by installing <a href="https://synocommunity.com/package/debian-chroot">Debian Chroot</a>. Unlike optware
+solutions, all packages are relatively fresh, easy to install, and more likely to work without issues.</p>
+
+<ol>
+<li>Add SynoCommunity repo following <a href="https://synocommunity.com/#easy-install">official guide</a>. Do not forget to set
+Trust level to <em>Synology Inc. and trusted publishers</em></li>
+<li>Install <a href="https://synocommunity.com/package/debian-chroot">Debian Chroot</a> package</li>
+<li>Start this package from <em>Package Center</em></li>
+</ol>
+
+<h2 id="configure-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec">Configure Debian chroot</h2>
+
+<ol>
+<li>SSH to NAS as <em>root</em></li>
+<li>Chroot to Debian
+<code class="hljs">
+/var/packages/debian-chroot/scripts/start-stop-status chroot
+</code></li>
+
+<li><p>Update package index and install locales to remove pesky warning about missing locales</p>
+
+<pre><code># apt-get update
+# apt-get install locales-all
+</code></pre></li>
+
+<li><p>Install alsa utils as we&rsquo;ll require them later</p>
+
+<pre><code># apt-get install alsa-utils
+</code></pre></li>
+
+<li><p>Exit to return back to NAS terminal (or create another SSH session)</p>
+
+<pre><code># exit
+</code></pre></li>
+</ol>
+
+<h2 id="share-your-media-files-to-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec">Share your media files to Debian chroot</h2>
+
+<p>By default Debian Chroot won&rsquo;t get access to files stored on NAS (that&rsquo;s the idea of chroot). We have to mount
+explicitly those directories, we want to expose.</p>
+
+<p>Fron NAS terminal (not Debian Chroot, exit from it or create another SSH session to NAS):</p>
+
+<pre><code>mount -o bind /path/to/dir/on/nas /var/packages/debian-chroot/target/var/chroottarget/path/to/dir/in/chroot
+</code></pre>
+
+<p>I created a script under <code>/usr/local/etc/rc.d/</code> to do that mounting automatically on startup. The script must be named
+<code>S[00-99]whatever.sh</code> to be picked up by DSM init framework, where <code>[00-99]</code> determines order of execution. Mine is
+named <code>S02chrootmount.sh</code>:</p>
+
+<pre><code>#!/bin/sh
+
+. /etc.defaults/rc.subr
+
+CHROOTDIR=/var/packages/debian-chroot/target/var/chroottarget/media
+MEDIADIR=/volume1/media
+
+case $1 in
+        start)
+                mount -o bind $MEDIADIR $CHROOTDIR
+        ;;
+        stop)
+                umount $CHROOTDIR
+        ;;
+        restart)
+                $0 stop
+                sleep 1
+                $0 start
+        ;;
+        *)
+                echo &quot;Usage: $0 start|stop|restart&quot;
+        ;;
+esac
+</code></pre>
+
+<p>To expose directory to chroot then, do</p>
+
+<pre><code>/usr/local/etc/rc.d/S02chrootmount.sh start
+</code></pre>
+
+<p>After doing that, we can chroot to Debian again and check that mount worked as expected (<code>/media</code> in chroot should
+corresponds to <code>/volume1/media</code> on NAS for my case).</p>
+
+<h1 id="setup-sound-card:5ee4c18b904f6b659bdc1bbc3fdfc5ec">Setup sound card</h1>
+
+<p>Obviously, sound card should be supported in Linux. I own <em>Audinst USB HUD mini</em> and it&rsquo;s a real plug-n-play. You just
+plug it in, and if alsa is set up, it just works. For what it&rsquo;s worth, I&rsquo;m satsfied with the device, it sounds not as
+good as my beloved ESI Juli@, but still it is good for its price.</p>
+
+<h2 id="loading-kernel-modules:5ee4c18b904f6b659bdc1bbc3fdfc5ec">Loading kernel modules</h2>
+
+<p>For sound card to work we need to install required kernel modules in host system (not in Debian Chroot). By default
+those are loaded by <em>AudioStation</em> application. I analyzed its scripts, and came up with the following:</p>
+
+<pre><code>#!/bin/sh
+
+. /etc.defaults/rc.subr
+
+KERNELMODULE=&quot;soundcore snd-page-alloc snd snd-seq-device snd-rawmidi snd-usbmidi-lib snd-usb-lib snd-hwdep snd-timer snd-pcm snd-usb-audio snd-mixer-oss snd-pcm-oss&quot;
+COMPATMODULE=&quot;snd-usb-hiface&quot;
+
+case $1 in
+        start)
+                SYNOLoadModules $KERNELMODULE
+                SYNOLoadModules $COMPATMODULE
+        ;;
+        stop)
+                SYNOUnloadModules $COMPATMODULE
+                SYNOUnloadModules $KERNELMODULE
+        ;;
+        restart)
+                $0 stop
+                sleep 1
+                $0 start
+        ;;
+        *)
+                echo &quot;Usage: $0 start|stop|restart&quot;
+        ;;
+esac
+</code></pre>
+
+<p>This will load exactly the modules, that are loaded by <em>AudioStation</em>.</p>
+
+<p>To do that automatically on NAS startup I saved the script as <code>/usr/local/etc/rc.d/S01audiod.sh</code>.</p>
+
+<p>Load modules without reboot:</p>
+
+<pre><code>/usr/local/etc/rc.d/S01audiod.sh start
+</code></pre>
+
+<p>Now if you chroot to Debian again and run <code>alsamixer</code>, you should see usual mixer interface for connected soundcard.</p>
+
+<p>Basically that&rsquo;s it. For more experienced users it shouldn&rsquo;t be hard to setup mpd or PulseAudio on Debian. Anyway, I&rsquo;ll
+try to cover that in following posts for those, who are not well familiar with the topic.</p>
+
+  </article>
+  
+<div class="tags">
+  <span class="label"><i class="fa fa-tags"></i></span>
+  
+  <a href="/tags/linux">linux</a>&nbsp;
+  
+  <a href="/tags/synology">synology</a>&nbsp;
+  
+  <a href="/tags/ds214">ds214</a>&nbsp;
+  
+  <a href="/tags/pulseaudio">pulseaudio</a>&nbsp;
+  
+  <a href="/tags/alsa">alsa</a>&nbsp;
+  
+</div>
+
+
+</main>
+
+<nav>
+  <div class="label">More reading</div>
+  
+  <div class="item">
+    <span class="direction">Older //</span>
+    <a href="http://127001.me/post/introducing-randrctl/" rel="prev">randrctl — profile-based screen manager for X</a>
+  </div>
+  
+  
+</nav>
+
+<article class="comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = '127001me';
+    var disqus_identifier = 'http:\/\/127001.me\/post\/synology\/mediaserver-p1\/';
+    var disqus_title = 'Turning Synology NAS into a geeky media server';
+    var disqus_url = 'http:\/\/127001.me\/post\/synology\/mediaserver-p1\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</article>
+
+<footer role="contentinfo">
+  
+  <div class="social">
+    
+    <a href="https://github.com/edio" title="GitHub"><i class="fa fa-github"></i></a>
+    
+    
+    <a href="https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14" title="Linkedin"><i class="fa fa-linkedin-square"></i></a>
+    
+    
+    <a href="https://plus.google.com/u/0/114605025600792749954" title="Google+"><i class="fa fa-google-plus"></i></a>
+    
+    
+    
+  </div>
+  
+</footer>
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
+

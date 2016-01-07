@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on 127.0.0.1</title>
-    <link>http://127001.me/tags/linux/</link>
-    <description>Recent content in Linux on 127.0.0.1</description>
+    <title>Synology on 127.0.0.1</title>
+    <link>http://127001.me/categories/synology/</link>
+    <description>Recent content in Synology on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 06 Jan 2016 01:51:40 +0100</lastBuildDate>
-    <atom:link href="http://127001.me/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://127001.me/categories/synology/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Turning Synology NAS into a geeky media server</title>
@@ -190,160 +190,6 @@ esac
 
 &lt;p&gt;Basically that&amp;rsquo;s it. For more experienced users it shouldn&amp;rsquo;t be hard to setup mpd or PulseAudio on Debian. Anyway, I&amp;rsquo;ll
 try to cover that in following posts for those, who are not well familiar with the topic.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>randrctl — profile-based screen manager for X</title>
-      <link>http://127001.me/post/introducing-randrctl/</link>
-      <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
-      
-      <guid>http://127001.me/post/introducing-randrctl/</guid>
-      <description>
-
-&lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
-
-&lt;p&gt;Idea appeared long before I was told about famous (or not?) &lt;a href=&#34;https://github.com/wertarbyte/autorandr&#34;&gt;autorandr&lt;/a&gt; project.
-So if you are familiar with autorandr, you are already familiar with randrctl idea.&lt;/p&gt;
-
-&lt;h1 id=&#34;idea:7ca82b84baa5fb70374970530ead3360&#34;&gt;Idea&lt;/h1&gt;
-
-&lt;p&gt;How often have you to plug external display to your laptop, how many different setups do you have? I have 3: no external display, office setup, where laptop stands below old 19&amp;rdquo; external display and home setup, where laptop stands beside of my shiny 23&amp;rdquo; fullhd display. To set them all up, I created 3 scripts in my home directory: &lt;code&gt;lvds.sh&lt;/code&gt;, &lt;code&gt;office.sh&lt;/code&gt;, &lt;code&gt;home.sh&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;That couldn&amp;rsquo;t be good. So I decided to develop an utility to manage my screen setup in the same way &lt;a href=&#34;https://wiki.archlinux.org/index.php/Netctl&#34;&gt;networks are managed in archlinux&lt;/a&gt;. So instead of calling custom shell script, it would be possible to do something like&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ randrctl switch-to office
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;randrctl:7ca82b84baa5fb70374970530ead3360&#34;&gt;randrctl&lt;/h1&gt;
-
-&lt;p&gt;And here it is: &lt;a href=&#34;https://github.com/edio/randrctl&#34;&gt;randrctl on github&lt;/a&gt; (tah-dam!). Project has a descriptive readme (I believe), but here is a brief list of what is done already&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;support for display mode (resolution), position, rotation and panning (the latter is not supported in autorandr afaik)&lt;/li&gt;
-&lt;li&gt;switching between profiles&lt;/li&gt;
-&lt;li&gt;executing custom commands before and after the switch or in the case randrctl fails&lt;/li&gt;
-&lt;li&gt;profile creation from current screen setup&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Under the hood it performs calls to &lt;code&gt;xrandr&lt;/code&gt; utility to get info about current setup and to apply new settings.&lt;/p&gt;
-
-&lt;h2 id=&#34;installation:7ca82b84baa5fb70374970530ead3360&#34;&gt;Installation&lt;/h2&gt;
-
-&lt;p&gt;Installation instructions are on &lt;a href=&#34;https://github.com/edio/randrctl&#34;&gt;github&lt;/a&gt;. Basic idea is that you clone a git repo and allow python to install the module. And then you copy exemplary configs to specific locations and copy completion functions for bash and zsh if you need them.&lt;/p&gt;
-
-&lt;p&gt;For archers there is a &lt;a href=&#34;https://aur.archlinux.org/packages/randrctl-git&#34;&gt;package on AUR&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;configuration:7ca82b84baa5fb70374970530ead3360&#34;&gt;Configuration&lt;/h2&gt;
-
-&lt;p&gt;All configuration is currently stored under &lt;code&gt;/etc/randrctl/&lt;/code&gt; (which may be not such a good idea, because screen setup usually do not require root privileges, I know. I&amp;rsquo;m working on it).&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;/etc/randrctl/config.ini&lt;/code&gt; allows to declare custom commands on profile switch or failure. The whole property value gets executed in a shell, so all these &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;s, &lt;code&gt;||&lt;/code&gt;s, pipes and redirections are supported. While composing your custom commands, you can get profile name from &lt;code&gt;$randr_profile&lt;/code&gt; environment variable. Error, if it happens, is stored to &lt;code&gt;$randr_error&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Profiles are stored under &lt;code&gt;/etc/randrctl/profiles/&lt;/code&gt; as plain text files in json format. Profile structure and property names are self-descriptive, I believe:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
-    &amp;quot;outputs&amp;quot;: {
-        &amp;quot;LVDS1&amp;quot;: {
-            &amp;quot;mode&amp;quot;: &amp;quot;1366x768&amp;quot;,
-            &amp;quot;panning&amp;quot;: &amp;quot;1366x1080&amp;quot;
-        },
-        &amp;quot;DP1&amp;quot;: {
-            &amp;quot;mode&amp;quot;: &amp;quot;1920x1080&amp;quot;,
-            &amp;quot;pos&amp;quot;: &amp;quot;1366x0&amp;quot;.
-            &amp;quot;rotate&amp;quot;: &amp;quot;inverted&amp;quot;
-        }
-    },
-    &amp;quot;primary&amp;quot;: &amp;quot;DP1&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;usage:7ca82b84baa5fb70374970530ead3360&#34;&gt;Usage&lt;/h2&gt;
-
-&lt;p&gt;Running &lt;code&gt;randrctl&lt;/code&gt; without parameters (or with canonical &lt;code&gt;-h&lt;/code&gt; or &lt;code&gt;--help&lt;/code&gt;) will tell you all you can do with it. And you can:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;check your current screen setup&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;$ randrctl show&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;dump it to file (note that root is required here)&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;# randrctl dump my_setup&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;check stored profiles&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;$ randrctl show my_setup&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;list your profiles&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;$ randrctl list&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;and finally, apply profile settings&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;$ randrctl switch-to my_setup&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;planned-features:7ca82b84baa5fb70374970530ead3360&#34;&gt;Planned features&lt;/h2&gt;
-
-&lt;p&gt;Right now I&amp;rsquo;m thinking about 2 things:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;autodetecting when display is plugged via udev and applying profile, that matches display EDID (I come with this idea before knowing about autorandr, I swear ;))&lt;/li&gt;
-&lt;li&gt;support for user profiles and configurations. This will allow to run randrctl without root&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Of course there is always a room for code and experience improvements, so these will take place also.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Listen tracks from youtube in mpd</title>
-      <link>http://127001.me/post/youtube-in-mpd/</link>
-      <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
-      
-      <guid>http://127001.me/post/youtube-in-mpd/</guid>
-      <description>&lt;p&gt;You&amp;rsquo;ll need&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;mpd with &lt;code&gt;curl&lt;/code&gt; support&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Suppose, you want to listen to some &lt;a href=&#34;http://www.youtube.com/watch?v=HS5fHWmzqIg&#34;&gt;vocal trance&lt;/a&gt; on youtube.&lt;/p&gt;
-
-&lt;p&gt;Use &lt;code&gt;youtube-dl&lt;/code&gt; to determine what formats are available&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;$ youtube-dl -f http://www.youtube.com/watch?v=HS5fHWmzqIg
-[youtube] Setting language
-[youtube] HS5fHWmzqIg: Downloading video webpage
-[youtube] HS5fHWmzqIg: Downloading video info webpage
-[youtube] HS5fHWmzqIg: Extracting video information
-Available formats:
-22      :       mp4     [720x1280]
-18      :       mp4     [360x640]
-43      :       webm    [360x640]
-5       :       flv     [240x400]
-36      :       3gp     [240x320]
-17      :       3gp     [144x176]
-136     :       mp4     [720p] (DASH Video)
-135     :       mp4     [480p] (DASH Video)
-134     :       mp4     [360p] (DASH Video)
-133     :       mp4     [240p] (DASH Video)
-160     :       mp4     [192p] (DASH Video)
-141     :       m4a     [256k] (DASH Audio)
-172     :       webm    [256k] (DASH Audio)
-140     :       m4a     [128k] (DASH Audio)
-171     :       webm    [128k] (DASH Audio)
-139     :       m4a     [48k] (DASH Audio)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;There are 5 audio formats for this video. &lt;strong&gt;141&lt;/strong&gt;&lt;sup&gt;th&lt;/sup&gt; has highest bitrate. So all we have to do, is to get real URL for this format and feed it to mpd&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ mpc add `youtube-dl -f141 -g http://www.youtube.com/watch?v=HS5fHWmzqIg`
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;That&amp;rsquo;s all, track from youtube is already in your mpd playlist. Enjoy!&lt;/p&gt;
 </description>
     </item>
     
