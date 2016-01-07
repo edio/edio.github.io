@@ -20,7 +20,7 @@
 &lt;p&gt;I&amp;rsquo;m not a huge fan of Synology. I bought my DS214 by friend&amp;rsquo;s recommendation and became frustrated with it right after
 the purchase. Bundled software is limited and buggy, it feels like the worst Windows™®-like experience ever. Many people
 find Synology products great. But for me it just doesn&amp;rsquo;t work well because it forces its usecases on me instead of being
-a helpful tool for my own very specific usecases.&lt;/p&gt;
+a helpful tool for my own very specific use cases.&lt;/p&gt;
 
 &lt;!--
 &gt; I bought it to save some time on setting up something like ArchLinux on something like HP MicroServer, but instead I
@@ -142,7 +142,7 @@ corresponds to &lt;code&gt;/volume1/media&lt;/code&gt; on NAS for my case).&lt;/
 &lt;h1 id=&#34;setup-sound-card:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Setup sound card&lt;/h1&gt;
 
 &lt;p&gt;Obviously, sound card should be supported in Linux. I own &lt;em&gt;Audinst USB HUD mini&lt;/em&gt; and it&amp;rsquo;s a real plug-n-play. You just
-plug it in, and if alsa is set up, it just works. For what it&amp;rsquo;s worth, I&amp;rsquo;m satsfied with the device, it sounds not as
+plug it in, and if alsa is set up, it just works. For what it&amp;rsquo;s worth, I&amp;rsquo;m satisfied with the device, it sounds not as
 good as my beloved ESI Juli@, but still it is good for its price.&lt;/p&gt;
 
 &lt;h2 id=&#34;loading-kernel-modules:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Loading kernel modules&lt;/h2&gt;
