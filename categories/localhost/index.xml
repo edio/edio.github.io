@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Synology on 127.0.0.1</title><link>http://127001.me/categories/synology/</link><description>Recent content in Synology on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 06 Jan 2016 01:51:40 +0100</lastBuildDate><atom:link href="http://127001.me/categories/synology/index.xml" rel="self" type="application/rss+xml"/><item><title>Turning Synology NAS into a geeky media server</title><link>http://127001.me/post/synology/mediaserver-p1/</link><pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate><guid>http://127001.me/post/synology/mediaserver-p1/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>localhost on 127.0.0.1</title><link>http://127001.me/categories/localhost/</link><description>Recent content in localhost on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 06 Jan 2016 01:51:40 +0100</lastBuildDate><atom:link href="http://127001.me/categories/localhost/index.xml" rel="self" type="application/rss+xml"/><item><title>Turning Synology NAS into a geeky media server</title><link>http://127001.me/post/synology/mediaserver-p1/</link><pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate><guid>http://127001.me/post/synology/mediaserver-p1/</guid><description>
 &lt;p&gt;I&amp;rsquo;m not a huge fan of Synology. I bought my DS214 by friend&amp;rsquo;s recommendation and became frustrated with it right after
 the purchase. Bundled software is limited and buggy, it feels like the worst Windows™®-like experience ever. Many people
 find Synology products great. But for me it just doesn&amp;rsquo;t work well because it forces its usecases on me instead of being
@@ -27,7 +27,7 @@ scrobble all statistics to Last.fm.&lt;/li&gt;
 some ARM-based) Synology product.&lt;/p&gt;
 &lt;p&gt;I do not expect anything bad, but, just in case, standard disclaimer: &lt;strong&gt;everything described here may contain mistakes
 and inaccuracies, cause data loss or even damage to your hardware.&lt;/strong&gt;&lt;/p&gt;
-&lt;h1 id=&#34;setup-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Setup Debian Chroot&lt;/h1&gt;
+&lt;h1 id=&#34;setup-debian-chroot&#34;&gt;Setup Debian Chroot&lt;/h1&gt;
 &lt;p&gt;Thanks to &lt;a href=&#34;https://synocommunity.com&#34;&gt;SynoCommunity project&lt;/a&gt; it is possible to get access to thousands of applications
 from Debian repositories by installing &lt;a href=&#34;https://synocommunity.com/package/debian-chroot&#34;&gt;Debian Chroot&lt;/a&gt;. Unlike optware
 solutions, all packages are relatively fresh, easy to install, and more likely to work without issues.&lt;/p&gt;
@@ -37,7 +37,7 @@ Trust level to &lt;em&gt;Synology Inc. and trusted publishers&lt;/em&gt;&lt;/li&
 &lt;li&gt;Install &lt;a href=&#34;https://synocommunity.com/package/debian-chroot&#34;&gt;Debian Chroot&lt;/a&gt; package&lt;/li&gt;
 &lt;li&gt;Start this package from &lt;em&gt;Package Center&lt;/em&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;configure-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Configure Debian chroot&lt;/h2&gt;
+&lt;h2 id=&#34;configure-debian-chroot&#34;&gt;Configure Debian chroot&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;SSH to NAS as &lt;em&gt;root&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;Chroot to Debian
@@ -55,7 +55,7 @@ Trust level to &lt;em&gt;Synology Inc. and trusted publishers&lt;/em&gt;&lt;/li&
 &lt;pre&gt;&lt;code&gt;# exit
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;share-media-files-to-debian-chroot:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Share media files to Debian chroot&lt;/h2&gt;
+&lt;h2 id=&#34;share-media-files-to-debian-chroot&#34;&gt;Share media files to Debian chroot&lt;/h2&gt;
 &lt;p&gt;By default Debian Chroot won&amp;rsquo;t get access to files stored on NAS (that&amp;rsquo;s the idea of chroot). We have to mount
 explicitly those directories, we want to expose.&lt;/p&gt;
 &lt;p&gt;Fron NAS terminal (not Debian Chroot, exit from it or create another SSH session to NAS):&lt;/p&gt;
@@ -90,11 +90,11 @@ esac
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;After doing that, we can chroot to Debian again and check that mount worked as expected (&lt;code&gt;/media&lt;/code&gt; in chroot should
 corresponds to &lt;code&gt;/volume1/media&lt;/code&gt; on NAS for my case).&lt;/p&gt;
-&lt;h1 id=&#34;setup-sound-card:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Setup sound card&lt;/h1&gt;
+&lt;h1 id=&#34;setup-sound-card&#34;&gt;Setup sound card&lt;/h1&gt;
 &lt;p&gt;Obviously, sound card should be supported in Linux. I own &lt;em&gt;Audinst USB HUD mini&lt;/em&gt; and it&amp;rsquo;s a real plug-n-play. I just
 plug it in, and if alsa is set up, it just works. For what it&amp;rsquo;s worth, I&amp;rsquo;m satisfied with the device, it sounds not as
 good as my beloved ESI Juli@, but still it is good for its price.&lt;/p&gt;
-&lt;h2 id=&#34;loading-kernel-modules:5ee4c18b904f6b659bdc1bbc3fdfc5ec&#34;&gt;Loading kernel modules&lt;/h2&gt;
+&lt;h2 id=&#34;loading-kernel-modules&#34;&gt;Loading kernel modules&lt;/h2&gt;
 &lt;p&gt;For sound card to work we need to install required kernel modules in host system (not in Debian Chroot). By default
 those are loaded by &lt;em&gt;AudioStation&lt;/em&gt; application. I analyzed its scripts, and came up with the following:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;#!/bin/sh
@@ -127,4 +127,37 @@ esac
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now if we chroot to Debian again and run &lt;code&gt;alsamixer&lt;/code&gt;, we should see usual mixer interface for connected soundcard.&lt;/p&gt;
 &lt;p&gt;Basically that&amp;rsquo;s it. For more experienced users it shouldn&amp;rsquo;t be hard to setup mpd or PulseAudio on Debian. Anyway, I&amp;rsquo;ll
-try to cover that in following posts for those, who are not well familiar with the topic.&lt;/p&gt;</description></item></channel></rss>
+try to cover that in following posts for those, who are not well familiar with the topic.&lt;/p&gt;</description></item><item><title>Listen tracks from youtube in mpd</title><link>http://127001.me/post/youtube-in-mpd/</link><pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate><guid>http://127001.me/post/youtube-in-mpd/</guid><description>&lt;p&gt;You&amp;rsquo;ll need&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;mpd with &lt;code&gt;curl&lt;/code&gt; support&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Suppose, you want to listen to some &lt;a href=&#34;http://www.youtube.com/watch?v=HS5fHWmzqIg&#34;&gt;vocal trance&lt;/a&gt; on youtube.&lt;/p&gt;
+&lt;p&gt;Use &lt;code&gt;youtube-dl&lt;/code&gt; to determine what formats are available&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;$ youtube-dl -f http://www.youtube.com/watch?v=HS5fHWmzqIg
+[youtube] Setting language
+[youtube] HS5fHWmzqIg: Downloading video webpage
+[youtube] HS5fHWmzqIg: Downloading video info webpage
+[youtube] HS5fHWmzqIg: Extracting video information
+Available formats:
+22 : mp4 [720x1280]
+18 : mp4 [360x640]
+43 : webm [360x640]
+5 : flv [240x400]
+36 : 3gp [240x320]
+17 : 3gp [144x176]
+136 : mp4 [720p] (DASH Video)
+135 : mp4 [480p] (DASH Video)
+134 : mp4 [360p] (DASH Video)
+133 : mp4 [240p] (DASH Video)
+160 : mp4 [192p] (DASH Video)
+141 : m4a [256k] (DASH Audio)
+172 : webm [256k] (DASH Audio)
+140 : m4a [128k] (DASH Audio)
+171 : webm [128k] (DASH Audio)
+139 : m4a [48k] (DASH Audio)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are 5 audio formats for this video. &lt;strong&gt;141&lt;/strong&gt;&lt;sup&gt;th&lt;/sup&gt; has highest bitrate. So all we have to do, is to get real URL for this format and feed it to mpd&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mpc add `youtube-dl -f141 -g http://www.youtube.com/watch?v=HS5fHWmzqIg`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That&amp;rsquo;s all, track from youtube is already in your mpd playlist. Enjoy!&lt;/p&gt;</description></item></channel></rss>
