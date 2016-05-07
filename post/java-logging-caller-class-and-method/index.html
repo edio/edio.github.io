@@ -1,76 +1,6 @@
-<!doctype html><html lang=en-us>
-<meta charset=utf-8>
-<title>
-How Java logging frameworks determine caller class and method name | 127.0.0.1
-</title>
-<meta name=viewport content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1">
-<link rel=canonical href=http://127001.me/post/java-logging-caller-class-and-method/>
-<link rel=apple-touch-icon-precomposed sizes=144x144 href=/favicon144.png>
-<link rel="shortcut icon" href=/favicon.png>
-<link href="https://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic" rel=stylesheet>
-<link href="https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin,cyrillic" rel=stylesheet>
-<link rel=stylesheet href=/css/font-awesome.min.css>
-<link rel=stylesheet href=/css/sanitize.css>
-<link rel=stylesheet href=/css/hljs/atelier-heath-light.css>
-<link rel=stylesheet href=/css/theme.css>
-<link href=http://127001.me/index.xml rel=alternate type=application/rss+xml title=127.0.0.1>
-<link href=http://127001.me/index.xml rel=feed type=application/rss+xml title=127.0.0.1>
-<div class=container>
-<header role=banner>
-<a href=http://127001.me/>
-<div class=title-block>
-<span class=title>127.0.0.1</span>
-<span class=subtitle>warm and cozy localhost</span>
-</div>
-</a>
-<div class=social>
-<a href=https://github.com/edio title=GitHub><i class="fa fa-github"></i></a>
-<a href=https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14 title=Linkedin><i class="fa fa-linkedin-square"></i></a>
-<a href=https://plus.google.com/u/0/114605025600792749954 title=Google+><i class="fa fa-google-plus"></i></a>
-</div>
-</header>
-<nav class=menubar>
-<ul>
-<li>
-<a href=http://127001.me/>
-posts&frasl;
-</a>
-<li>
-<a href=http://127001.me/categories/>
-categories&frasl;
-</a>
-<li>
-<a href=http://127001.me/tags/>
-tags&frasl;
-</a>
-<span class=spacer></span>
-<li>
-<a href=http://127001.me/index.xml type=application/rss+xml target=_blank title=RSS>
-<i class="fa fa-rss"></i>
-</a>
-</ul>
-</nav>
-<main id=single role=main>
-<div class=single-header>
-<h1><a href=http://127001.me/post/java-logging-caller-class-and-method/>How Java logging frameworks determine caller class and method name </a></h1>
-<div class=meta>
-Apr 8, 2014
-</div>
-</div>
-<article>
-<p>This post describes how java logging frameworks (Log4j, for example) know a point (concrete class and method name), where logging statement has been invoked.
-<p>I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.
-<h1 id=brief-log4j-configuration-and-usage-overview>Brief Log4J configuration and usage overview</h1>
-<p>Logger is identified by its name (a.k.a. category). Common myth here, is that logger is somehow connected with the class it is declared in. The myth is based on the signature of the factory method:
-<pre><code class=language-java>private static final Logger log = LogManager.getLogger(MyService.class);
-</code></pre>
-<p>but that&rsquo;s just a shortcut for
-<pre><code class=language-java>LogManager.getLogger(MyService.class.getName());
-</code></pre>
-<h2 id=category-vs-caller-class-name>Category vs Caller class name</h2>
-<p>It is important to understand the difference between logger category (placeholder <code>%c</code> in <a href=http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html><em>PatternLayout</em></a>) and caller class name (<code>%C</code>).
-<p>Consider the following example
-<pre><code>package com.my.company.name;
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><title>How Java logging frameworks determine caller class and method name | 127.0.0.1</title><meta name="viewport" content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1"><link rel="canonical" href="http://127001.me/post/java-logging-caller-class-and-method/"><link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon144.png"><link rel="shortcut icon" href="/favicon.png"><link href="https://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic" rel="stylesheet" type="text/css"><link href="https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin,cyrillic" rel="stylesheet" type="text/css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/sanitize.css"><link rel="stylesheet" href="/css/hljs/atelier-heath-light.css"><link rel="stylesheet" href="/css/theme.css"><link href="http://127001.me/index.xml" rel="alternate" type="application/rss+xml" title="127.0.0.1"><link href="http://127001.me/index.xml" rel="feed" type="application/rss+xml" title="127.0.0.1"></head><div class="container"><header role="banner"><a href="http://127001.me/"><div class="title-block"><span class="title">127.0.0.1</span> <span class="subtitle">warm and cozy localhost</span></div></a><div class="social"><a href="https://github.com/edio" title="GitHub"><i class="fa fa-github"></i></a> <a href="https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14" title="Linkedin"><i class="fa fa-linkedin-square"></i></a> <a href="https://plus.google.com/u/0/114605025600792749954" title="Google+"><i class="fa fa-google-plus"></i></a></div></header><nav class="menubar"><ul><li><a href="http://127001.me/">/posts</a></li><li><a href="http://127001.me/categories/">/categories</a></li><li><a href="http://127001.me/tags/">/tags</a></li><span class="spacer"></span><li><a href="http://127001.me/index.xml" type="application/rss+xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></li></ul></nav><main id="single" role="main"><div class="single-header"><h1><a href="http://127001.me/post/java-logging-caller-class-and-method/">How Java logging frameworks determine caller class and method name </a></h1><div class="meta">Apr 8, 2014</div></div><article><p>This post describes how java logging frameworks (Log4j, for example) know a point (concrete class and method name), where logging statement has been invoked.</p><p>I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.</p><h1 id="brief-log4j-configuration-and-usage-overview">Brief Log4J configuration and usage overview</h1><p>Logger is identified by its name (a.k.a. category). Common myth here, is that logger is somehow connected with the class it is declared in. The myth is based on the signature of the factory method:</p><pre><code class="language-java">private static final Logger log = LogManager.getLogger(MyService.class);
+</code></pre><p>but that&rsquo;s just a shortcut for</p><pre><code class="language-java">LogManager.getLogger(MyService.class.getName());
+</code></pre><h2 id="category-vs-caller-class-name">Category vs Caller class name</h2><p>It is important to understand the difference between logger category (placeholder <code>%c</code> in <a href="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html"><em>PatternLayout</em></a>) and caller class name (<code>%C</code>).</p><p>Consider the following example</p><pre><code>package com.my.company.name;
 public class MyService {
 
   private static final Logger log1 = LogManager.getLogger(MyService.class);
@@ -81,52 +11,25 @@ public class MyService {
     log2.debug(&quot;I'm log2&quot;);
   }
 }
-</code></pre>
-<p>When call to <em>f()</em> is performed while logger is configured with pattern <code>%c - %m%n</code>, log will contain
-<pre><code>com.my.company.name.MyService - I'm log1
+</code></pre><p>When call to <em>f()</em> is performed while logger is configured with pattern <code>%c - %m%n</code>, log will contain</p><pre><code>com.my.company.name.MyService - I'm log1
 blah-blah - I'm log2
-</code></pre>
-<p>On the other hand, if pattern is <code>%C - %m%n</code>, we&rsquo;ll get
-<pre><code>com.my.company.name.MyService - I'm log1
+</code></pre><p>On the other hand, if pattern is <code>%C - %m%n</code>, we&rsquo;ll get</p><pre><code>com.my.company.name.MyService - I'm log1
 com.my.company.name.MyService - I'm log2
-</code></pre>
-<p>Despite of being named <em>blah-blah</em>, the second logger somehow determined its caller class name.
-<h1 id=how-does-it-work>How does it work?</h1>
-<p>Before JVM enters any method, it records the point from which this method is invoked to be able to return to that same point later, after the method returns. Let&rsquo;s look at simple example
-<pre><code class=language-java>public class Example {
+</code></pre><p>Despite of being named <em>blah-blah</em>, the second logger somehow determined its caller class name.</p><h1 id="how-does-it-work">How does it work?</h1><p>Before JVM enters any method, it records the point from which this method is invoked to be able to return to that same point later, after the method returns. Let&rsquo;s look at simple example</p><pre><code class="language-java">public class Example {
   public static void main(String[] args) { a(); }
   static void a() { getCallerInfo(); }
   static void getCallerInfo() { b(); }
   static void b() { throw new RuntimeException(); }
 }
-</code></pre>
-<p>Method <em>b()</em> throws an exception. Exception reaches the very top without being caught and its stacktrace gets printed to <em>System.err</em>:
-<pre><code>Exception in thread &quot;main&quot; java.lang.RuntimeException
+</code></pre><p>Method <em>b()</em> throws an exception. Exception reaches the very top without being caught and its stacktrace gets printed to <em>System.err</em>:</p><pre><code>Exception in thread &quot;main&quot; java.lang.RuntimeException
  at Example.b(Example.java:7)
  at Example.getCallerInfo(Example.java:6)
  at Example.a(Example.java:5)
  at Example.main(Example.java:4)
-</code></pre>
-<p>Having that stacktrace it is easy to say, that method <em>getCallerInfo()</em> has been called from method <em>a()</em>. So if we could get that stacktrace in runtime somehow and analyze it, we could find an invocation point for any method in our application.
-<h2 id=obtaining-stacktrace>Obtaining stacktrace</h2>
-<p>There are few ways to get stacktrace in Java: <a href=http://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html#getStackTrace--><em>Thread.getStackTrace()</em></a> and <a href=http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html#getStackTrace--><em>Throwable.getStackTrace()</em></a>. Both methods return array of <a href=http://docs.oracle.com/javase/8/docs/api/java/lang/StackTraceElement.html><em>StackTraceElement</em></a>.
-<h4 id=throwable-getstacktrace>Throwable.getStackTrace()</h4>
-<p>Usage is as simple as
-<pre><code class=language-java>new Throwable().getStackTrace();
-</code></pre>
-<p>Stacktrace gets filled in when <em>Throwable</em> is created, so no need to throw it. Moreover, it is possible to reuse the same <em>Throwable</em> instance calling <a href=http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html#fillInStackTrace--><em>fillInStacktrace()</em></a> to refresh stacktrace when needed (of course, keeping in mind possible race conditions if shared across threads).
-Under the hood native method <em>Throwable.fillInStackTrace(int dummy)</em> is invoked eventually.
-<h4 id=thread-getstacktrace>Thread.getStackTrace()</h4>
-<p>Usage is
-<pre><code class=language-java>Thread.currentThread().getStackTrace();
-</code></pre>
-<p>Although a bit cleaner, this method does not give other benefits and is a bit slower (it has to check, whether stack trace is obtained for current thread of for some other thread, doing necessary security checks if required). And in the end stacktrace is obtained from new <em>Exception</em> instance in a way described above.
-<h2 id=parsing-stacktrace>Parsing stacktrace</h2>
-<p>So we got array of <em>StackTraceElement</em>. We need to iterate through that array and find such element whichs declaring class and method name properties satisfy some criteria:
-<pre><code class=language-java>&quot;debug&quot;.equals(methodName) &amp; &quot;my.company.Logger&quot;.equals(declaringClass)
-</code></pre>
-<p>Here is very simple straightforward implementation of a logger, which knows everything about its caller.
-<pre><code class=language-java>public class Logger {
+</code></pre><p>Having that stacktrace it is easy to say, that method <em>getCallerInfo()</em> has been called from method <em>a()</em>. So if we could get that stacktrace in runtime somehow and analyze it, we could find an invocation point for any method in our application.</p><h2 id="obtaining-stacktrace">Obtaining stacktrace</h2><p>There are few ways to get stacktrace in Java: <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html#getStackTrace--"><em>Thread.getStackTrace()</em></a> and <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html#getStackTrace--"><em>Throwable.getStackTrace()</em></a>. Both methods return array of <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/StackTraceElement.html"><em>StackTraceElement</em></a>.</p><h4 id="throwable-getstacktrace">Throwable.getStackTrace()</h4><p>Usage is as simple as</p><pre><code class="language-java">new Throwable().getStackTrace();
+</code></pre><p>Stacktrace gets filled in when <em>Throwable</em> is created, so no need to throw it. Moreover, it is possible to reuse the same <em>Throwable</em> instance calling <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html#fillInStackTrace--"><em>fillInStacktrace()</em></a> to refresh stacktrace when needed (of course, keeping in mind possible race conditions if shared across threads). Under the hood native method <em>Throwable.fillInStackTrace(int dummy)</em> is invoked eventually.</p><h4 id="thread-getstacktrace">Thread.getStackTrace()</h4><p>Usage is</p><pre><code class="language-java">Thread.currentThread().getStackTrace();
+</code></pre><p>Although a bit cleaner, this method does not give other benefits and is a bit slower (it has to check, whether stack trace is obtained for current thread of for some other thread, doing necessary security checks if required). And in the end stacktrace is obtained from new <em>Exception</em> instance in a way described above.</p><h2 id="parsing-stacktrace">Parsing stacktrace</h2><p>So we got array of <em>StackTraceElement</em>. We need to iterate through that array and find such element whichs declaring class and method name properties satisfy some criteria:</p><pre><code class="language-java">&quot;debug&quot;.equals(methodName) &amp; &quot;my.company.Logger&quot;.equals(declaringClass)
+</code></pre><p>Here is very simple straightforward implementation of a logger, which knows everything about its caller.</p><pre><code class="language-java">public class Logger {
 
   /**
    * Log message to stderr along with the caller class and method name.
@@ -153,46 +56,13 @@ Under the hood native method <em>Throwable.fillInStackTrace(int dummy)</em> is i
     throw new IllegalStateException(&quot;Logger doesn't appear in stacktrace&quot;);
   }
 }
-</code></pre>
-<h1 id=what-about-log4j>What about log4j</h1>
-<p>Of course, it&rsquo;s a bit more complicated than that. Good points to start investigation are
-<ul>
-<li><em>org.apache.log4j.spi.LocationInfo</em>
-<li><em>org.apache.log4j.helpers.PatternParser.LocationPatternConverter</em>
-</ul>
-</article>
-<div class=tags>
-<span class=label><i class="fa fa-tags"></i></span>
-<a href=/tags/java>java</a>&nbsp;
-<a href=/tags/log4j>log4j</a>&nbsp;
-<a href=/tags/stacktrace>stacktrace</a>&nbsp;
-</div>
-</main>
-<nav class=paging>
-<div class=label>More reading</div>
-<div class=item>
-<span class=direction>Older //</span>
-<a href=http://127001.me/post/youtube-in-mpd/ rel=prev>Listen tracks from youtube in mpd</a>
-</div>
-<div class=item>
-<span class=direction>Newer //</span>
-<a href=http://127001.me/post/introducing-randrctl/ rel=next>randrctl — profile-based screen manager for X</a>
-</div>
-</nav>
-<article class=comments>
-<div id=disqus_thread></div>
-<script>var disqus_shortname='127001me';var disqus_identifier='http:\/\/127001.me\/post\/java-logging-caller-class-and-method\/';var disqus_title='How Java logging frameworks determine caller class and method name';var disqus_url='http:\/\/127001.me\/post\/java-logging-caller-class-and-method\/';(function(){var dsq=document.createElement('script');dsq.type='text/javascript';dsq.async=true;dsq.src='//'+disqus_shortname+'.disqus.com/embed.js';(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(dsq);})();</script>
-<noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
-<a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
-</article>
-<footer role=contentinfo>
-<div class=copyright>
-© 2016 <span class=author>Dmytro Kostiuchenko</span>
-</div>
-<div class=poweredby>
-Powered by <a href=http://gohugo.io>HUGO</a>
-</div>
-</footer>
-</div>
-<script src=/js/highlight.pack.js></script>
-<script>hljs.initHighlightingOnLoad();</script>
+</code></pre><h1 id="what-about-log4j">What about log4j</h1><p>Of course, it&rsquo;s a bit more complicated than that. Good points to start investigation are</p><ul><li><em>org.apache.log4j.spi.LocationInfo</em></li><li><em>org.apache.log4j.helpers.PatternParser.LocationPatternConverter</em></li></ul></article><div class="tags"><span class="label"><i class="fa fa-tags"></i></span> <a href="/tags/java">java</a>&nbsp; <a href="/tags/log4j">log4j</a>&nbsp; <a href="/tags/stacktrace">stacktrace</a>&nbsp;</div></main><nav class="paging"><div class="label">More reading</div><div class="item"><span class="direction">Older //</span> <a href="http://127001.me/post/youtube-in-mpd/" rel="prev">Listen tracks from youtube in mpd</a></div><div class="item"><span class="direction">Newer //</span> <a href="http://127001.me/post/introducing-randrctl/" rel="next">randrctl — profile-based screen manager for X</a></div></nav><article class="comments"><div id="disqus_thread"></div><script type="text/javascript">var disqus_shortname = '127001me';
+    var disqus_identifier = 'http:\/\/127001.me\/post\/java-logging-caller-class-and-method\/';
+    var disqus_title = 'How Java logging frameworks determine caller class and method name';
+    var disqus_url = 'http:\/\/127001.me\/post\/java-logging-caller-class-and-method\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></article><footer role="contentinfo"><div class="copyright">© 2016 <span class="author">Dmytro Kostiuchenko</span></div><div class="poweredby">Powered by <a href="http://gohugo.io">HUGO</a></div></footer></div><script src="/js/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></html>
