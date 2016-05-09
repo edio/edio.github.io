@@ -45,7 +45,7 @@ interface V {
 
 &lt;p&gt;Indeed, the latter puzzle appears to be much easier, and most of the candidates answer, that implementation of both
 methods in a signle class shouldn&amp;rsquo;t be possible, because the signatures of &lt;code&gt;S.m(int)&lt;/code&gt; and &lt;code&gt;V.m(int)&lt;/code&gt; are the same while
-return types are different. And that is absolutely correct.&lt;/p&gt;
+return types are different. And this is absolutely correct.&lt;/p&gt;
 
 &lt;p&gt;Sometimes, though, I ask another question on the topic:&lt;/p&gt;
 
@@ -65,7 +65,7 @@ JVM, on the other hand, distinguishes methods in a class by a combination of the
 &lt;a href=&#34;https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.2.2&#34;&gt;unqualified method name&lt;/a&gt; (simply the name of
 the method) and the
 &lt;a href=&#34;https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3.3&#34;&gt;method descriptor&lt;/a&gt;, that is a list of
-parameter descriptiors and one return descriptor.&lt;/p&gt;
+parameter descriptors and one return descriptor.&lt;/p&gt;
 
 &lt;p&gt;For example, if we wanted to invoke a method &lt;code&gt;String m(int i)&lt;/code&gt; directly on a class &lt;code&gt;foo.Bar&lt;/code&gt;, in the bytecode we&amp;rsquo;d need
 to have:&lt;/p&gt;
@@ -151,10 +151,9 @@ cw.visitEnd();
 &lt;p&gt;Although, our reference pseudo-java code for &lt;code&gt;SV&lt;/code&gt; didn&amp;rsquo;t contain any constructors, we must generate code for it anyway,
 if we do not declare constructors in Java, compiler implicitly generates empty constructor for us.&lt;/p&gt;
 
-&lt;p&gt;In the methods bodies we start with obtaining the &lt;code&gt;out&lt;/code&gt; field of type &lt;code&gt;java.io.PrintStream&lt;/code&gt; from &lt;code&gt;System&lt;/code&gt; class. Then
-we load a constant (&lt;code&gt;&amp;quot;String&amp;quot;&lt;/code&gt; or &lt;code&gt;&amp;quot;void&amp;quot;&lt;/code&gt;) onto stack and invoke method &lt;code&gt;println&lt;/code&gt; on an obtained &lt;code&gt;out&lt;/code&gt; reference.
-Bytecode instructions take parameters by popping values from the stack. If a bytecode instruction takes 2 parameters
-it will pop 2 values from the stack, that is the case with &lt;code&gt;INVOKEVIRTUAL&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In the methods bodies we start by obtaining the &lt;code&gt;out&lt;/code&gt; field of type &lt;code&gt;java.io.PrintStream&lt;/code&gt; from &lt;code&gt;System&lt;/code&gt; class and
+pushing it onto the operand stack. Then we load a constant (&lt;code&gt;&amp;quot;String&amp;quot;&lt;/code&gt; or &lt;code&gt;&amp;quot;void&amp;quot;&lt;/code&gt;) onto the stack and invoke &lt;code&gt;println&lt;/code&gt;
+on an obtained &lt;code&gt;out&lt;/code&gt; reference with the string constant as an argument.&lt;/p&gt;
 
 &lt;p&gt;Finally, for &lt;code&gt;String m(int i)&lt;/code&gt; we push a constant of type reference with value &lt;code&gt;null&lt;/code&gt; to stack and use a correspondingly
 typed &lt;code&gt;return&lt;/code&gt; instruction, &lt;code&gt;ARETURN&lt;/code&gt; it is, to return a value back to a method caller. For the &lt;code&gt;void m(int i)&lt;/code&gt; we use
@@ -231,7 +230,7 @@ Object o = generatedClazz.newInstance();
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Since our class is generated in runtime, we can&amp;rsquo;t cast to it in our source code. We can cast to the implemented
-interfaces though. And invocation becomes possible with this:&lt;/p&gt;
+interfaces though. And non-reflective invocation becomes possible with this:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;((S)o).m(1);
 ((V)o).m(1);
@@ -243,7 +242,7 @@ interfaces though. And invocation becomes possible with this:&lt;/p&gt;
 void
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;To some the output might seem unexpected: we call &lt;em&gt;the same&lt;/em&gt; (from Java&amp;rsquo;s prospective) method on a class, but results
+&lt;p&gt;To some the output might seem unexpected: we call &lt;em&gt;the same&lt;/em&gt; (from Java&amp;rsquo;s perspective) method on a class, but results
 differ depending on the interface we cast object to. Mind-blowing, isn&amp;rsquo;t it?&lt;/p&gt;
 
 &lt;p&gt;Things become clearer, if we think about the underlying bytecode. For the invocation we performed, compiler generates
@@ -271,8 +270,8 @@ generics and access to private fields from inner classes are implemented using s
 
 &lt;p&gt;Consider an interface:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;public interface PetShelter {
-  Number getPet();
+&lt;pre&gt;&lt;code&gt;public interface ZeroProvider {
+  Number getZero();
 }
 &lt;/code&gt;&lt;/pre&gt;
 
