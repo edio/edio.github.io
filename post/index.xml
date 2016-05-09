@@ -6,8 +6,333 @@
     <description>Recent content in Posts on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 06 Jan 2016 01:51:40 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 09 May 2016 00:59:08 +0200</lastBuildDate>
     <atom:link href="http://127001.me/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Overloading that is not permitted or Java bridge methods</title>
+      <link>http://127001.me/post/java-bridge-methods/</link>
+      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
+      
+      <guid>http://127001.me/post/java-bridge-methods/</guid>
+      <description>
+
+&lt;p&gt;Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
+similar interfaces in a single class:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Implement both interfaces in a single class if possible. Explain why possible/not possible.
+
+interface WithPrimitiveInt {
+  void m(int i);
+}
+
+interface WithInteger {
+  void m(Integer i);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Sometimes candidates, not being sure about the right answer, are willing to solve the following puzzle instead (I give
+it to candidates later anyway):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;interface S {
+  String m(int i);
+}
+
+interface V {
+  void m(int i);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Indeed, the latter puzzle appears to be much easier, and most of the candidates answer, that implementation of both
+methods in a signle class shouldn&amp;rsquo;t be possible, because the signatures of &lt;code&gt;S.m(int)&lt;/code&gt; and &lt;code&gt;V.m(int)&lt;/code&gt; are the same while
+return types are different. And that is absolutely correct.&lt;/p&gt;
+
+&lt;p&gt;Sometimes, though, I ask another question on the topic:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Do you think, it would make any sense to allow implementation of methods with the same method signature but different
+return types in a single class? Maybe, in some hypothetical JVM-based language or at least on a JVM level?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That&amp;rsquo;s kind of an open question and I do not expect a single correct answer here. But although I do not expect one, the
+correct answer exists. And a person, who worked with the reflections API a lot, performed bytecode manipulations or read
+JVM specification might know it.&lt;/p&gt;
+
+&lt;h2 id=&#34;java-method-signature-vs-jvm-method-descriptor&#34;&gt;Java method signature vs JVM method descriptor&lt;/h2&gt;
+
+&lt;p&gt;Java method signature (i.e. method name and types of parameters) is only imposed by Java compiler during compilation.
+JVM, on the other hand, distinguishes methods in a class by a combination of the
+&lt;a href=&#34;https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.2.2&#34;&gt;unqualified method name&lt;/a&gt; (simply the name of
+the method) and the
+&lt;a href=&#34;https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3.3&#34;&gt;method descriptor&lt;/a&gt;, that is a list of
+parameter descriptiors and one return descriptor.&lt;/p&gt;
+
+&lt;p&gt;For example, if we wanted to invoke a method &lt;code&gt;String m(int i)&lt;/code&gt; directly on a class &lt;code&gt;foo.Bar&lt;/code&gt;, in the bytecode we&amp;rsquo;d need
+to have:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INVOKEVIRTUAL foo/Bar.m (I)Ljava/lang/String;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and for &lt;code&gt;void m(int i)&lt;/code&gt; it would be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INVOKEVIRTUAL foo/Bar.m (I)V
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That said, JVM is perfectly fine with &lt;code&gt;String m(int i)&lt;/code&gt; and &lt;code&gt;void m(int i)&lt;/code&gt; in a single class. All we need to do, is to
+generate proper bytecode.&lt;/p&gt;
+
+&lt;h2 id=&#34;bytecode-kung-fu&#34;&gt;Bytecode Kung Fu&lt;/h2&gt;
+
+&lt;p&gt;We have interfaces &lt;code&gt;S&lt;/code&gt; and &lt;code&gt;V&lt;/code&gt;, let&amp;rsquo;s generate now a class &lt;code&gt;SV&lt;/code&gt; which implements both those interfaces. Representation
+in Java, if it was allowed, should look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class SV implements S, V {
+  public void m(int i) {
+    System.out.println(&amp;quot;void m(int i)&amp;quot;);
+  }
+  public String m(int i) {
+    System.out.println(&amp;quot;String m(int i)&amp;quot;);
+    return null;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To generate bytecode we&amp;rsquo;ll use &lt;a href=&#34;http://asm.ow2.org/index.html&#34;&gt;Objectweb ASM library&lt;/a&gt;, which is low-level enough to get
+a feeling of what JVM bytecode is.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://github.com/edio/java-bridge-methods&#34;&gt;Full source code&lt;/a&gt; is shared on github, here I&amp;rsquo;ll only list and explain
+essential snippets.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+
+// package edio.java.experiments
+// public class SV implements S, V
+cw.visit(V1_7, ACC_PUBLIC, &amp;quot;edio/java/experiments/SV&amp;quot;, null, &amp;quot;java/lang/Object&amp;quot;, new String[]{
+    &amp;quot;edio/java/experiments/S&amp;quot;,
+    &amp;quot;edio/java/experiments/V&amp;quot;
+});
+
+// constructor
+MethodVisitor constructor = cw.visitMethod(ACC_PUBLIC, &amp;quot;&amp;lt;init&amp;gt;&amp;quot;, &amp;quot;()V&amp;quot;, null, null);
+constructor.visitCode();
+constructor.visitVarInsn(Opcodes.ALOAD, 0);
+constructor.visitMethodInsn(Opcodes.INVOKESPECIAL, &amp;quot;java/lang/Object&amp;quot;, &amp;quot;&amp;lt;init&amp;gt;&amp;quot;, &amp;quot;()V&amp;quot;);
+constructor.visitInsn(Opcodes.RETURN);
+constructor.visitMaxs(1, 1);
+constructor.visitEnd();
+
+// public String m(int i)
+MethodVisitor mString = cw.visitMethod(ACC_PUBLIC, &amp;quot;m&amp;quot;, &amp;quot;(I)Ljava/lang/String;&amp;quot;, null, null);
+mString.visitCode();
+mString.visitFieldInsn(Opcodes.GETSTATIC, &amp;quot;java/lang/System&amp;quot;, &amp;quot;out&amp;quot;, &amp;quot;Ljava/io/PrintStream;&amp;quot;);
+mString.visitLdcInsn(&amp;quot;String&amp;quot;);
+mString.visitMethodInsn(Opcodes.INVOKEVIRTUAL, &amp;quot;java/io/PrintStream&amp;quot;, &amp;quot;println&amp;quot;, &amp;quot;(Ljava/lang/String;)V&amp;quot;);
+mString.visitInsn(Opcodes.ACONST_NULL);
+mString.visitInsn(Opcodes.ARETURN);
+mString.visitMaxs(2, 2);
+mString.visitEnd();
+
+// public void m(int i)
+MethodVisitor mVoid = cw.visitMethod(ACC_PUBLIC, &amp;quot;m&amp;quot;, &amp;quot;(I)V&amp;quot;, null, null);
+mVoid.visitFieldInsn(Opcodes.GETSTATIC, &amp;quot;java/lang/System&amp;quot;, &amp;quot;out&amp;quot;, &amp;quot;Ljava/io/PrintStream;&amp;quot;);
+mVoid.visitLdcInsn(&amp;quot;void&amp;quot;);
+mVoid.visitMethodInsn(Opcodes.INVOKEVIRTUAL, &amp;quot;java/io/PrintStream&amp;quot;, &amp;quot;println&amp;quot;, &amp;quot;(Ljava/lang/String;)V&amp;quot;);
+mVoid.visitInsn(Opcodes.RETURN);
+mVoid.visitMaxs(2, 2);
+mVoid.visitEnd();
+
+cw.visitEnd();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We start with creating &lt;code&gt;ClassWriter&lt;/code&gt; to generate bytecode.&lt;/p&gt;
+
+&lt;p&gt;Then we declare a class, that implements interfaces &lt;code&gt;S&lt;/code&gt; and &lt;code&gt;V&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Although, our reference pseudo-java code for &lt;code&gt;SV&lt;/code&gt; didn&amp;rsquo;t contain any constructors, we must generate code for it anyway,
+if we do not declare constructors in Java, compiler implicitly generates empty constructor for us.&lt;/p&gt;
+
+&lt;p&gt;In the methods bodies we start with obtaining the &lt;code&gt;out&lt;/code&gt; field of type &lt;code&gt;java.io.PrintStream&lt;/code&gt; from &lt;code&gt;System&lt;/code&gt; class. Then
+we load a constant (&lt;code&gt;&amp;quot;String&amp;quot;&lt;/code&gt; or &lt;code&gt;&amp;quot;void&amp;quot;&lt;/code&gt;) onto stack and invoke method &lt;code&gt;println&lt;/code&gt; on an obtained &lt;code&gt;out&lt;/code&gt; reference.
+Bytecode instructions take parameters by popping values from the stack. If a bytecode instruction takes 2 parameters
+it will pop 2 values from the stack, that is the case with &lt;code&gt;INVOKEVIRTUAL&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, for &lt;code&gt;String m(int i)&lt;/code&gt; we push a constant of type reference with value &lt;code&gt;null&lt;/code&gt; to stack and use a correspondingly
+typed &lt;code&gt;return&lt;/code&gt; instruction, &lt;code&gt;ARETURN&lt;/code&gt; it is, to return a value back to a method caller. For the &lt;code&gt;void m(int i)&lt;/code&gt; we use
+untyped &lt;code&gt;RETURN&lt;/code&gt; to only jump back to a method caller without returning a value.&lt;/p&gt;
+
+&lt;p&gt;To verify, that our bytecode is correct (and I&amp;rsquo;ve been doing this all the time, iteratively fixing the issues), we write
+the generated class to a filesystem&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Files.write(new File(&amp;quot;/tmp/SV.class&amp;quot;).toPath(), cw.toByteArray());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and use &lt;code&gt;jad&lt;/code&gt; (java decompiler) to turn bytecode back to java&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ jad -p /tmp/SV.class
+The class file version is 51.0 (only 45.3, 46.0 and 47.0 are supported)
+// Decompiled by Jad v1.5.8e. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.geocities.com/kpdus/jad.html
+// Decompiler options: packimports(3) 
+
+package edio.java.experiments;
+
+import java.io.PrintStream;
+
+// Referenced classes of package edio.java.experiments:
+//            S, V
+
+public class SV
+    implements S, V
+{
+
+    public SV()
+    {
+    }
+
+    public String m(int i)
+    {
+        System.out.println(&amp;quot;String&amp;quot;);
+        return null;
+    }
+
+    public void m(int i)
+    {
+        System.out.println(&amp;quot;void&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Close enough, I think.&lt;/p&gt;
+
+&lt;h2 id=&#34;using-generated-class-in-runtime&#34;&gt;Using generated class in runtime&lt;/h2&gt;
+
+&lt;p&gt;Successful decompilation by &lt;code&gt;jad&lt;/code&gt; actually guarantees us nothing. &lt;code&gt;jad&lt;/code&gt; warns us if there are major problems with the
+bytecode, like frame size to local variables discrepancy or missing return statement. But in general we can&amp;rsquo;t be sure
+that our generated class will do any job in runtime.&lt;/p&gt;
+
+&lt;p&gt;To use generated class in runtime we need to load it somehow into JVM and then instantiate.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s implement our own &lt;code&gt;AsmClassLoader&lt;/code&gt;. It is just a convenient wrapper around &lt;code&gt;ClassLoader.defineClass&lt;/code&gt; method:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class AsmClassLoader extends ClassLoader {
+  public Class defineAsmClass(String name, ClassWriter classWriter) {
+    byte[] bytes = classWriter.toByteArray();
+    return defineClass(name, bytes, 0, bytes.length);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s use that classloader and instantiate the class:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ClassWriter cw = SVGenerator.generateClass();
+AsmClassLoader classLoader = new AsmClassLoader();
+Class&amp;lt;?&amp;gt; generatedClazz = classLoader.defineAsmClass(SVGenerator.SV_FQCN, cw);
+Object o = generatedClazz.newInstance();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since our class is generated in runtime, we can&amp;rsquo;t cast to it in our source code. We can cast to the implemented
+interfaces though. And invocation becomes possible with this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;((S)o).m(1);
+((V)o).m(1);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we execute the code, the output will be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;String
+void
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To some the output might seem unexpected: we call &lt;em&gt;the same&lt;/em&gt; (from Java&amp;rsquo;s prospective) method on a class, but results
+differ depending on the interface we cast object to. Mind-blowing, isn&amp;rsquo;t it?&lt;/p&gt;
+
+&lt;p&gt;Things become clearer, if we think about the underlying bytecode. For the invocation we performed, compiler generates
+&lt;code&gt;INVOKEINTERFACE&lt;/code&gt; instruction and the method descriptor comes not from the class, but from the interface.&lt;/p&gt;
+
+&lt;p&gt;Thus, for the first invocation we&amp;rsquo;ll have:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INVOKEINTERFACE edio/java/experiments/S.m (I)Ljava/lang/String;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and for the second one:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INVOKEINTERFACE edio/java/experiments/V.m (I)V
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The object, on which invocation is performed, is obtained from the stack. And that is the power behind polymorphism in
+Java.&lt;/p&gt;
+
+&lt;h2 id=&#34;bridge-method-is-the-name&#34;&gt;Bridge method is the name&lt;/h2&gt;
+
+&lt;p&gt;One might ask: “So what is the point of that all? Will you ever use that kind of stuff in your code?”&lt;/p&gt;
+
+&lt;p&gt;The thing is that we do use this virtually every time we write usual Java code. For example, covariant return types,
+generics and access to private fields from inner classes are implemented using similar “magic” in bytecode.&lt;/p&gt;
+
+&lt;p&gt;Consider an interface:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public interface PetShelter {
+  Number getPet();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and its implementation returning a covariant type:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class IntegerZero implements ZeroProvider {
+  public Integer getZero() {
+    return 0;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s now think about the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;IntegerZero iz = new IntegerZero();
+iz.getZero();
+
+ZeroProvider zp = iz;
+zp.getZero();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For the &lt;code&gt;iz.getZero()&lt;/code&gt; call compiler will generate &lt;code&gt;INVOKEVIRTUAL&lt;/code&gt; with &lt;code&gt;()Ljava/lang/Integer;&lt;/code&gt; method descriptor, while
+for the &lt;code&gt;zp.getZero()&lt;/code&gt; it will generate &lt;code&gt;INVOKEINTERFACE&lt;/code&gt; with &lt;code&gt;()Ljava/lang/Number;&lt;/code&gt; method descriptor. We already
+know, that JVM dispatches a call on the object by a method name and a method descriptor. Since descriptors are
+different, those 2 calls can&amp;rsquo;t be dispatched to the same method in our &lt;code&gt;IntegerZero&lt;/code&gt; instance.&lt;/p&gt;
+
+&lt;p&gt;In fact, compiler generates one additional method, which acts as a &lt;em&gt;bridge&lt;/em&gt; between the real method we declared in the
+class, and the method used during invocation via interface. Hence the name — &lt;strong&gt;bridge method&lt;/strong&gt;. If only Java permitted
+this, the resulting code would look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class IntegerZero implements ZeroProvider {
+  public Integer getZero() {
+    return 0;
+  }
+
+  // This is a synthetic bridge method, which is present only in bytecode.
+  // Java compiler wouldn&#39;t permit it.
+  public Number getZero() {
+    return this.getZero();
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;afterword&#34;&gt;Afterword&lt;/h2&gt;
+
+&lt;p&gt;Java programming language and Java Virtual Machine are not to be confused: although they share one common word in their
+names and although Java is the main language for JVM, their possibilities and limitations are not always the same.
+Knowing JVM helps a lot understanding Java or any other JVM-based language and knowing Java and its history, on the
+other hand, helps understanding certain decisions in JVM design.&lt;/p&gt;
+
+&lt;h2 id=&#34;related-links&#34;&gt;Related links&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.oracle.com/javase/specs/jvms/se7/html/&#34;&gt;Java Virtual Machine Specification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://download.forge.objectweb.org/asm/asm4-guide.pdf&#34;&gt;ASM user guide [pdf]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/edio/java-bridge-methods&#34;&gt;Source code from the article&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/921025/eclipse-warning-about-synthetic-accessor-for-private-static-nested-classes-in-jav&#34;&gt;Synthetic accessor for private nested classes in Java [StackOverflow]&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>Turning Synology NAS into a geeky media server</title>
@@ -21,17 +346,6 @@
 the purchase. Bundled software is limited and buggy, it feels like the worst Windows™®-like experience ever. Many people
 find Synology products great. But for me it just doesn&amp;rsquo;t work well because it forces its usecases on me instead of being
 a helpful tool for my own very specific use cases.&lt;/p&gt;
-
-&lt;!--
-&gt; I bought it to save some time on setting up something like ArchLinux on something like HP MicroServer, but instead I
-spent hours trying to compile software I need for lousy ARM processor and somewhat unusual OS. &gt; &gt; So after few
-sleepless nights with toolchains and cross-compilation in VM, I decided to sell it and bought... silly me... DS214Play.
-I thought, that my only problem is an ARM processor. &gt; &gt; Indeed, it worked better, but it was still the same device with
-the same OS, same set of built-in software with blows and whistles, 90% of which I probably never used.  &gt; &gt; So, for
-what it&#39;s worth, if you&#39;re, like me, a geek, who is used to Gentoo, ArchLinux or Debian, if you think installing music
-player on router and controlling it over wi-fi with wi-fi-capable kettle is fun, if you like to squeeze maximum from
-your HW, do yourself a favor — build custom server. It will save you tons of time. 
---&gt;
 
 &lt;p&gt;Anyway, I wasn&amp;rsquo;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it.&lt;/p&gt;
 

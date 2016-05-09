@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>java on 127.0.0.1</title>
-    <link>http://127001.me/categories/java/</link>
-    <description>Recent content in java on 127.0.0.1</description>
+    <title>asm on 127.0.0.1</title>
+    <link>http://127001.me/tags/asm/</link>
+    <description>Recent content in asm on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 09 May 2016 00:59:08 +0200</lastBuildDate>
-    <atom:link href="http://127001.me/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://127001.me/tags/asm/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Overloading that is not permitted or Java bridge methods</title>
@@ -331,158 +331,6 @@ other hand, helps understanding certain decisions in JVM design.&lt;/p&gt;
 &lt;li&gt;&lt;a href=&#34;http://github.com/edio/java-bridge-methods&#34;&gt;Source code from the article&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/921025/eclipse-warning-about-synthetic-accessor-for-private-static-nested-classes-in-jav&#34;&gt;Synthetic accessor for private nested classes in Java [StackOverflow]&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>How Java logging frameworks determine caller class and method name</title>
-      <link>http://127001.me/post/java-logging-caller-class-and-method/</link>
-      <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
-      
-      <guid>http://127001.me/post/java-logging-caller-class-and-method/</guid>
-      <description>
-
-&lt;p&gt;This post describes how java logging frameworks (Log4j, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;
-
-&lt;p&gt;I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.&lt;/p&gt;
-
-&lt;h1 id=&#34;brief-log4j-configuration-and-usage-overview&#34;&gt;Brief Log4J configuration and usage overview&lt;/h1&gt;
-
-&lt;p&gt;Logger is identified by its name (a.k.a. category). Common myth here, is that logger is somehow connected with the class it is declared in. The myth is based on the signature of the factory method:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private static final Logger log = LogManager.getLogger(MyService.class);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;but that&amp;rsquo;s just a shortcut for&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;LogManager.getLogger(MyService.class.getName());
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;category-vs-caller-class-name&#34;&gt;Category vs Caller class name&lt;/h2&gt;
-
-&lt;p&gt;It is important to understand the difference between logger category (placeholder &lt;code&gt;%c&lt;/code&gt; in &lt;a href=&#34;http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html&#34;&gt;&lt;em&gt;PatternLayout&lt;/em&gt;&lt;/a&gt;) and caller class name (&lt;code&gt;%C&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;Consider the following example&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;package com.my.company.name;
-public class MyService {
-
-  private static final Logger log1 = LogManager.getLogger(MyService.class);
-  private static final Logger log2 = LogManager.getLogger(&amp;quot;blah-blah&amp;quot;);
-
-  public void f() {
-    log1.debug(&amp;quot;I&#39;m log1&amp;quot;);
-    log2.debug(&amp;quot;I&#39;m log2&amp;quot;);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;When call to &lt;em&gt;f()&lt;/em&gt; is performed while logger is configured with pattern &lt;code&gt;%c - %m%n&lt;/code&gt;, log will contain&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;com.my.company.name.MyService - I&#39;m log1
-blah-blah - I&#39;m log2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;On the other hand, if pattern is &lt;code&gt;%C - %m%n&lt;/code&gt;, we&amp;rsquo;ll get&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;com.my.company.name.MyService - I&#39;m log1
-com.my.company.name.MyService - I&#39;m log2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Despite of being named &lt;em&gt;blah-blah&lt;/em&gt;, the second logger somehow determined its caller class name.&lt;/p&gt;
-
-&lt;h1 id=&#34;how-does-it-work&#34;&gt;How does it work?&lt;/h1&gt;
-
-&lt;p&gt;Before JVM enters any method, it records the point from which this method is invoked to be able to return to that same point later, after the method returns. Let&amp;rsquo;s look at simple example&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Example {
-  public static void main(String[] args) { a(); }
-  static void a() { getCallerInfo(); }
-  static void getCallerInfo() { b(); }
-  static void b() { throw new RuntimeException(); }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Method &lt;em&gt;b()&lt;/em&gt; throws an exception. Exception reaches the very top without being caught and its stacktrace gets printed to &lt;em&gt;System.err&lt;/em&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Exception in thread &amp;quot;main&amp;quot; java.lang.RuntimeException
- at Example.b(Example.java:7)
- at Example.getCallerInfo(Example.java:6)
- at Example.a(Example.java:5)
- at Example.main(Example.java:4)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Having that stacktrace it is easy to say, that method &lt;em&gt;getCallerInfo()&lt;/em&gt; has been called from method &lt;em&gt;a()&lt;/em&gt;. So if we could get that stacktrace in runtime somehow and analyze it, we could find an invocation point for any method in our application.&lt;/p&gt;
-
-&lt;h2 id=&#34;obtaining-stacktrace&#34;&gt;Obtaining stacktrace&lt;/h2&gt;
-
-&lt;p&gt;There are few ways to get stacktrace in Java: &lt;a href=&#34;http://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html#getStackTrace--&#34;&gt;&lt;em&gt;Thread.getStackTrace()&lt;/em&gt;&lt;/a&gt; and &lt;a href=&#34;http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html#getStackTrace--&#34;&gt;&lt;em&gt;Throwable.getStackTrace()&lt;/em&gt;&lt;/a&gt;. Both methods return array of &lt;a href=&#34;http://docs.oracle.com/javase/8/docs/api/java/lang/StackTraceElement.html&#34;&gt;&lt;em&gt;StackTraceElement&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h4 id=&#34;throwable-getstacktrace&#34;&gt;Throwable.getStackTrace()&lt;/h4&gt;
-
-&lt;p&gt;Usage is as simple as&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;new Throwable().getStackTrace();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Stacktrace gets filled in when &lt;em&gt;Throwable&lt;/em&gt; is created, so no need to throw it. Moreover, it is possible to reuse the same &lt;em&gt;Throwable&lt;/em&gt; instance calling &lt;a href=&#34;http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html#fillInStackTrace--&#34;&gt;&lt;em&gt;fillInStacktrace()&lt;/em&gt;&lt;/a&gt; to refresh stacktrace when needed (of course, keeping in mind possible race conditions if shared across threads).
-Under the hood native method &lt;em&gt;Throwable.fillInStackTrace(int dummy)&lt;/em&gt; is invoked eventually.&lt;/p&gt;
-
-&lt;h4 id=&#34;thread-getstacktrace&#34;&gt;Thread.getStackTrace()&lt;/h4&gt;
-
-&lt;p&gt;Usage is&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Thread.currentThread().getStackTrace();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Although a bit cleaner, this method does not give other benefits and is a bit slower (it has to check, whether stack trace is obtained for current thread of for some other thread, doing necessary security checks if required). And in the end stacktrace is obtained from new &lt;em&gt;Exception&lt;/em&gt; instance in a way described above.&lt;/p&gt;
-
-&lt;h2 id=&#34;parsing-stacktrace&#34;&gt;Parsing stacktrace&lt;/h2&gt;
-
-&lt;p&gt;So we got array of &lt;em&gt;StackTraceElement&lt;/em&gt;. We need to iterate through that array and find such element whichs declaring class and method name properties satisfy some criteria:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;&amp;quot;debug&amp;quot;.equals(methodName) &amp;amp; &amp;quot;my.company.Logger&amp;quot;.equals(declaringClass)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Here is very simple straightforward implementation of a logger, which knows everything about its caller.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Logger {
-
-  /**
-   * Log message to stderr along with the caller class and method name.
-   * @param msg message to log
-   */
-  public final void log(String msg) {
-    StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-    // Index of StackTraceElement in stacktrace, where our logger appears.
-    int i = getSelfElementIndex(stackTrace, this.getClass());
-    // Caller is the next item down the stack.
-    StackTraceElement caller = stackTrace[i + 1];
-    System.err.println(caller.getClassName() + &amp;quot;.&amp;quot; + caller.getMethodName() + &amp;quot;: &amp;quot;
-       + msg);
-  }
-
-  private int getSelfElementIndex(StackTraceElement[] stackTrace) {
-    for (int i = 0; i &amp;lt; stackTrace.length; i++) {
-      StackTraceElement el = stackTrace[i];
-      // We don&#39;t need to check method name, our logger has only one method.
-      if (el.getClassName().equals(this.getClass().getName())) {
-        return i;
-      }
-    }
-    throw new IllegalStateException(&amp;quot;Logger doesn&#39;t appear in stacktrace&amp;quot;);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;what-about-log4j&#34;&gt;What about log4j&lt;/h1&gt;
-
-&lt;p&gt;Of course, it&amp;rsquo;s a bit more complicated than that. Good points to start investigation are&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;org.apache.log4j.spi.LocationInfo&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;org.apache.log4j.helpers.PatternParser.LocationPatternConverter&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

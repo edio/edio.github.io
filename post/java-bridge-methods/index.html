@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><title>Overloading that is not permitted or Java bridge methods | 127.0.0.1</title><meta name="viewport" content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1"><link rel="canonical" href="http://127001.me/post/java-bridge-methods/"><link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon144.png"><link rel="shortcut icon" href="/favicon.png"><link href="https://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic" rel="stylesheet" type="text/css"><link href="https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin,cyrillic" rel="stylesheet" type="text/css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/sanitize.css"><link rel="stylesheet" href="/css/hljs/atelier-heath-light.css"><link rel="stylesheet" href="/css/theme.css"><link href="http://127001.me/index.xml" rel="alternate" type="application/rss+xml" title="127.0.0.1"><link href="http://127001.me/index.xml" rel="feed" type="application/rss+xml" title="127.0.0.1"></head><div class="container"><header role="banner"><a href="http://127001.me/"><div class="title-block"><span class="title">127.0.0.1</span> <span class="subtitle">warm and cozy localhost</span></div></a><div class="social"><a href="https://github.com/edio" title="GitHub"><i class="fa fa-github"></i></a> <a href="https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14" title="Linkedin"><i class="fa fa-linkedin-square"></i></a> <a href="https://plus.google.com/u/0/114605025600792749954" title="Google+"><i class="fa fa-google-plus"></i></a></div></header><nav class="menubar"><ul><li><a href="http://127001.me/">/posts</a></li><li><a href="http://127001.me/categories/">/categories</a></li><li><a href="http://127001.me/tags/">/tags</a></li><span class="spacer"></span><li><a href="http://127001.me/index.xml" type="application/rss+xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></li></ul></nav><main id="single" role="main"><div class="single-header"><h1><a href="http://127001.me/post/java-bridge-methods/">Overloading that is not permitted or Java bridge methods </a></h1><div class="meta">May 9, 2016</div></div><article><p>Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very similar interfaces in a single class:</p><pre><code>// Implement both interfaces in a single class if possible. Explain why possible/not possible.
+
+interface WithPrimitiveInt {
+  void m(int i);
+}
+
+interface WithInteger {
+  void m(Integer i);
+}
+</code></pre><p>Sometimes candidates, not being sure about the right answer, are willing to solve the following puzzle instead (I give it to candidates later anyway):</p><pre><code>interface S {
+  String m(int i);
+}
+
+interface V {
+  void m(int i);
+}
+</code></pre><p>Indeed, the latter puzzle appears to be much easier, and most of the candidates answer, that implementation of both methods in a signle class shouldn&rsquo;t be possible, because the signatures of <code>S.m(int)</code> and <code>V.m(int)</code> are the same while return types are different. And that is absolutely correct.</p><p>Sometimes, though, I ask another question on the topic:</p><blockquote><p>Do you think, it would make any sense to allow implementation of methods with the same method signature but different return types in a single class? Maybe, in some hypothetical JVM-based language or at least on a JVM level?</p></blockquote><p>That&rsquo;s kind of an open question and I do not expect a single correct answer here. But although I do not expect one, the correct answer exists. And a person, who worked with the reflections API a lot, performed bytecode manipulations or read JVM specification might know it.</p><h2 id="java-method-signature-vs-jvm-method-descriptor">Java method signature vs JVM method descriptor</h2><p>Java method signature (i.e. method name and types of parameters) is only imposed by Java compiler during compilation. JVM, on the other hand, distinguishes methods in a class by a combination of the <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.2.2">unqualified method name</a> (simply the name of the method) and the <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3.3">method descriptor</a>, that is a list of parameter descriptiors and one return descriptor.</p><p>For example, if we wanted to invoke a method <code>String m(int i)</code> directly on a class <code>foo.Bar</code>, in the bytecode we&rsquo;d need to have:</p><pre><code>INVOKEVIRTUAL foo/Bar.m (I)Ljava/lang/String;
+</code></pre><p>and for <code>void m(int i)</code> it would be:</p><pre><code>INVOKEVIRTUAL foo/Bar.m (I)V
+</code></pre><p>That said, JVM is perfectly fine with <code>String m(int i)</code> and <code>void m(int i)</code> in a single class. All we need to do, is to generate proper bytecode.</p><h2 id="bytecode-kung-fu">Bytecode Kung Fu</h2><p>We have interfaces <code>S</code> and <code>V</code>, let&rsquo;s generate now a class <code>SV</code> which implements both those interfaces. Representation in Java, if it was allowed, should look like this:</p><pre><code>public class SV implements S, V {
+  public void m(int i) {
+    System.out.println(&quot;void m(int i)&quot;);
+  }
+  public String m(int i) {
+    System.out.println(&quot;String m(int i)&quot;);
+    return null;
+  }
+}
+</code></pre><p>To generate bytecode we&rsquo;ll use <a href="http://asm.ow2.org/index.html">Objectweb ASM library</a>, which is low-level enough to get a feeling of what JVM bytecode is.</p><p><a href="http://github.com/edio/java-bridge-methods">Full source code</a> is shared on github, here I&rsquo;ll only list and explain essential snippets.</p><pre><code>ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+
+// package edio.java.experiments
+// public class SV implements S, V
+cw.visit(V1_7, ACC_PUBLIC, &quot;edio/java/experiments/SV&quot;, null, &quot;java/lang/Object&quot;, new String[]{
+    &quot;edio/java/experiments/S&quot;,
+    &quot;edio/java/experiments/V&quot;
+});
+
+// constructor
+MethodVisitor constructor = cw.visitMethod(ACC_PUBLIC, &quot;&lt;init&gt;&quot;, &quot;()V&quot;, null, null);
+constructor.visitCode();
+constructor.visitVarInsn(Opcodes.ALOAD, 0);
+constructor.visitMethodInsn(Opcodes.INVOKESPECIAL, &quot;java/lang/Object&quot;, &quot;&lt;init&gt;&quot;, &quot;()V&quot;);
+constructor.visitInsn(Opcodes.RETURN);
+constructor.visitMaxs(1, 1);
+constructor.visitEnd();
+
+// public String m(int i)
+MethodVisitor mString = cw.visitMethod(ACC_PUBLIC, &quot;m&quot;, &quot;(I)Ljava/lang/String;&quot;, null, null);
+mString.visitCode();
+mString.visitFieldInsn(Opcodes.GETSTATIC, &quot;java/lang/System&quot;, &quot;out&quot;, &quot;Ljava/io/PrintStream;&quot;);
+mString.visitLdcInsn(&quot;String&quot;);
+mString.visitMethodInsn(Opcodes.INVOKEVIRTUAL, &quot;java/io/PrintStream&quot;, &quot;println&quot;, &quot;(Ljava/lang/String;)V&quot;);
+mString.visitInsn(Opcodes.ACONST_NULL);
+mString.visitInsn(Opcodes.ARETURN);
+mString.visitMaxs(2, 2);
+mString.visitEnd();
+
+// public void m(int i)
+MethodVisitor mVoid = cw.visitMethod(ACC_PUBLIC, &quot;m&quot;, &quot;(I)V&quot;, null, null);
+mVoid.visitFieldInsn(Opcodes.GETSTATIC, &quot;java/lang/System&quot;, &quot;out&quot;, &quot;Ljava/io/PrintStream;&quot;);
+mVoid.visitLdcInsn(&quot;void&quot;);
+mVoid.visitMethodInsn(Opcodes.INVOKEVIRTUAL, &quot;java/io/PrintStream&quot;, &quot;println&quot;, &quot;(Ljava/lang/String;)V&quot;);
+mVoid.visitInsn(Opcodes.RETURN);
+mVoid.visitMaxs(2, 2);
+mVoid.visitEnd();
+
+cw.visitEnd();
+</code></pre><p>We start with creating <code>ClassWriter</code> to generate bytecode.</p><p>Then we declare a class, that implements interfaces <code>S</code> and <code>V</code>.</p><p>Although, our reference pseudo-java code for <code>SV</code> didn&rsquo;t contain any constructors, we must generate code for it anyway, if we do not declare constructors in Java, compiler implicitly generates empty constructor for us.</p><p>In the methods bodies we start with obtaining the <code>out</code> field of type <code>java.io.PrintStream</code> from <code>System</code> class. Then we load a constant (<code>&quot;String&quot;</code> or <code>&quot;void&quot;</code>) onto stack and invoke method <code>println</code> on an obtained <code>out</code> reference. Bytecode instructions take parameters by popping values from the stack. If a bytecode instruction takes 2 parameters it will pop 2 values from the stack, that is the case with <code>INVOKEVIRTUAL</code>.</p><p>Finally, for <code>String m(int i)</code> we push a constant of type reference with value <code>null</code> to stack and use a correspondingly typed <code>return</code> instruction, <code>ARETURN</code> it is, to return a value back to a method caller. For the <code>void m(int i)</code> we use untyped <code>RETURN</code> to only jump back to a method caller without returning a value.</p><p>To verify, that our bytecode is correct (and I&rsquo;ve been doing this all the time, iteratively fixing the issues), we write the generated class to a filesystem</p><pre><code>Files.write(new File(&quot;/tmp/SV.class&quot;).toPath(), cw.toByteArray());
+</code></pre><p>and use <code>jad</code> (java decompiler) to turn bytecode back to java</p><pre><code>$ jad -p /tmp/SV.class
+The class file version is 51.0 (only 45.3, 46.0 and 47.0 are supported)
+// Decompiled by Jad v1.5.8e. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.geocities.com/kpdus/jad.html
+// Decompiler options: packimports(3) 
+
+package edio.java.experiments;
+
+import java.io.PrintStream;
+
+// Referenced classes of package edio.java.experiments:
+//            S, V
+
+public class SV
+    implements S, V
+{
+
+    public SV()
+    {
+    }
+
+    public String m(int i)
+    {
+        System.out.println(&quot;String&quot;);
+        return null;
+    }
+
+    public void m(int i)
+    {
+        System.out.println(&quot;void&quot;);
+    }
+}
+</code></pre><p>Close enough, I think.</p><h2 id="using-generated-class-in-runtime">Using generated class in runtime</h2><p>Successful decompilation by <code>jad</code> actually guarantees us nothing. <code>jad</code> warns us if there are major problems with the bytecode, like frame size to local variables discrepancy or missing return statement. But in general we can&rsquo;t be sure that our generated class will do any job in runtime.</p><p>To use generated class in runtime we need to load it somehow into JVM and then instantiate.</p><p>Let&rsquo;s implement our own <code>AsmClassLoader</code>. It is just a convenient wrapper around <code>ClassLoader.defineClass</code> method:</p><pre><code>public class AsmClassLoader extends ClassLoader {
+  public Class defineAsmClass(String name, ClassWriter classWriter) {
+    byte[] bytes = classWriter.toByteArray();
+    return defineClass(name, bytes, 0, bytes.length);
+  }
+}
+</code></pre><p>Now let&rsquo;s use that classloader and instantiate the class:</p><pre><code>ClassWriter cw = SVGenerator.generateClass();
+AsmClassLoader classLoader = new AsmClassLoader();
+Class&lt;?&gt; generatedClazz = classLoader.defineAsmClass(SVGenerator.SV_FQCN, cw);
+Object o = generatedClazz.newInstance();
+</code></pre><p>Since our class is generated in runtime, we can&rsquo;t cast to it in our source code. We can cast to the implemented interfaces though. And invocation becomes possible with this:</p><pre><code>((S)o).m(1);
+((V)o).m(1);
+</code></pre><p>If we execute the code, the output will be:</p><pre><code>String
+void
+</code></pre><p>To some the output might seem unexpected: we call <em>the same</em> (from Java&rsquo;s prospective) method on a class, but results differ depending on the interface we cast object to. Mind-blowing, isn&rsquo;t it?</p><p>Things become clearer, if we think about the underlying bytecode. For the invocation we performed, compiler generates <code>INVOKEINTERFACE</code> instruction and the method descriptor comes not from the class, but from the interface.</p><p>Thus, for the first invocation we&rsquo;ll have:</p><pre><code>INVOKEINTERFACE edio/java/experiments/S.m (I)Ljava/lang/String;
+</code></pre><p>and for the second one:</p><pre><code>INVOKEINTERFACE edio/java/experiments/V.m (I)V
+</code></pre><p>The object, on which invocation is performed, is obtained from the stack. And that is the power behind polymorphism in Java.</p><h2 id="bridge-method-is-the-name">Bridge method is the name</h2><p>One might ask: “So what is the point of that all? Will you ever use that kind of stuff in your code?”</p><p>The thing is that we do use this virtually every time we write usual Java code. For example, covariant return types, generics and access to private fields from inner classes are implemented using similar “magic” in bytecode.</p><p>Consider an interface:</p><pre><code>public interface PetShelter {
+  Number getPet();
+}
+</code></pre><p>and its implementation returning a covariant type:</p><pre><code>public class IntegerZero implements ZeroProvider {
+  public Integer getZero() {
+    return 0;
+  }
+}
+</code></pre><p>Let&rsquo;s now think about the following code:</p><pre><code>IntegerZero iz = new IntegerZero();
+iz.getZero();
+
+ZeroProvider zp = iz;
+zp.getZero();
+</code></pre><p>For the <code>iz.getZero()</code> call compiler will generate <code>INVOKEVIRTUAL</code> with <code>()Ljava/lang/Integer;</code> method descriptor, while for the <code>zp.getZero()</code> it will generate <code>INVOKEINTERFACE</code> with <code>()Ljava/lang/Number;</code> method descriptor. We already know, that JVM dispatches a call on the object by a method name and a method descriptor. Since descriptors are different, those 2 calls can&rsquo;t be dispatched to the same method in our <code>IntegerZero</code> instance.</p><p>In fact, compiler generates one additional method, which acts as a <em>bridge</em> between the real method we declared in the class, and the method used during invocation via interface. Hence the name — <strong>bridge method</strong>. If only Java permitted this, the resulting code would look like:</p><pre><code>public class IntegerZero implements ZeroProvider {
+  public Integer getZero() {
+    return 0;
+  }
+
+  // This is a synthetic bridge method, which is present only in bytecode.
+  // Java compiler wouldn't permit it.
+  public Number getZero() {
+    return this.getZero();
+  }
+}
+</code></pre><h2 id="afterword">Afterword</h2><p>Java programming language and Java Virtual Machine are not to be confused: although they share one common word in their names and although Java is the main language for JVM, their possibilities and limitations are not always the same. Knowing JVM helps a lot understanding Java or any other JVM-based language and knowing Java and its history, on the other hand, helps understanding certain decisions in JVM design.</p><h2 id="related-links">Related links</h2><ol><li><a href="https://docs.oracle.com/javase/specs/jvms/se7/html/">Java Virtual Machine Specification</a></li><li><a href="http://download.forge.objectweb.org/asm/asm4-guide.pdf">ASM user guide [pdf]</a></li><li><a href="http://github.com/edio/java-bridge-methods">Source code from the article</a></li><li><a href="http://stackoverflow.com/questions/921025/eclipse-warning-about-synthetic-accessor-for-private-static-nested-classes-in-jav">Synthetic accessor for private nested classes in Java [StackOverflow]</a></li></ol></article><div class="tags"><span class="label"><i class="fa fa-tags"></i></span> <a href="/tags/java">java</a>&nbsp; <a href="/tags/jvm">jvm</a>&nbsp; <a href="/tags/asm">asm</a>&nbsp; <a href="/tags/bridge-method">bridge method</a>&nbsp;</div></main><nav class="paging"><div class="label">More reading</div><div class="item"><span class="direction">Older //</span> <a href="http://127001.me/post/synology/mediaserver-p1/" rel="prev">Turning Synology NAS into a geeky media server</a></div></nav><article class="comments"><div id="disqus_thread"></div><script type="text/javascript">var disqus_shortname = '127001me';
+    var disqus_identifier = 'http:\/\/127001.me\/post\/java-bridge-methods\/';
+    var disqus_title = 'Overloading that is not permitted or Java bridge methods';
+    var disqus_url = 'http:\/\/127001.me\/post\/java-bridge-methods\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></article><footer role="contentinfo"><div class="copyright">© 2016 <span class="author">Dmytro Kostiuchenko</span></div><div class="poweredby">Powered by <a href="http://gohugo.io">HUGO</a></div></footer></div><script src="/js/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></html>
