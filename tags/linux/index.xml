@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>linux on 127.0.0.1</title>
+    <title>Linux on 127.0.0.1</title>
     <link>http://127001.me/tags/linux/</link>
-    <description>Recent content in linux on 127.0.0.1</description>
+    <description>Recent content in Linux on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 06 Jan 2016 01:51:40 +0100</lastBuildDate>
@@ -21,17 +21,6 @@
 the purchase. Bundled software is limited and buggy, it feels like the worst Windows™®-like experience ever. Many people
 find Synology products great. But for me it just doesn&amp;rsquo;t work well because it forces its usecases on me instead of being
 a helpful tool for my own very specific use cases.&lt;/p&gt;
-
-&lt;!--
-&gt; I bought it to save some time on setting up something like ArchLinux on something like HP MicroServer, but instead I
-spent hours trying to compile software I need for lousy ARM processor and somewhat unusual OS. &gt; &gt; So after few
-sleepless nights with toolchains and cross-compilation in VM, I decided to sell it and bought... silly me... DS214Play.
-I thought, that my only problem is an ARM processor. &gt; &gt; Indeed, it worked better, but it was still the same device with
-the same OS, same set of built-in software with blows and whistles, 90% of which I probably never used.  &gt; &gt; So, for
-what it&#39;s worth, if you&#39;re, like me, a geek, who is used to Gentoo, ArchLinux or Debian, if you think installing music
-player on router and controlling it over wi-fi with wi-fi-capable kettle is fun, if you like to squeeze maximum from
-your HW, do yourself a favor — build custom server. It will save you tons of time. 
---&gt;
 
 &lt;p&gt;Anyway, I wasn&amp;rsquo;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it.&lt;/p&gt;
 
