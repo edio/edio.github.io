@@ -109,7 +109,7 @@ playback completely.&lt;/p&gt;
 
 &lt;li&gt;&lt;p&gt;Anyone on local network (192.168.0.1 through 192.168.0.255 in my case) should be able to use PulseAudio&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;load-module module-native-protocol-tcp auth-ip-acl=192.168.0.0/24;
+&lt;pre&gt;&lt;code&gt;load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24;
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;PulseAudio should be discoverable via zeroconf, so clients are not required to specify static IP&lt;/p&gt;
@@ -137,7 +137,7 @@ load-module module-alsa-card device_id=0
 load-module module-native-protocol-unix auth-group=audio
 
 ### Allow access for everyone on local network
-load-module module-native-protocol-tcp auth-ip-acl=192.168.0.0/24;
+load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24;
 load-module module-zeroconf-publish
 
 ### Load the RTP receiver module (can be configured via paprefs)
