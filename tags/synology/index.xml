@@ -33,7 +33,7 @@ through it again.&lt;/p&gt;
 &lt;p&gt;In this post I&amp;rsquo;ll describe how to set up PulseAudio in Debian chroot, so that it&amp;rsquo;s possible to stream any sound from
 linux-powered pc to a sound card connected to Synology NAS.&lt;/p&gt;
 
-&lt;h2 id=&#34;insalling-pulseaudio&#34;&gt;Insalling PulseAudio&lt;/h2&gt;
+&lt;h2 id=&#34;installing-pulseaudio&#34;&gt;Installing PulseAudio&lt;/h2&gt;
 
 &lt;p&gt;Although Synology already uses PulseAudio for sound playback in Synology AudioStation, an old version of PulseAudio is
 used for that purpose (2.1 as per DSM5.1). Debian chroot, on the other hand, provides PulseAudio 5.0.&lt;/p&gt;
@@ -201,7 +201,7 @@ autospawn = yes
 
 &lt;h2 id=&#34;configure-ntp&#34;&gt;Configure NTP&lt;/h2&gt;
 
-&lt;p&gt;As I mentioned streamin via native TCP protocoal won&amp;rsquo;t work if system clocks on NAS and your PC are our of sync.
+&lt;p&gt;As I mentioned streaming via native TCP protocol won&amp;rsquo;t work if system clocks on NAS and your PC are our of sync.
 DSM6.0 has ntp installed, and by default it uses Google servers for time synchronization:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;(nas)$ ntpq -p
@@ -273,14 +273,14 @@ server time4.google.com minpoll 6 maxpoll 10 iburst prefer
   ...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;I don&amp;rsquo;t know why do I have 2 sinks frankly.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s hot it looks in PulseAudio Volume Control utility&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://127001.me/post/synology/screenshot1.png&#34; alt=&#34;pavucontrol&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;starting-pulseaudio-on-nas-automatically&#34;&gt;Starting PulseAudio on NAS automatically&lt;/h2&gt;
 
-&lt;p&gt;We need to create startup scripts to run &lt;code&gt;dbus&lt;/code&gt;, &lt;code&gt;avahi-daemon&lt;/code&gt; and &lt;code&gt;pulseaudio&lt;/code&gt; itself. This was described in the
-&lt;a href=&#34;http://127001.me/post/synolody/mediaserver-p1&#34;&gt;previous part&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We need to create startup scripts to run &lt;code&gt;dbus&lt;/code&gt;, &lt;code&gt;avahi-daemon&lt;/code&gt; and &lt;code&gt;pulseaudio&lt;/code&gt; itself. The approach was described in
+the &lt;a href=&#34;http://127001.me/post/synology/mediaserver-p1&#34;&gt;previous part&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Just refer to the &lt;a href=&#34;https://github.com/edio/synology-mediaserver/tree/master/nas/usr/local/etc/rc.d&#34;&gt;git repo&lt;/a&gt; for
 details.&lt;/p&gt;
