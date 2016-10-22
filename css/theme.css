@@ -31,7 +31,7 @@ body {
 header {
   display: flex;
   justify-content: space-between;
-  padding: 2em 12px;
+  padding: 2em 6px;
 }
 header a {
   text-decoration: none;
@@ -40,38 +40,30 @@ header .title-block {
   flex: 1;
   text-align: left;
 }
-header .title-block .title {
+header .title-block .title-span {
+  display: inline-block;
+  position: relative;
+}
+header .title-block .title-span a.title {
   font-family: 'Roboto Mono', monospace;
   font-size: 2.0em;
   color: #fff;
-  display: block;
+}
+header .title-block .title-span a.rss {
+  color: #ffc33d;
+  font-size: 1.0em;
+  position: absolute;
+  top: -0.5em;
+  right: -1.2em;
+}
+header .title-block .title-span a.rss:hover {
+  color: #fff;
 }
 header .title-block .subtitle {
   font-size: 1.0em;
   color: #a3a19c;
   display: block;
   padding: .5em 0;
-}
-header .social {
-  vertical-align: middle;
-}
-header .social a {
-  font-size: 1.5em;
-  margin: 0 .3em;
-  text-decoration: none;
-  color: #868480;
-}
-header .social a:hover {
-  color: #a3a19c;
-}
-@media (max-width: 480px) {
-  header {
-    text-align: center;
-    flex-direction: column;
-  }
-  header .title-block {
-    text-align: center;
-  }
 }
 .ContentBorders {
   border-left: 2px solid #6d8cc7;
@@ -84,7 +76,7 @@ header .social a:hover {
   }
 }
 nav.menubar {
-  border-top: 12px solid #6d8cc7;
+  border-top: 6px solid #6d8cc7;
   background-color: #fff;
   color: #fff;
   border-left: 2px solid #6d8cc7;
@@ -100,30 +92,34 @@ nav.menubar {
 }
 @media (max-width: 480px) {
   nav.menubar {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: -6px;
+    padding-right: -6px;
   }
 }
 nav.menubar ul {
-  margin-top: -12px;
+  margin-top: -6px;
   list-style-type: none;
   display: flex;
   justify-content: space-between;
 }
 nav.menubar ul li {
   display: inline-block;
-  font-weight: bold;
+  font-weight: normal;
 }
 nav.menubar ul li a {
-  border-top: 12px solid #6d8cc7;
+  border-top: 6px solid #6d8cc7;
   display: block;
-  padding: 12px 12px 0;
+  padding: 0 12px 0;
   color: #6a4c57;
-  text-decoration: underline dotted;
+  text-decoration: none;
 }
 nav.menubar ul li a:hover {
-  border-top: 12px solid #ffc33d;
+  border-top: 6px solid #ffc33d;
   color: #333;
+}
+nav.menubar ul li a > span {
+  display: inline;
+  border-bottom: 1px dotted;
 }
 nav.menubar ul .spacer {
   flex: 1;
@@ -147,8 +143,8 @@ main {
 }
 @media (max-width: 480px) {
   main {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 }
 main .single-header {
@@ -221,8 +217,10 @@ main .tags .label {
 }
 main .tags a {
   color: #6a4c57;
-  text-decoration: underline dotted;
-  margin-left: .1em;
+  padding: 0 2px;
+  border-bottom: 1px dotted;
+  text-decoration: none;
+  margin: 0;
 }
 main .tags a:hover {
   color: #868480;
@@ -332,8 +330,8 @@ nav.paging {
 }
 @media (max-width: 480px) {
   nav.paging {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 }
 @media (max-width: 480px) {
@@ -376,8 +374,8 @@ article.comments {
 }
 @media (max-width: 480px) {
   article.comments {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 }
 footer {
@@ -399,6 +397,18 @@ footer .copyright {
 }
 footer .copyright .author {
   font-weight: normal;
+}
+footer .social {
+  vertical-align: middle;
+}
+footer .social a {
+  font-size: 1.5em;
+  margin: 0 .3em;
+  text-decoration: none;
+  color: #868480;
+}
+footer .social a:hover {
+  color: #a3a19c;
 }
 footer .poweredby {
   margin: .5em 0;
