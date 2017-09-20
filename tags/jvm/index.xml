@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Jvm on 127.0.0.1</title>
+    <title>jvm on 127.0.0.1</title>
     <link>http://127001.me/tags/jvm/</link>
-    <description>Recent content in Jvm on 127.0.0.1</description>
+    <description>Recent content in jvm on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 09 May 2016 00:59:08 +0200</lastBuildDate>

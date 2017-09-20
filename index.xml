@@ -832,7 +832,7 @@ esac
 &lt;p&gt;But then, if device is replugged, you have to do that again. To fix that permanently we need an udev rule to set mode
 each time device is connected.&lt;/p&gt;
 
-&lt;p&gt;Create &lt;code&gt;/usr/lib/udev/rules.d/50-sound.conf&lt;/code&gt; with the following content&lt;/p&gt;
+&lt;p&gt;Create &lt;code&gt;/usr/lib/udev/rules.d/50-sound.rules&lt;/code&gt; with the following content&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;SUBSYSTEM==&amp;quot;sound&amp;quot;, MODE=&amp;quot;0666&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;

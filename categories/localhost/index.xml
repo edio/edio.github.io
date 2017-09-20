@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Localhost on 127.0.0.1</title>
+    <title>localhost on 127.0.0.1</title>
     <link>http://127001.me/categories/localhost/</link>
-    <description>Recent content in Localhost on 127.0.0.1</description>
+    <description>Recent content in localhost on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 16 Aug 2016 21:00:00 +0100</lastBuildDate>
@@ -508,7 +508,7 @@ esac
 &lt;p&gt;But then, if device is replugged, you have to do that again. To fix that permanently we need an udev rule to set mode
 each time device is connected.&lt;/p&gt;
 
-&lt;p&gt;Create &lt;code&gt;/usr/lib/udev/rules.d/50-sound.conf&lt;/code&gt; with the following content&lt;/p&gt;
+&lt;p&gt;Create &lt;code&gt;/usr/lib/udev/rules.d/50-sound.rules&lt;/code&gt; with the following content&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;SUBSYSTEM==&amp;quot;sound&amp;quot;, MODE=&amp;quot;0666&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
