@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <url>
-    <loc>http://127001.me/</loc>
-    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
     <loc>http://127001.me/post/synology/mediaserver-p2/</loc>
@@ -34,6 +30,143 @@
   <url>
     <loc>http://127001.me/post/youtube-in-mpd/</loc>
     <lastmod>2013-09-13T14:18:07+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/alsa/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/asm/</loc>
+    <lastmod>2016-05-09T00:59:08+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/bridge-method/</loc>
+    <lastmod>2016-05-09T00:59:08+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/ds214/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/java/</loc>
+    <lastmod>2016-05-09T00:59:08+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/categories/java/</loc>
+    <lastmod>2016-05-09T00:59:08+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/jvm/</loc>
+    <lastmod>2016-05-09T00:59:08+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/linux/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/categories/localhost/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/log4j/</loc>
+    <lastmod>2014-04-08T23:54:49+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/mpd/</loc>
+    <lastmod>2013-09-13T14:18:07+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/categories/opensource/</loc>
+    <lastmod>2014-09-17T18:45:22+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/post/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/pulseaudio/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/randrctl/</loc>
+    <lastmod>2014-09-17T18:45:22+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/stacktrace/</loc>
+    <lastmod>2014-04-08T23:54:49+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/synology/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/</loc>
+    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/tools/</loc>
+    <lastmod>2014-09-17T18:45:22+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/x/</loc>
+    <lastmod>2014-09-17T18:45:22+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/youtube/</loc>
+    <lastmod>2013-09-13T14:18:07+03:00</lastmod>
+    <priority>0</priority>
   </url>
   
 </urlset>

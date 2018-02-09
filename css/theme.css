@@ -185,6 +185,15 @@ main article a:before {
 main article a:after {
   content: ']';
 }
+main article a.cut {
+  display: inline;
+  position: relative;
+  top: -2em;
+}
+main article a.cut:before,
+main article a.cut:after {
+  content: '';
+}
 main a {
   color: #6d8cc7;
   font-weight: 400;
