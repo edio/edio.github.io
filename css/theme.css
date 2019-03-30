@@ -3,6 +3,7 @@
 /* logo */
 /* body */
 /* main */
+/* fonts */
 /* ___________________________________________ */
 :root {
   background-color: inherit;
@@ -18,9 +19,9 @@
 }
 body {
   background-color: #fff;
-  font-family: 'Source Sans Pro', serif;
-  font-size: 14pt;
-  font-weight: 300;
+  font-family: sans-serif;
+  font-size: 12pt;
+  font-weight: 400;
   line-height: 1.5em;
   margin: 0;
   padding: 0 0px;
@@ -45,7 +46,7 @@ header .title-block .title-span {
   position: relative;
 }
 header .title-block .title-span a.title {
-  font-family: 'Roboto Mono', monospace;
+  font-family: monospace;
   font-size: 1.0em;
   color: #ddd;
 }
@@ -82,15 +83,6 @@ header .title-block .title-span a.title .cursor {
     opacity: 0;
   }
 }
-.BracedAnchors a {
-  display: inline-block;
-}
-.BracedAnchors a:before {
-  content: '[';
-}
-.BracedAnchors a:after {
-  content: ']';
-}
 main {
   background-color: #fff;
   padding-top: 32px;
@@ -105,10 +97,11 @@ main .post-title-wrapper {
   margin-bottom: 1em;
 }
 main .post-title-wrapper h1 {
-  font-size: 1.75em;
+  border-bottom: 1px solid #dddddf;
   font-weight: 400;
   line-height: 1.5em;
   margin: 0;
+  padding-bottom: 8px;
 }
 main .post-title-wrapper h1 a {
   color: #000;
@@ -176,31 +169,14 @@ main article {
   word-wrap: break-word;
   margin-bottom: 1em;
 }
-main article a {
-  display: inline-block;
-}
-main article a:before {
-  content: '[';
-}
-main article a:after {
-  content: ']';
-}
-main article a.cut {
-  display: inline;
-  position: relative;
-  top: -2em;
-}
-main article a.cut:before,
-main article a.cut:after {
-  content: '';
-}
 main a {
-  color: #6d8cc7;
+  color: #2156a5;
   font-weight: 400;
-  text-decoration: none;
+  text-decoration: underline;
 }
-main a:hover {
-  color: #739dff;
+main a:hover,
+main a:focus {
+  color: #1d4b8f;
 }
 main blockquote {
   border-left: 2px solid #6d8cc7;
@@ -211,52 +187,66 @@ main blockquote {
 }
 main code.hljs {
   border: 1px solid #ccc;
-  font-size: 0.8em;
+  line-height: 12pt;
+  font-size: 10pt;
+}
+main code.hljs .conum {
+  color: rgba(0, 0, 0, 0) !important;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+/Edge */
+}
+main code.hljs .conum > * {
+  background-color: black;
+  border-radius: 100px;
+  border: 1px solid black;
+  color: white !important;
+  display: inline-block;
+  font-family: sans-serif;
+  height: 12pt;
+  margin: -6pt;
+  text-align: center;
+  width: 12pt;
 }
 main code {
-  background-color: #f5f5f5;
-  border: 1px solid #eee;
-  font-family: 'Roboto Mono', monospace;
+  font-family: monospace;
   font-size: .9em;
 }
 main h1 {
-  font-size: 1.75em;
+  font-size: 2.0em;
 }
 main h2 {
-  font-size: 1.5em;
+  font-size: 1.75em;
 }
 main h3 {
   font-size: 1.5em;
-  color: #6a4c57;
 }
 main h4 {
-  font-size: 1.2em;
-  color: #6a4c57;
+  font-size: 1.4375em;
 }
 main h5 {
-  font-size: 1.0em;
-  font-weight: bold;
+  font-size: 1.125em;
 }
 main h6 {
   font-size: 1.0em;
-  font-weight: bold;
-  color: #6a4c57;
 }
-main h1,
 main h2,
 main h3,
 main h4,
 main h5,
 main h6 {
-  margin-top: 1.5em;
-  margin-bottom: 1em;
-  line-height: 1.5em;
-  font-weight: normal;
-}
-main img {
-  margin: auto;
-  max-width: 100%;
-  display: block;
+  color: #ba3925;
+  font-family: sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.0125em;
+  margin-bottom: .5em;
+  margin-top: 1em;
+  text-rendering: optimizeLegibility;
 }
 main p {
   line-height: 1.8em;
@@ -265,16 +255,17 @@ main p {
 }
 main ul,
 main ol {
-  margin-left: 1em;
+  margin-left: 0;
   margin-bottom: .3em;
 }
-main li {
-  line-height: 1.75em;
+main li p {
+  margin-top: 0.3em;
+  margin-bottom: 0;
 }
 article.comments {
   background-color: #fff;
   color: #000;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: sans-serif;
   padding-left: 10px;
   padding-right: 10px;
 }

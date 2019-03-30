@@ -17,12 +17,13 @@
       <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
       
       <guid>http://127001.me/post/introducing-randrctl/</guid>
-      <description>&lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
-
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Idea appeared long before I was told about famous (or not?) &lt;a href=&#34;https://github.com/wertarbyte/autorandr&#34;&gt;autorandr&lt;/a&gt; project.
 So if you are familiar with autorandr, you are already familiar with randrctl idea.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

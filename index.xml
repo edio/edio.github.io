@@ -17,23 +17,32 @@
       <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
       
       <guid>http://127001.me/post/synology/mediaserver-p2/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;The &lt;a href=&#34;http://127001.me/post/synology/mediaserver-p1&#34;&gt;previous post&lt;/a&gt; on the topic has been revised recently. You might want to look
-through it again.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;p&gt;&lt;/p&gt;
-
+      <description>&lt;div class=&#34;quoteblock&#34;&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;UPDATE: This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
+no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
+friendly towards linux enthusiasts&lt;/p&gt;
+&lt;/div&gt;
 &lt;/blockquote&gt;
-
-&lt;p&gt;Previously we&amp;rsquo;ve covered ALSA setup and Debian chroot.&lt;/p&gt;
-
-&lt;p&gt;In this post I&amp;rsquo;ll describe how to set up PulseAudio in Debian chroot, so that it&amp;rsquo;s possible to stream any sound from
+&lt;/div&gt;
+&lt;div class=&#34;quoteblock&#34;&gt;
+&lt;blockquote&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;http://127001.me/post/synology/mediaserver-p1&#34;&gt;Previously&lt;/a&gt; we&amp;#8217;ve covered ALSA setup and Debian chroot.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;In this post I&amp;#8217;ll describe how to set up PulseAudio in Debian chroot, so that it&amp;#8217;s possible to stream any sound from
 linux-powered pc to a sound card connected to Synology NAS.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -42,10 +51,14 @@ linux-powered pc to a sound card connected to Synology NAS.&lt;/p&gt;
       <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
       
       <guid>http://127001.me/post/java-bridge-methods/</guid>
-      <description>&lt;p&gt;Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
 similar interfaces in a single class:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Implement both interfaces in a single class if possible. Explain why possible/not possible.
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;// Implement both interfaces in a single class if possible
+// Explain why possible or not possible
 
 interface WithPrimitiveInt {
   void m(int i);
@@ -53,22 +66,24 @@ interface WithPrimitiveInt {
 
 interface WithInteger {
   void m(Integer i);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Sometimes candidates, not being sure about the right answer, are willing to solve the following puzzle instead (I give
 it to candidates later anyway):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;interface S {
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;interface S {
   String m(int i);
 }
 
 interface V {
   void m(int i);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -77,33 +92,50 @@ interface V {
       <pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate>
       
       <guid>http://127001.me/post/synology/mediaserver-p1/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;This post was revised and updated on Aug 16, 2016&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;p&gt;&lt;/p&gt;
-
+      <description>&lt;div class=&#34;quoteblock&#34;&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;UPDATE: This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
+no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
+friendly towards linux enthusiasts&lt;/p&gt;
+&lt;/div&gt;
 &lt;/blockquote&gt;
-
-&lt;p&gt;I&amp;rsquo;m not a huge fan of Synology. I bought my DS214 by friend&amp;rsquo;s recommendation and became frustrated with it right after
+&lt;/div&gt;
+&lt;div class=&#34;quoteblock&#34;&gt;
+&lt;blockquote&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;I&amp;#8217;m not a huge fan of Synology. I bought my DS214 by friend&amp;#8217;s recommendation and became frustrated with it right after
 the purchase. Bundled software was limited and buggy. Many people find Synology products great. But for me it just
-didn&amp;rsquo;t work well because it forced its use cases on me instead of being a helpful tool for my own very specific use
+didn&amp;#8217;t work well because it forced its use cases on me instead of being a helpful tool for my own very specific use
 cases.&lt;/p&gt;
-
-&lt;p&gt;Anyway, I wasn&amp;rsquo;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it and
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Anyway, I wasn&amp;#8217;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it and
 currently with my DS214Play I can:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Play virtually any sound via connected USB sound card.&lt;/li&gt;
-&lt;li&gt;Particularly, I can play my huge collection of high-resolution music in various formats (with replaygain tags
+&lt;/div&gt;
+&lt;div class=&#34;olist arabic&#34;&gt;
+&lt;ol class=&#34;arabic&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Play virtually any sound via connected USB sound card.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Particularly, I can play my huge collection of high-resolution music in various formats (with replaygain tags
 respected). All that thanks to &lt;em&gt;mpd&lt;/em&gt;, which I can control from any decent phone, web-browser or even smart-watch and
-scrobble all statistics to Last.fm.&lt;/li&gt;
-&lt;li&gt;Stream sound from my laptop via &lt;em&gt;PulseAudio&lt;/em&gt;, while watching videos on YouTube or movies. &lt;/li&gt;
+scrobble all statistics to Last.fm.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Stream sound from my laptop via &lt;strong&gt;PulseAudio&lt;/strong&gt;, while watching videos on YouTube or movies.&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;p&gt;In this and few next posts I&amp;rsquo;m going to tell, what I have done to get all this.&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -112,12 +144,13 @@ scrobble all statistics to Last.fm.&lt;/li&gt;
       <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
       
       <guid>http://127001.me/post/introducing-randrctl/</guid>
-      <description>&lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
-
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Idea appeared long before I was told about famous (or not?) &lt;a href=&#34;https://github.com/wertarbyte/autorandr&#34;&gt;autorandr&lt;/a&gt; project.
 So if you are familiar with autorandr, you are already familiar with randrctl idea.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -126,11 +159,12 @@ So if you are familiar with autorandr, you are already familiar with randrctl id
       <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
       
       <guid>http://127001.me/post/java-logging-caller-class-and-method/</guid>
-      <description>&lt;p&gt;This post describes how java logging frameworks (Log4j, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;
-
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;This post describes how java logging frameworks (&lt;em&gt;log4j&lt;/em&gt;, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -139,14 +173,19 @@ So if you are familiar with autorandr, you are already familiar with randrctl id
       <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
       
       <guid>http://127001.me/post/youtube-in-mpd/</guid>
-      <description>&lt;p&gt;You&amp;rsquo;ll need&lt;/p&gt;
-
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;We&amp;#8217;ll need&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;ulist&#34;&gt;
 &lt;ul&gt;
-&lt;li&gt;mpd with &lt;code&gt;curl&lt;/code&gt; support&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;mpd&lt;/em&gt; with &lt;em&gt;curl&lt;/em&gt; support&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

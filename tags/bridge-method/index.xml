@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Bridge method on 127.0.0.1</title>
+    <title>Bridge Method on 127.0.0.1</title>
     <link>http://127001.me/tags/bridge-method/</link>
-    <description>Recent content in Bridge method on 127.0.0.1</description>
+    <description>Recent content in Bridge Method on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 09 May 2016 00:59:08 +0200</lastBuildDate>
@@ -17,10 +17,14 @@
       <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
       
       <guid>http://127001.me/post/java-bridge-methods/</guid>
-      <description>&lt;p&gt;Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
 similar interfaces in a single class:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Implement both interfaces in a single class if possible. Explain why possible/not possible.
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;// Implement both interfaces in a single class if possible
+// Explain why possible or not possible
 
 interface WithPrimitiveInt {
   void m(int i);
@@ -28,22 +32,24 @@ interface WithPrimitiveInt {
 
 interface WithInteger {
   void m(Integer i);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Sometimes candidates, not being sure about the right answer, are willing to solve the following puzzle instead (I give
 it to candidates later anyway):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;interface S {
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;interface S {
   String m(int i);
 }
 
 interface V {
   void m(int i);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
     </item>
     
   </channel>

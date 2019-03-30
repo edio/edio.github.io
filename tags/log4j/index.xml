@@ -17,11 +17,12 @@
       <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
       
       <guid>http://127001.me/post/java-logging-caller-class-and-method/</guid>
-      <description>&lt;p&gt;This post describes how java logging frameworks (Log4j, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;
-
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;This post describes how java logging frameworks (&lt;em&gt;log4j&lt;/em&gt;, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

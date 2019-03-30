@@ -17,14 +17,19 @@
       <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
       
       <guid>http://127001.me/post/youtube-in-mpd/</guid>
-      <description>&lt;p&gt;You&amp;rsquo;ll need&lt;/p&gt;
-
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;We&amp;#8217;ll need&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;ulist&#34;&gt;
 &lt;ul&gt;
-&lt;li&gt;mpd with &lt;code&gt;curl&lt;/code&gt; support&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;mpd&lt;/em&gt; with &lt;em&gt;curl&lt;/em&gt; support&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>
