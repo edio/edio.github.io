@@ -201,12 +201,14 @@ main code.hljs .conum {
   /* IE10+/Edge */
 }
 main code.hljs .conum > * {
-  background-color: black;
+  background-color: #a3a19c;
   border-radius: 100px;
-  border: 1px solid black;
+  border: 1px solid #a3a19c;
   color: white !important;
   display: inline-block;
   font-family: sans-serif;
+  font-size: 8pt;
+  font-weight: 400;
   height: 12pt;
   margin: -6pt;
   text-align: center;
