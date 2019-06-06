@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Bridge Method on 127.0.0.1</title>
-    <link>http://127001.me/tags/bridge-method/</link>
-    <description>Recent content in Bridge Method on 127.0.0.1</description>
+    <title>software engineering on 127.0.0.1</title>
+    <link>http://127001.me/category/software-engineering/</link>
+    <description>Recent content in software engineering on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 09 May 2016 00:59:08 +0200</lastBuildDate>
     
-	<atom:link href="http://127001.me/tags/bridge-method/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://127001.me/category/software-engineering/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -23,7 +23,7 @@ similar interfaces in a single class:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;// Implement both interfaces in a single class if possible
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code data-lang=&#34;java&#34; class=&#34;language-java hljs&#34;&gt;// Implement both interfaces in a single class if possible
 // Explain why possible or not possible
 
 interface WithPrimitiveInt {
@@ -41,7 +41,7 @@ it to candidates later anyway):&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;interface S {
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code data-lang=&#34;java&#34; class=&#34;language-java hljs&#34;&gt;interface S {
   String m(int i);
 }
 
@@ -49,6 +49,20 @@ interface V {
   void m(int i);
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>How Java logging frameworks determine caller class and method name</title>
+      <link>http://127001.me/post/java-logging-caller-class-and-method/</link>
+      <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
+      
+      <guid>http://127001.me/post/java-logging-caller-class-and-method/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;This post describes how java logging frameworks (&lt;em&gt;log4j&lt;/em&gt;, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.&lt;/p&gt;
 &lt;/div&gt;</description>
     </item>
     

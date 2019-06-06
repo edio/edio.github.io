@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tools on 127.0.0.1</title>
-    <link>http://127001.me/tags/tools/</link>
-    <description>Recent content in Tools on 127.0.0.1</description>
+    <title>opensource on 127.0.0.1</title>
+    <link>http://127001.me/tags/opensource/</link>
+    <description>Recent content in opensource on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 17 Sep 2014 18:45:22 +0300</lastBuildDate>
     
-	<atom:link href="http://127001.me/tags/tools/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://127001.me/tags/opensource/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

@@ -57,7 +57,7 @@ similar interfaces in a single class:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;// Implement both interfaces in a single class if possible
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code data-lang=&#34;java&#34; class=&#34;language-java hljs&#34;&gt;// Implement both interfaces in a single class if possible
 // Explain why possible or not possible
 
 interface WithPrimitiveInt {
@@ -75,7 +75,7 @@ it to candidates later anyway):&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code class=&#34;language-java hljs&#34; data-lang=&#34;java&#34;&gt;interface S {
+&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code data-lang=&#34;java&#34; class=&#34;language-java hljs&#34;&gt;interface S {
   String m(int i);
 }
 

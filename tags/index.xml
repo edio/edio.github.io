@@ -12,61 +12,7 @@
     
     
     <item>
-      <title>Alsa</title>
-      <link>http://127001.me/tags/alsa/</link>
-      <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
-      
-      <guid>http://127001.me/tags/alsa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Asm</title>
-      <link>http://127001.me/tags/asm/</link>
-      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
-      
-      <guid>http://127001.me/tags/asm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Bridge Method</title>
-      <link>http://127001.me/tags/bridge-method/</link>
-      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
-      
-      <guid>http://127001.me/tags/bridge-method/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ds214</title>
-      <link>http://127001.me/tags/ds214/</link>
-      <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
-      
-      <guid>http://127001.me/tags/ds214/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Java</title>
-      <link>http://127001.me/tags/java/</link>
-      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
-      
-      <guid>http://127001.me/tags/java/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Jvm</title>
-      <link>http://127001.me/tags/jvm/</link>
-      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
-      
-      <guid>http://127001.me/tags/jvm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
+      <title>linux</title>
       <link>http://127001.me/tags/linux/</link>
       <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
       
@@ -75,25 +21,7 @@
     </item>
     
     <item>
-      <title>Log4j</title>
-      <link>http://127001.me/tags/log4j/</link>
-      <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
-      
-      <guid>http://127001.me/tags/log4j/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Mpd</title>
-      <link>http://127001.me/tags/mpd/</link>
-      <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
-      
-      <guid>http://127001.me/tags/mpd/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Pulseaudio</title>
+      <title>pulseaudio</title>
       <link>http://127001.me/tags/pulseaudio/</link>
       <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
       
@@ -102,7 +30,52 @@
     </item>
     
     <item>
-      <title>Randrctl</title>
+      <title>synology ds214</title>
+      <link>http://127001.me/tags/synology-ds214/</link>
+      <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
+      
+      <guid>http://127001.me/tags/synology-ds214/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asm</title>
+      <link>http://127001.me/tags/asm/</link>
+      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
+      
+      <guid>http://127001.me/tags/asm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>java</title>
+      <link>http://127001.me/tags/java/</link>
+      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
+      
+      <guid>http://127001.me/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jvm</title>
+      <link>http://127001.me/tags/jvm/</link>
+      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
+      
+      <guid>http://127001.me/tags/jvm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>opensource</title>
+      <link>http://127001.me/tags/opensource/</link>
+      <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
+      
+      <guid>http://127001.me/tags/opensource/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>randrctl</title>
       <link>http://127001.me/tags/randrctl/</link>
       <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
       
@@ -111,47 +84,29 @@
     </item>
     
     <item>
-      <title>Stacktrace</title>
-      <link>http://127001.me/tags/stacktrace/</link>
+      <title>x11</title>
+      <link>http://127001.me/tags/x11/</link>
+      <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
+      
+      <guid>http://127001.me/tags/x11/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>log4j</title>
+      <link>http://127001.me/tags/log4j/</link>
       <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
       
-      <guid>http://127001.me/tags/stacktrace/</guid>
+      <guid>http://127001.me/tags/log4j/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Synology</title>
-      <link>http://127001.me/tags/synology/</link>
-      <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
-      
-      <guid>http://127001.me/tags/synology/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tools</title>
-      <link>http://127001.me/tags/tools/</link>
-      <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
-      
-      <guid>http://127001.me/tags/tools/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>X</title>
-      <link>http://127001.me/tags/x/</link>
-      <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
-      
-      <guid>http://127001.me/tags/x/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Youtube</title>
-      <link>http://127001.me/tags/youtube/</link>
+      <title>mpd</title>
+      <link>http://127001.me/tags/mpd/</link>
       <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
       
-      <guid>http://127001.me/tags/youtube/</guid>
+      <guid>http://127001.me/tags/mpd/</guid>
       <description></description>
     </item>
     

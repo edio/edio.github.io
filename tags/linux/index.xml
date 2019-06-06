@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on 127.0.0.1</title>
+    <title>linux on 127.0.0.1</title>
     <link>http://127001.me/tags/linux/</link>
-    <description>Recent content in Linux on 127.0.0.1</description>
+    <description>Recent content in linux on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 16 Aug 2016 21:00:00 +0100</lastBuildDate>
@@ -109,27 +109,6 @@ scrobble all statistics to Last.fm.&lt;/p&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Idea appeared long before I was told about famous (or not?) &lt;a href=&#34;https://github.com/wertarbyte/autorandr&#34;&gt;autorandr&lt;/a&gt; project.
 So if you are familiar with autorandr, you are already familiar with randrctl idea.&lt;/p&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Listen tracks from youtube in mpd</title>
-      <link>http://127001.me/post/youtube-in-mpd/</link>
-      <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
-      
-      <guid>http://127001.me/post/youtube-in-mpd/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;We&amp;#8217;ll need&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;ulist&#34;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;em&gt;mpd&lt;/em&gt; with &lt;em&gt;curl&lt;/em&gt; support&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 &lt;/div&gt;</description>
     </item>
     
