@@ -6,10 +6,37 @@
     <description>Recent content in Tags on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Aug 2016 21:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jul 2019 11:00:00 -0400</lastBuildDate>
     
 	<atom:link href="http://127001.me/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>sbt</title>
+      <link>http://127001.me/tags/sbt/</link>
+      <pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate>
+      
+      <guid>http://127001.me/tags/sbt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>scala</title>
+      <link>http://127001.me/tags/scala/</link>
+      <pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate>
+      
+      <guid>http://127001.me/tags/scala/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>scalatest</title>
+      <link>http://127001.me/tags/scalatest/</link>
+      <pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate>
+      
+      <guid>http://127001.me/tags/scalatest/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>linux</title>

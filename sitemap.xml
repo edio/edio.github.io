@@ -4,25 +4,54 @@
   
   <url>
     <loc>http://127001.me/</loc>
-    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://127001.me/category/</loc>
-    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</loc>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://127001.me/post/</loc>
-    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://127001.me/tags/</loc>
-    <lastmod>2016-08-16T21:00:00+01:00</lastmod>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/sbt/</loc>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/scala/</loc>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/tags/scalatest/</loc>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://127001.me/category/software-engineering/</loc>
+    <lastmod>2019-07-08T11:00:00-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -74,12 +103,6 @@
   
   <url>
     <loc>http://127001.me/tags/jvm/</loc>
-    <lastmod>2016-05-09T00:59:08+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://127001.me/category/software-engineering/</loc>
     <lastmod>2016-05-09T00:59:08+02:00</lastmod>
     <priority>0</priority>
   </url>

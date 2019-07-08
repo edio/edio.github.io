@@ -6,10 +6,29 @@
     <description>Recent content in Posts on 127.0.0.1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Aug 2016 21:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jul 2019 11:00:00 -0400</lastBuildDate>
     
 	<atom:link href="http://127001.me/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Filtering ScalaTest tests by tags in sbt</title>
+      <link>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</link>
+      <pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate>
+      
+      <guid>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;em&gt;ScalaTest&lt;/em&gt; lets you tagging your tests with arbitrary tags and then filtering
+by tags when executing tests.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;It&amp;#8217;s not immediately obvious though, how to make use of this in &lt;em&gt;sbt&lt;/em&gt;, at least
+I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow, and
+I remember myself looking for a complete solution for quite a while&amp;#8230;&amp;#8203; Solution,
+however, is as simple as &lt;em&gt;2&amp;nbsp;+&amp;nbsp;2&lt;/em&gt; (where both twos mean reading
+documentation 😉).&lt;/p&gt;
+&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>Turning Synology NAS into a geeky media server: PulseAudio</title>
@@ -17,24 +36,36 @@
       <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
       
       <guid>http://127001.me/post/synology/mediaserver-p2/</guid>
-      <description>&lt;div class=&#34;quoteblock&#34;&gt;
-&lt;blockquote&gt;
+      <description>&lt;div class=&#34;admonitionblock warning&#34;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&#34;icon&#34;&gt;
+&lt;i class=&#34;fa icon-warning&#34; title=&#34;Warning&#34;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&#34;content&#34;&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;UPDATE: This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
+&lt;p&gt;This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
 no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
 friendly towards linux enthusiasts&lt;/p&gt;
 &lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
 &lt;/div&gt;
-&lt;div class=&#34;quoteblock&#34;&gt;
-&lt;blockquote&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;div class=&#34;admonitionblock tip&#34;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&#34;icon&#34;&gt;
+&lt;i class=&#34;fa icon-tip&#34; title=&#34;Tip&#34;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&#34;content&#34;&gt;
+Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;http://127001.me/post/synology/mediaserver-p1&#34;&gt;Previously&lt;/a&gt; we&amp;#8217;ve covered ALSA setup and Debian chroot.&lt;/p&gt;
@@ -92,24 +123,36 @@ interface V {
       <pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate>
       
       <guid>http://127001.me/post/synology/mediaserver-p1/</guid>
-      <description>&lt;div class=&#34;quoteblock&#34;&gt;
-&lt;blockquote&gt;
+      <description>&lt;div class=&#34;admonitionblock warning&#34;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&#34;icon&#34;&gt;
+&lt;i class=&#34;fa icon-warning&#34; title=&#34;Warning&#34;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&#34;content&#34;&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;UPDATE: This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
+&lt;p&gt;This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
 no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
 friendly towards linux enthusiasts&lt;/p&gt;
 &lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
 &lt;/div&gt;
-&lt;div class=&#34;quoteblock&#34;&gt;
-&lt;blockquote&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;div class=&#34;admonitionblock tip&#34;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&#34;icon&#34;&gt;
+&lt;i class=&#34;fa icon-tip&#34; title=&#34;Tip&#34;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&#34;content&#34;&gt;
+Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;I&amp;#8217;m not a huge fan of Synology. I bought my DS214 by friend&amp;#8217;s recommendation and became frustrated with it right after

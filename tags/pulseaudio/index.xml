@@ -17,24 +17,36 @@
       <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
       
       <guid>http://127001.me/post/synology/mediaserver-p2/</guid>
-      <description>&lt;div class=&#34;quoteblock&#34;&gt;
-&lt;blockquote&gt;
+      <description>&lt;div class=&#34;admonitionblock warning&#34;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&#34;icon&#34;&gt;
+&lt;i class=&#34;fa icon-warning&#34; title=&#34;Warning&#34;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&#34;content&#34;&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;UPDATE: This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
+&lt;p&gt;This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
 no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
 friendly towards linux enthusiasts&lt;/p&gt;
 &lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
 &lt;/div&gt;
-&lt;div class=&#34;quoteblock&#34;&gt;
-&lt;blockquote&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;div class=&#34;admonitionblock tip&#34;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&#34;icon&#34;&gt;
+&lt;i class=&#34;fa icon-tip&#34; title=&#34;Tip&#34;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&#34;content&#34;&gt;
+Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;http://127001.me/post/synology/mediaserver-p1&#34;&gt;Previously&lt;/a&gt; we&amp;#8217;ve covered ALSA setup and Debian chroot.&lt;/p&gt;

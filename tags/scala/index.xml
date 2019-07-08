@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>scala on 127.0.0.1</title>
+    <link>http://127001.me/tags/scala/</link>
+    <description>Recent content in scala on 127.0.0.1</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 08 Jul 2019 11:00:00 -0400</lastBuildDate>
+    
+	<atom:link href="http://127001.me/tags/scala/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Filtering ScalaTest tests by tags in sbt</title>
+      <link>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</link>
+      <pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate>
+      
+      <guid>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;em&gt;ScalaTest&lt;/em&gt; lets you tagging your tests with arbitrary tags and then filtering
+by tags when executing tests.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;It&amp;#8217;s not immediately obvious though, how to make use of this in &lt;em&gt;sbt&lt;/em&gt;, at least
+I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow, and
+I remember myself looking for a complete solution for quite a while&amp;#8230;&amp;#8203; Solution,
+however, is as simple as &lt;em&gt;2&amp;nbsp;+&amp;nbsp;2&lt;/em&gt; (where both twos mean reading
+documentation 😉).&lt;/p&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

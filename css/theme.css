@@ -97,6 +97,7 @@ main .post-title-wrapper {
   margin-bottom: 1em;
 }
 main .post-title-wrapper h1 {
+  color: #000;
   font-weight: 400;
   line-height: 1.5em;
   margin: 0;
@@ -107,6 +108,20 @@ main .post-title-wrapper h1 a {
 }
 main .post-title-wrapper h1 a:hover {
   color: #6a4c57;
+}
+main .post-title-wrapper .banner {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+main .post-title-wrapper .banner img {
+  flex: 1;
+  max-width: 760px;
+  height: -webkit-fill-available;
+}
+main .post-title-wrapper .banner img.fill {
+  min-width: 760px;
 }
 main#list h1#taxonomy-name {
   font-size: 1.2em;
@@ -173,6 +188,9 @@ main article {
   word-wrap: break-word;
   margin-bottom: 1em;
 }
+main article .imageblock {
+  text-align: center;
+}
 main a {
   color: #2156a5;
   font-weight: 400;
@@ -182,57 +200,28 @@ main a:hover,
 main a:focus {
   color: #1d4b8f;
 }
-main blockquote {
-  border-left: 2px solid #6d8cc7;
-  padding-left: 10px;
-  background-color: #f5f5f5;
-  font-size: .9em;
-  margin: 10px;
+main div.quoteblock p,
+main div.quoteblock blockquote {
+  font-size: 1em;
+  margin: 0;
 }
-main code.hljs {
-  border: 1px solid #ccc;
-  line-height: 12pt;
-  font-size: 10pt;
-}
-main code.hljs .conum {
-  color: rgba(0, 0, 0, 0) !important;
-  user-select: none;
-  -webkit-user-select: none;
-  /* Safari */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* IE10+/Edge */
-}
-main code.hljs .conum > * {
-  background-color: #a3a19c;
-  border-radius: 100px;
-  border: 1px solid #a3a19c;
-  color: white !important;
-  display: inline-block;
-  font-family: sans-serif;
-  font-size: 8pt;
-  font-weight: 400;
-  height: 12pt;
-  margin: -6pt;
-  text-align: center;
-  width: 12pt;
+main .sect1 + .sect1 {
+  border-top: none;
 }
 main code {
   font-family: monospace;
-  font-size: .9em;
 }
 main h1 {
-  font-size: 2.0em;
+  font-size: 2.125em;
 }
 main h2 {
   font-size: 1.75em;
 }
 main h3 {
-  font-size: 1.5em;
+  font-size: 1.4375em;
 }
 main h4 {
-  font-size: 1.4375em;
+  font-size: 1.3em;
 }
 main h5 {
   font-size: 1.125em;
@@ -255,13 +244,12 @@ main h6 {
   text-rendering: optimizeLegibility;
 }
 main p {
+  font-size: 1rem;
   line-height: 1.8em;
   margin-top: 1em;
-  margin-bottom: .3em;
 }
 main ul,
 main ol {
-  margin-left: 0;
   margin-bottom: .3em;
 }
 main li p {
