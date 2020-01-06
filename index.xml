@@ -1,235 +1,155 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>127.0.0.1</title>
-    <link>http://127001.me/</link>
-    <description>Recent content on 127.0.0.1</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 08 Jul 2019 11:00:00 -0400</lastBuildDate>
-    
-	<atom:link href="http://127001.me/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Filtering ScalaTest tests by tags in sbt</title>
-      <link>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</link>
-      <pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate>
-      
-      <guid>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;&lt;em&gt;ScalaTest&lt;/em&gt; lets you tagging your tests with arbitrary tags and then filtering
-by tags when executing tests.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;It&amp;#8217;s not immediately obvious though, how to make use of this in &lt;em&gt;sbt&lt;/em&gt;, at least
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>127.0.0.1</title><link>http://127001.me/</link><description>Recent content on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 08 Jul 2019 11:00:00 -0400</lastBuildDate><atom:link href="http://127001.me/index.xml" rel="self" type="application/rss+xml"/><item><title>Filtering ScalaTest tests by tags in sbt</title><link>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</link><pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate><guid>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</guid><description>&lt;div class="paragraph">
+&lt;p>&lt;em>ScalaTest&lt;/em> lets you tagging your tests with arbitrary tags and then filtering
+by tags when executing tests.&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>It&amp;#8217;s not immediately obvious though, how to make use of this in &lt;em>sbt&lt;/em>, at least
 I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow, and
 I remember myself looking for a complete solution for quite a while&amp;#8230;&amp;#8203; Solution,
-however, is as simple as &lt;em&gt;2&amp;nbsp;+&amp;nbsp;2&lt;/em&gt; (where both twos mean reading
-documentation 😉).&lt;/p&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Turning Synology NAS into a geeky media server: PulseAudio</title>
-      <link>http://127001.me/post/synology/mediaserver-p2/</link>
-      <pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate>
-      
-      <guid>http://127001.me/post/synology/mediaserver-p2/</guid>
-      <description>&lt;div class=&#34;admonitionblock warning&#34;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&#34;icon&#34;&gt;
-&lt;i class=&#34;fa icon-warning&#34; title=&#34;Warning&#34;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&#34;content&#34;&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
-no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
-friendly towards linux enthusiasts&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&#34;admonitionblock tip&#34;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&#34;icon&#34;&gt;
-&lt;i class=&#34;fa icon-tip&#34; title=&#34;Tip&#34;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&#34;content&#34;&gt;
-Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;&lt;a href=&#34;http://127001.me/post/synology/mediaserver-p1&#34;&gt;Previously&lt;/a&gt; we&amp;#8217;ve covered ALSA setup and Debian chroot.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;In this post I&amp;#8217;ll describe how to set up PulseAudio in Debian chroot, so that it&amp;#8217;s possible to stream any sound from
-linux-powered pc to a sound card connected to Synology NAS.&lt;/p&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Overloading that is not permitted or Java bridge methods</title>
-      <link>http://127001.me/post/java-bridge-methods/</link>
-      <pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate>
-      
-      <guid>http://127001.me/post/java-bridge-methods/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
-similar interfaces in a single class:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;listingblock&#34;&gt;
-&lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code data-lang=&#34;java&#34; class=&#34;language-java hljs&#34;&gt;// Implement both interfaces in a single class if possible
+however, is as simple as &lt;em>2&amp;nbsp;+&amp;nbsp;2&lt;/em> (where both twos mean reading
+documentation 😉).&lt;/p>
+&lt;/div></description></item><item><title>Turning Synology NAS into a geeky media server: PulseAudio</title><link>http://127001.me/post/synology/mediaserver-p2/</link><pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate><guid>http://127001.me/post/synology/mediaserver-p2/</guid><description>&lt;div class="admonitionblock warning">
+&lt;table>
+&lt;tr>
+&lt;td class="icon">
+&lt;i class="fa icon-warning" title="Warning">&lt;/i>
+&lt;/td>
+&lt;td class="content">
+&lt;div class="paragraph">
+&lt;p>This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
+no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
+friendly towards linux enthusiasts&lt;/p>
+&lt;/div>
+&lt;/td>
+&lt;/tr>
+&lt;/table>
+&lt;/div>
+&lt;div class="admonitionblock tip">
+&lt;table>
+&lt;tr>
+&lt;td class="icon">
+&lt;i class="fa icon-tip" title="Tip">&lt;/i>
+&lt;/td>
+&lt;td class="content">
+Required files can be downloaded from &lt;a href="https://github.com/edio/synology-mediaserver" class="bare">https://github.com/edio/synology-mediaserver&lt;/a>
+&lt;/td>
+&lt;/tr>
+&lt;/table>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>&lt;a href="http://127001.me/post/synology/mediaserver-p1">Previously&lt;/a> we&amp;#8217;ve covered ALSA setup and Debian chroot.&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>In this post I&amp;#8217;ll describe how to set up PulseAudio in Debian chroot, so that it&amp;#8217;s possible to stream any sound from
+linux-powered pc to a sound card connected to Synology NAS.&lt;/p>
+&lt;/div></description></item><item><title>Overloading that is not permitted or Java bridge methods</title><link>http://127001.me/post/java-bridge-methods/</link><pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate><guid>http://127001.me/post/java-bridge-methods/</guid><description>&lt;div class="paragraph">
+&lt;p>Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
+similar interfaces in a single class:&lt;/p>
+&lt;/div>
+&lt;div class="listingblock">
+&lt;div class="content">
+&lt;pre class="highlightjs highlight">&lt;code data-lang="java" class="language-java hljs">// Implement both interfaces in a single class if possible
 // Explain why possible or not possible
-
 interface WithPrimitiveInt {
-  void m(int i);
+void m(int i);
 }
-
 interface WithInteger {
-  void m(Integer i);
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Sometimes candidates, not being sure about the right answer, are willing to solve the following puzzle instead (I give
-it to candidates later anyway):&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;listingblock&#34;&gt;
-&lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlightjs highlight&#34;&gt;&lt;code data-lang=&#34;java&#34; class=&#34;language-java hljs&#34;&gt;interface S {
-  String m(int i);
+void m(Integer i);
+}&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>Sometimes candidates, not being sure about the right answer, are willing to solve the following puzzle instead (I give
+it to candidates later anyway):&lt;/p>
+&lt;/div>
+&lt;div class="listingblock">
+&lt;div class="content">
+&lt;pre class="highlightjs highlight">&lt;code data-lang="java" class="language-java hljs">interface S {
+String m(int i);
 }
-
 interface V {
-  void m(int i);
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Turning Synology NAS into a geeky media server</title>
-      <link>http://127001.me/post/synology/mediaserver-p1/</link>
-      <pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate>
-      
-      <guid>http://127001.me/post/synology/mediaserver-p1/</guid>
-      <description>&lt;div class=&#34;admonitionblock warning&#34;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&#34;icon&#34;&gt;
-&lt;i class=&#34;fa icon-warning&#34; title=&#34;Warning&#34;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&#34;content&#34;&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
-no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
-friendly towards linux enthusiasts&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&#34;admonitionblock tip&#34;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&#34;icon&#34;&gt;
-&lt;i class=&#34;fa icon-tip&#34; title=&#34;Tip&#34;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&#34;content&#34;&gt;
-Required files can be downloaded from &lt;a href=&#34;https://github.com/edio/synology-mediaserver&#34; class=&#34;bare&#34;&gt;https://github.com/edio/synology-mediaserver&lt;/a&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;I&amp;#8217;m not a huge fan of Synology. I bought my DS214 by friend&amp;#8217;s recommendation and became frustrated with it right after
+void m(int i);
+}&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;/div></description></item><item><title>Turning Synology NAS into a geeky media server</title><link>http://127001.me/post/synology/mediaserver-p1/</link><pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate><guid>http://127001.me/post/synology/mediaserver-p1/</guid><description>&lt;div class="admonitionblock warning">
+&lt;table>
+&lt;tr>
+&lt;td class="icon">
+&lt;i class="fa icon-warning" title="Warning">&lt;/i>
+&lt;/td>
+&lt;td class="content">
+&lt;div class="paragraph">
+&lt;p>This post was written in pre-docker era. Back in the time it was necessary to perform many things that are
+no longer required on modern devices (like installing Debian Chroot package which, expectedly, is no longer offered).&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>Modern devices with Docker support or equivalent features (FWIW, my choice is Linux Station from QNAP) are much more
+friendly towards linux enthusiasts&lt;/p>
+&lt;/div>
+&lt;/td>
+&lt;/tr>
+&lt;/table>
+&lt;/div>
+&lt;div class="admonitionblock tip">
+&lt;table>
+&lt;tr>
+&lt;td class="icon">
+&lt;i class="fa icon-tip" title="Tip">&lt;/i>
+&lt;/td>
+&lt;td class="content">
+Required files can be downloaded from &lt;a href="https://github.com/edio/synology-mediaserver" class="bare">https://github.com/edio/synology-mediaserver&lt;/a>
+&lt;/td>
+&lt;/tr>
+&lt;/table>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>I&amp;#8217;m not a huge fan of Synology. I bought my DS214 by friend&amp;#8217;s recommendation and became frustrated with it right after
 the purchase. Bundled software was limited and buggy. Many people find Synology products great. But for me it just
 didn&amp;#8217;t work well because it forced its use cases on me instead of being a helpful tool for my own very specific use
-cases.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Anyway, I wasn&amp;#8217;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it and
-currently with my DS214Play I can:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;olist arabic&#34;&gt;
-&lt;ol class=&#34;arabic&#34;&gt;
-&lt;li&gt;
-&lt;p&gt;Play virtually any sound via connected USB sound card.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Particularly, I can play my huge collection of high-resolution music in various formats (with replaygain tags
-respected). All that thanks to &lt;em&gt;mpd&lt;/em&gt;, which I can control from any decent phone, web-browser or even smart-watch and
-scrobble all statistics to Last.fm.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Stream sound from my laptop via &lt;strong&gt;PulseAudio&lt;/strong&gt;, while watching videos on YouTube or movies.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>randrctl — profile-based screen manager for X</title>
-      <link>http://127001.me/post/introducing-randrctl/</link>
-      <pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate>
-      
-      <guid>http://127001.me/post/introducing-randrctl/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;Idea appeared long before I was told about famous (or not?) &lt;a href=&#34;https://github.com/wertarbyte/autorandr&#34;&gt;autorandr&lt;/a&gt; project.
-So if you are familiar with autorandr, you are already familiar with randrctl idea.&lt;/p&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>How Java logging frameworks determine caller class and method name</title>
-      <link>http://127001.me/post/java-logging-caller-class-and-method/</link>
-      <pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate>
-      
-      <guid>http://127001.me/post/java-logging-caller-class-and-method/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;This post describes how java logging frameworks (&lt;em&gt;log4j&lt;/em&gt;, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.&lt;/p&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Listen tracks from youtube in mpd</title>
-      <link>http://127001.me/post/youtube-in-mpd/</link>
-      <pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate>
-      
-      <guid>http://127001.me/post/youtube-in-mpd/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;We&amp;#8217;ll need&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;ulist&#34;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;em&gt;mpd&lt;/em&gt; with &lt;em&gt;curl&lt;/em&gt; support&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;http://rg3.github.io/youtube-dl/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-  </channel>
-</rss>
+cases.&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>Anyway, I wasn&amp;#8217;t willing to lose money on reselling my NAS, so I decided to get as much as possible from it and
+currently with my DS214Play I can:&lt;/p>
+&lt;/div>
+&lt;div class="olist arabic">
+&lt;ol class="arabic">
+&lt;li>
+&lt;p>Play virtually any sound via connected USB sound card.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Particularly, I can play my huge collection of high-resolution music in various formats (with replaygain tags
+respected). All that thanks to &lt;em>mpd&lt;/em>, which I can control from any decent phone, web-browser or even smart-watch and
+scrobble all statistics to Last.fm.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Stream sound from my laptop via &lt;strong>PulseAudio&lt;/strong>, while watching videos on YouTube or movies.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>randrctl — profile-based screen manager for X</title><link>http://127001.me/post/introducing-randrctl/</link><pubDate>Wed, 17 Sep 2014 18:45:22 +0300</pubDate><guid>http://127001.me/post/introducing-randrctl/</guid><description>&lt;div class="paragraph">
+&lt;p>While having some free time, decided to automate one of my daily routines — setting up external display.&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>Idea appeared long before I was told about famous (or not?) &lt;a href="https://github.com/wertarbyte/autorandr">autorandr&lt;/a> project.
+So if you are familiar with autorandr, you are already familiar with randrctl idea.&lt;/p>
+&lt;/div></description></item><item><title>How Java logging frameworks determine caller class and method name</title><link>http://127001.me/post/java-logging-caller-class-and-method/</link><pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate><guid>http://127001.me/post/java-logging-caller-class-and-method/</guid><description>&lt;div class="paragraph">
+&lt;p>This post describes how java logging frameworks (&lt;em>log4j&lt;/em>, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>I decided to write this post, because quite often I communicate with developers, who do not understant what is the cost of writing caller information to logs, and why such high cost is imposed.&lt;/p>
+&lt;/div></description></item><item><title>Listen tracks from youtube in mpd</title><link>http://127001.me/post/youtube-in-mpd/</link><pubDate>Fri, 13 Sep 2013 14:18:07 +0300</pubDate><guid>http://127001.me/post/youtube-in-mpd/</guid><description>&lt;div class="paragraph">
+&lt;p>We&amp;#8217;ll need&lt;/p>
+&lt;/div>
+&lt;div class="ulist">
+&lt;ul>
+&lt;li>
+&lt;p>&lt;em>mpd&lt;/em> with &lt;em>curl&lt;/em> support&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://rg3.github.io/youtube-dl/">youtube-dl&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/div></description></item></channel></rss>
