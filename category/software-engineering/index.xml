@@ -4,10 +4,9 @@ by tags when executing tests.&lt;/p>
 &lt;/div>
 &lt;div class="paragraph">
 &lt;p>It&amp;#8217;s not immediately obvious though, how to make use of this in &lt;em>sbt&lt;/em>, at least
-I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow, and
-I remember myself looking for a complete solution for quite a while&amp;#8230;&amp;#8203; Solution,
-however, is as simple as &lt;em>2&amp;nbsp;+&amp;nbsp;2&lt;/em> (where both twos mean reading
-documentation 😉).&lt;/p>
+I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow,
+and I remember myself looking for a complete solution for quite a while, so
+here it is.&lt;/p>
 &lt;/div></description></item><item><title>Overloading that is not permitted or Java bridge methods</title><link>http://127001.me/post/java-bridge-methods/</link><pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate><guid>http://127001.me/post/java-bridge-methods/</guid><description>&lt;div class="paragraph">
 &lt;p>Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
 similar interfaces in a single class:&lt;/p>

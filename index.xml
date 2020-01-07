@@ -4,10 +4,9 @@ by tags when executing tests.&lt;/p>
 &lt;/div>
 &lt;div class="paragraph">
 &lt;p>It&amp;#8217;s not immediately obvious though, how to make use of this in &lt;em>sbt&lt;/em>, at least
-I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow, and
-I remember myself looking for a complete solution for quite a while&amp;#8230;&amp;#8203; Solution,
-however, is as simple as &lt;em>2&amp;nbsp;+&amp;nbsp;2&lt;/em> (where both twos mean reading
-documentation 😉).&lt;/p>
+I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow,
+and I remember myself looking for a complete solution for quite a while, so
+here it is.&lt;/p>
 &lt;/div></description></item><item><title>Turning Synology NAS into a geeky media server: PulseAudio</title><link>http://127001.me/post/synology/mediaserver-p2/</link><pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate><guid>http://127001.me/post/synology/mediaserver-p2/</guid><description>&lt;div class="admonitionblock warning">
 &lt;table>
 &lt;tr>
