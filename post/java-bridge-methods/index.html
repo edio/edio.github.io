@@ -40,7 +40,7 @@ in Java, if it was allowed, should look like this:</p></div><div class=listingbl
   }
 }</code></pre></div></div><div class=paragraph><p>To generate bytecode we&#8217;ll use <a href=http://asm.ow2.org/index.html>Objectweb ASM library</a>, which is low-level enough to get
 a feeling of what JVM bytecode is.</p></div><div class=paragraph><p><a href=http://github.com/edio/java-bridge-methods>Full source code</a> is shared on github, here I&#8217;ll only list and explain
-essential snippets.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES); <b class=conum>(1)</b>
+essential snippets.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES); <i class=conum data-value=1></i><b>(1)</b>
 
 // package edio.java.experiments
 // public class SV implements S, V
@@ -49,11 +49,11 @@ cw.visit(V1_7, ACC_PUBLIC, "edio/java/experiments/SV", null, "java/lang/Object",
       "edio/java/experiments/S",
       "edio/java/experiments/V"
     }
-); <b class=conum>(2)</b>
+); <i class=conum data-value=2></i><b>(2)</b>
 
 // constructor
 MethodVisitor constructor =
-    cw.visitMethod(ACC_PUBLIC, "&lt;init&gt;", "()V", null, null); <b class=conum>(3)</b>
+    cw.visitMethod(ACC_PUBLIC, "&lt;init&gt;", "()V", null, null); <i class=conum data-value=3></i><b>(3)</b>
 constructor.visitCode();
 constructor.visitVarInsn(Opcodes.ALOAD, 0);
 constructor.visitMethodInsn(
@@ -67,11 +67,11 @@ MethodVisitor mString =
     cw.visitMethod(ACC_PUBLIC, "m", "(I)Ljava/lang/String;", null, null);
 mString.visitCode();
 mString.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out",
-    "Ljava/io/PrintStream;"); <b class=conum>(4)</b>
-mString.visitLdcInsn("String"); <b class=conum>(5)</b>
+    "Ljava/io/PrintStream;"); <i class=conum data-value=4></i><b>(4)</b>
+mString.visitLdcInsn("String"); <i class=conum data-value=5></i><b>(5)</b>
 mString.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println",
     "(Ljava/lang/String;)V");
-mString.visitInsn(Opcodes.ACONST_NULL); <b class=conum>(6)</b>
+mString.visitInsn(Opcodes.ACONST_NULL); <i class=conum data-value=6></i><b>(6)</b>
 mString.visitInsn(Opcodes.ARETURN);
 mString.visitMaxs(2, 2);
 mString.visitEnd();
@@ -79,20 +79,20 @@ mString.visitEnd();
 // public void m(int i)
 MethodVisitor mVoid = cw.visitMethod(ACC_PUBLIC, "m", "(I)V", null, null);
 mVoid.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out",
-    "Ljava/io/PrintStream;"); <b class=conum>(4)</b>
-mVoid.visitLdcInsn("void"); <b class=conum>(5)</b>
+    "Ljava/io/PrintStream;"); <i class=conum data-value=4></i><b>(4)</b>
+mVoid.visitLdcInsn("void"); <i class=conum data-value=5></i><b>(5)</b>
 mVoid.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println",
     "(Ljava/lang/String;)V");
-mVoid.visitInsn(Opcodes.RETURN); <b class=conum>(6)</b>
+mVoid.visitInsn(Opcodes.RETURN); <i class=conum data-value=6></i><b>(6)</b>
 mVoid.visitMaxs(2, 2);
 mVoid.visitEnd();
 
-cw.visitEnd();</code></pre></div></div><div class="colist arabic"><ol><li><p>We start with creating <code>ClassWriter</code> to generate bytecode.</p></li><li><p>Then we declare a class, that implements interfaces <code>S</code> and <code>V</code>.</p></li><li><p>Although, our reference pseudo-java code for <code>SV</code> didn&#8217;t contain any constructors, we must generate code for it
-anyway, if we do not declare constructors in Java, compiler implicitly generates empty constructor for us.</p></li><li><p>In the methods bodies we start by obtaining the <code>out</code> field of type <code>java.io.PrintStream</code> from <code>System</code> class and
-pushing it onto the operand stack</p></li><li><p>Then we load a constant (<code>"String"</code> or <code>"void"</code>) onto the stack and invoke <code>println</code>
-on an obtained <code>out</code> reference with the string constant as an argument.</p></li><li><p>Finally, for <code>String m(int i)</code> we push a constant of type reference with value <code>null</code> to stack and use a correspondingly
+cw.visitEnd();</code></pre></div></div><div class="colist arabic"><table><tr><td><i class=conum data-value=1></i><b>1</b></td><td>We start with creating <code>ClassWriter</code> to generate bytecode.</td></tr><tr><td><i class=conum data-value=2></i><b>2</b></td><td>Then we declare a class, that implements interfaces <code>S</code> and <code>V</code>.</td></tr><tr><td><i class=conum data-value=3></i><b>3</b></td><td>Although, our reference pseudo-java code for <code>SV</code> didn&#8217;t contain any constructors, we must generate code for it
+anyway, if we do not declare constructors in Java, compiler implicitly generates empty constructor for us.</td></tr><tr><td><i class=conum data-value=4></i><b>4</b></td><td>In the methods bodies we start by obtaining the <code>out</code> field of type <code>java.io.PrintStream</code> from <code>System</code> class and
+pushing it onto the operand stack</td></tr><tr><td><i class=conum data-value=5></i><b>5</b></td><td>Then we load a constant (<code>"String"</code> or <code>"void"</code>) onto the stack and invoke <code>println</code>
+on an obtained <code>out</code> reference with the string constant as an argument.</td></tr><tr><td><i class=conum data-value=6></i><b>6</b></td><td>Finally, for <code>String m(int i)</code> we push a constant of type reference with value <code>null</code> to stack and use a correspondingly
 typed <code>return</code> instruction, <code>ARETURN</code> it is, to return a value back to a method caller. For the <code>void m(int i)</code> we use
-untyped <code>RETURN</code> to only jump back to a method caller without returning a value.</p></li></ol></div><div class=paragraph><p>To verify, that our bytecode is correct (and I&#8217;ve been doing this all the time, iteratively fixing the issues), we write
+untyped <code>RETURN</code> to only jump back to a method caller without returning a value.</td></tr></table></div><div class=paragraph><p>To verify, that our bytecode is correct (and I&#8217;ve been doing this all the time, iteratively fixing the issues), we write
 the generated class to a filesystem</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">Files.write(new File("/tmp/SV.class").toPath(), cw.toByteArray());</code></pre></div></div><div class=paragraph><p>and use <code>jad</code> (java decompiler) to turn bytecode back to java</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code class="language-none hljs">$ jad -p /tmp/SV.class
 The class file version is 51.0 (only 45.3, 46.0 and 47.0 are supported)
 // Decompiled by Jad v1.5.8e. Copyright 2001 Pavel Kouznetsov.
@@ -171,4 +171,4 @@ names and although Java is the main language for JVM, their possibilities and li
 Knowing JVM helps a lot understanding Java or any other JVM-based language and knowing Java and its history, on the
 other hand, helps understanding certain decisions in JVM design.</p></div></div></div><div class=sect1><h2 id=_related_links>Related links</h2><div class=sectionbody><div class="olist arabic"><ol class=arabic><li><p><a href=https://docs.oracle.com/javase/specs/jvms/se7/html/>Java Virtual Machine Specification</a></p></li><li><p><a href=http://download.forge.objectweb.org/asm/asm4-guide.pdf>ASM user guide [pdf]</a></p></li><li><p><a href=http://github.com/edio/java-bridge-methods>Source code from the article</a></p></li><li><p><a href=http://stackoverflow.com/questions/921025/eclipse-warning-about-synthetic-accessor-for-private-static-nested-classes-in-jav>Synthetic accessor for private nested classes in Java [StackOverflow]</a></p></li></ol></div></div></div></article></main><article class=comments><div id=disqus_thread></div><script>if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!==-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';}else{var disqus_config=function(){};(function(){var inIFrame=function(){var iframe=true;try{iframe=window.self!==window.top;}catch(e){}
 return iframe;};if(inIFrame())return;var disqus_js='//127001me.disqus.com/embed.js';var d=document,s=d.createElement('script');s.src=disqus_js;s.async=true;s.setAttribute('data-timestamp',+new Date());var b=false,l=function(){if(b)return;(d.head||d.body).appendChild(s);b=true;}
-var t=d.getElementById('disqus_thread');s.onerror=function(e){if(sessionStorage.getItem('failure-note'))return;t.innerText='Disqus failed to load';t.style.border='1px dashed';t.style.padding='.5em';t.style.background='lightyellow';sessionStorage.setItem('failure-note',true);};if(location.hash.match(/^#comment/))return l();var c=function(){if(b)return;var rect=t.getBoundingClientRect();if(rect.top<window.innerHeight&&rect.bottom>=0)l();};window.addEventListener('load',c);d.addEventListener('scroll',c);})();}</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></article><footer role=contentinfo><div class=footer-content><div class=footer-copyright-info>© 2019 Dmytro Kostiuchenko</div><div class=footer-social-buttons><a href=https://github.com/edio title=GitHub><i class="fa fa-github"></i></a><a href=https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14 title=Linkedin><i class="fa fa-linkedin-square"></i></a></div></div></footer></div><script src=/js/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
+var t=d.getElementById('disqus_thread');s.onerror=function(e){if(sessionStorage.getItem('failure-note'))return;t.innerText='Disqus failed to load';t.style.border='1px dashed';t.style.padding='.5em';t.style.background='lightyellow';sessionStorage.setItem('failure-note',true);};if(location.hash.match(/^#comment/))return l();var c=function(){if(b)return;var rect=t.getBoundingClientRect();if(rect.top<window.innerHeight&&rect.bottom>=0)l();};window.addEventListener('load',c);d.addEventListener('scroll',c);})();}</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></article><footer role=contentinfo><div class=footer-content><div class=footer-copyright-info><a href=https://creativecommons.org/licenses/by/4.0/ title="Except where otherwise noted, content on this site is licensed under CC-BY-4.0"><i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i></a>2019 Dmytro Kostiuchenko</div><div class=footer-social-buttons><a href=https://github.com/edio title=GitHub><i class="fa fa-github"></i></a><a href=https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14 title=Linkedin><i class="fa fa-linkedin-square"></i></a></div></div></footer></div><script src=/js/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
