@@ -75,7 +75,7 @@ binding” was really needed because the mechanism itself let too many semantica
 composition and delegation over inheritance almost 20 years ago too<sup class=footnote>[<a id=_footnoteref_8 class=footnote href=#_footnotedef_8 title="View footnote.">8</a>]</sup>. And maybe, 10 years ago I would still occasionally see 7 levels of inheritance in the new
 code. But people don&#8217;t do this anymore. I&#8217;ve seen Java projects, where programmers preferred code duplication over
 inheritance, and they believed they were doing OOP. Modern non-FP languages (Go, Rust) do not even offer this design
-facility. Inheritance just proved itself practically inconvenient in <em>many</em> cases, and this is not unique to FP.</p></div></div></div></div><div class=sect1><h2 id=_oop_patterns_that_converge_to_fp>OOP Patterns that converge to FP</h2><div class=sectionbody><div class=paragraph><p>Let&#8217;s consider the unfamous <em>Factory</em> pattern. It is useful when in our program we have to construct an object from
+facility. Inheritance just proved itself practically inconvenient in <em>many</em> cases, and this is not unique to FP.</p></div></div></div></div><div class=sect1><h2 id=_oop_patterns_that_converge_to_fp>OOP patterns that converge to FP</h2><div class=sectionbody><div class=paragraph><p>Let&#8217;s consider the unfamous <em>Factory</em> pattern. It is useful when in our program we have to construct an object from
 some data, but the data is scattered among different points in runtime. So we first feed some part of data to the
 factory and then some other part of data when it becomes available:</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">class FooFactory {
     FooFactory(int datum1, int datum2) { ...  }
@@ -104,9 +104,9 @@ class Service {
     Command doAction1() {  ...; return new Action1Command(); }
     Command doAction2() {  ...; return new Action2Command(); }
     ...
-}</code></pre></div></div><div class=paragraph><p>My point is, there were real problems that had to be solved, and all those OOP patterns are perfectly valid solutions.
-I find it interesting, that although OOP abstractions are built using entirely different building blocks, solutions
-produced in the scope of this paradigm are well aligned with solutions that FP paradigm offers.</p></div><div class=paragraph><p>I guess my point is&#8230;&#8203;</p></div></div></div><div class=sect1><h2 id=_dont_make_fp_look_less_approachable_than_it_is>Don&#8217;t make FP look less approachable than it is</h2><div class=sectionbody><div class=paragraph><p>Writing programs using only pure function and immutable data structures may have some benefits. But it does not mean,
+}</code></pre></div></div><div class=paragraph><p>There were real problems that had to be solved, and all those OOP patterns are perfectly valid solutions. I find it
+interesting, that although OOP abstractions are built using entirely different building blocks, solutions produced in
+the scope of this paradigm are well aligned with solutions that FP paradigm offers.</p></div><div class=paragraph><p>I guess my point is&#8230;&#8203;</p></div></div></div><div class=sect1><h2 id=_dont_make_fp_look_less_approachable_than_it_is>Don&#8217;t make FP look less approachable than it is</h2><div class=sectionbody><div class=paragraph><p>Writing programs using only pure function and immutable data structures may have some benefits. But it does not mean,
 that there&#8217;s nothing in between the side-effectfull mutable OOP and idealistic FP. When it comes to solving real-world
 problems with code, FP or OOP is a false dichotomy.</p></div><div class=paragraph><p>It is good to be influenced by FP and take the best of it, where it suits you. Already mentioned Rust and Go do not
 offer inheritance, allow higher-order functions, employ error propagation models that result in complete functions,
