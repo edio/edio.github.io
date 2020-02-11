@@ -1,0 +1,119 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><title>You may be doing FP already | 127.0.0.1</title><meta name=viewport content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1"><link rel=canonical href=http://127001.me/post/you-may-be-doing-fp-already/><link rel=apple-touch-icon-precomposed sizes=144x144 href=/favicon144.png><link rel="shortcut icon" href=/favicon.png><link rel=stylesheet href=http://127001.me/css/bundle.min.css><link href=http://127001.me/index.xml rel=alternate type=application/rss+xml title=127.0.0.1><link href=http://127001.me/index.xml rel=feed type=application/rss+xml title=127.0.0.1><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-82090130-1','auto');ga('send','pageview');</script></head><div class=container><header role=banner><div class=title-block><span class=title-span><a class=title href=http://127001.me/><span class=user>me</span>@<span class=host>127.0.0.1</span>:<span class=cwd>~</span><span class=prompt>$</span> <span class=cursor>_</span></a></span></div></header><main id=single role=main><div class=post-title-wrapper><div style=display:flex><div style=flex:1><div class=post-category><a href=/category/software-engineering>/software engineering/</a></div></div><div class=post-date>Feb 10, 2020</div></div><h1>You may be doing FP already</h1><div style=display:flex><div style=flex:1><div class=post-tags-list><a href=/tags/fp>#fp</a>&nbsp;
+<a href=/tags/java>#java</a>&nbsp;
+<a href=/tags/oop>#oop</a>&nbsp;
+<a href=/tags/scala>#scala</a>&nbsp;</div></div></div></div><article><div class=paragraph><p>Functional programming (FP) has been a somewhat hot topic in recent years in my surroundings. Although in my <em>close</em>
+surroundings people are usually not very zealous or overly excited, I do notice sometimes talks, discussions and vocally
+expressed opinions where <em>tremendous</em> benefits of FP over other paradigms are claimed, through presenting FP as a
+fundamentally new approach to writing code, opposite to, say, OOP. Some go as far as saying, that one must fully ditch
+OOP and all related experience because it&#8217;s all just a mistake.</p></div><div class=paragraph><p>Such extreme claims are rarely challenged. When a person with an OOP background gets involved in any FP-related
+discussion, it quickly gets overwhelmed with new unfamiliar vocabulary: algebras, monads, semigroups, functors, type
+classes&#8230;&#8203; And I start questioning intents of those claims — are they made to make people shift to FP, or to prove, that
+some definition of FP is better than some definition of OOP?</p></div><div class=paragraph><p>With this post, I hope to show that FP can be seen as an evolutionary step, a generalization over practices we already
+consider the best in OOP paradigm. And if viewed like this, it can be useful even when adopted gradually. I hope this
+point of view will persuade programmers to look into FP and to borrow new techniques from it to improve non-FP code.</p></div><div class=sect1><h2 id=cut>FP concepts we already use in OOP</h2><div class=sectionbody><div class=paragraph><p>I want to examine concepts, that are claimed (by some) to be unique to FP but are actually used in non-FP code too.</p></div><div class=sect2><h3 id=_pure_functions>Pure functions</h3><div class=paragraph><p>And for starters let&#8217;s examine what probably is considered the core concept of FP — pure functions.</p></div><div class=paragraph><p>A pure function must satisfy 2 properties:</p></div><div class=ulist><ul><li><p>its return value is the same for the same arguments,</p></li><li><p>its evaluation has no side effects.</p></li></ul></div><div class=paragraph><p>Let&#8217;s consider a simple issue tracking system.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">class Issue {
+  long id;
+  String title;
+  String text;
+  List&lt;Comment&gt; comments;
+}
+
+class Comment {
+  long id;
+  String text;
+  long timestampMillis;
+}</code></pre></div></div><div class=paragraph><p>Our task is to make issues to be closed automatically if they are stale. The issue is considered stale when no comments
+were made on them over some time. If we just finished our first book about Java, we would probably come up with
+something like this in our model.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">class Issue {
+  ...
+  boolean isStale() {
+    long now = System.currentTimeMillis();
+    long recentCommentTs = this.comments.get(comments.size() - 1).timestampMillis;
+    return now - recentCommentTs &gt; STALE_THRESHOLD_MILLIS; // THRESHOLD declared elsewhere
+  }
+}</code></pre></div></div><div class=paragraph><p>Now if on our first job in a big company we tried to push a code like that to the repo, our colleagues or even static
+code analysis system integrated into company CI would quickly let us know, that the code must be tested. So we read
+about testing, TDD, and eventually, we&#8217;ll end up with hundreds of tabs in our browser, all describing how do we mock
+system time in our tests&#8230;&#8203;</p></div><div class=paragraph><p>A more experienced OOP programmer who practices TDD wouldn&#8217;t even attempt writing code like that, and at the very least
+would start with something like this, because it is easier to test:</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">class Issue {
+  ...
+  boolean isStale(long now) {
+    long recentCommentTs = this.comments.get(comments.size() - 1).timestampMillis;
+    return now - recentCommentTs &gt; STALE_THRESHOLD_MILLIS;
+  }
+}</code></pre></div></div><div class=paragraph><p>Even more experienced programmer would probably come up with something even more composable.</p></div><div class=paragraph><p>It is already easy to spot though, that <code>isStale()</code> as written by an imaginary junior programmer is not pure, it returns
+different results depending on the state of the system clock. <code>isStale(long)</code> is still <em>not pure</em> because its result
+depends on the state of the <code>Issue</code> object. Make <code>Issue</code> immutable and <code>isStale(long)</code> would be pure.</p></div><div class=paragraph><p>TDD is said to aid in good code design, but it is rarely mentioned or even understood, that it achieves this <em>mostly</em>
+by forcing us to write programs that are composed of pure computations!</p></div><div class=paragraph><p>Testable code is a requirement worked out by the industry that gave birth to other practices that converge to functional
+programming. Such a big one is dependency injection.</p></div><div class=paragraph><p>I still occasionally meet people, who associate dependency injection with magical frameworks like Spring and Guice. It
+is however just a very simple technique: inject all dependencies needed for your computation, do not let your
+computations produce those dependencies.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">class NonDiIssueService {
+  IssueDao dao = new IssueDao();
+}
+
+class DiIssueService {
+  ...
+  DiIssueService(IssueDao dao) {
+    this.dao = dao;
+  }
+}</code></pre></div></div><div class=paragraph><p><code>service = new NonDiIssueService()</code> and <code>service = new DiIssueService(dao)</code> are manifestations of the same pattern we
+saw in <code>isStale()</code> and <code>isStale(now)</code> — both let us eliminate side effects and make our functions deterministic.</p></div><div class=paragraph><p>It turns out, through industry requirements OOP community came up with best practices that forced it to re-invent pure
+functions in OOP.</p></div></div><div class=sect2><h3 id=_immutable_data_structures>Immutable data structures</h3><div class=paragraph><p>Immutable data structures are an inherent feature of FP. However, saying that you don&#8217;t have this in OOP would be just
+silly. Here are just a few examples from Java world:</p></div><div class=ulist><ul><li><p>Joshua Bloch in his <em>Effective Java</em> suggests minimizing mutability<sup class=footnote>[<a id=_footnoteref_1 class=footnote href=#_footnotedef_1 title="View footnote.">1</a>]</sup>,</p></li><li><p>one of the most popular utility libraries for Java, Guava, has a great collection of immutable
+data structures<sup class=footnote>[<a id=_footnoteref_2 class=footnote href=#_footnotedef_2 title="View footnote.">2</a>]</sup>,</p></li><li><p>extremely popular AST sugaring library Lombok offers special annotation for generating immutable value classes <code>@Value</code> <sup class=footnote>[<a id=_footnoteref_3 class=footnote href=#_footnotedef_3 title="View footnote.">3</a>]</sup>,</p></li><li><p>in many companies (most I worked for) Java CI pipeline integrates some static analyzer, like FindBugs, that will
+remind you to make defensive copies of non-primitive types passed as arguments to avoid any unexpected mutability&#8230;&#8203;</p></li></ul></div><div class=paragraph><p>Ilya Suzdalnitski argues, that mutability is inherent to OOP<sup class=footnote>[<a id=_footnoteref_4 class=footnote href=#_footnotedef_4 title="View footnote.">4</a>]</sup>. Won&#8217;t
+comment on the veracity of that, but let&#8217;s assume it is true. Is it bad?</p></div><div class=paragraph><p>Mutability is part of the nature of the hardware we run our programs on, it is hard to abstract away from it completely.
+I&#8217;d argue, that as of now, it is just easier to build efficient applications that have confined mutable pieces in
+them<sup class=footnote>[<a id=_footnoteref_5 class=footnote href=#_footnotedef_5 title="View footnote.">5</a>]</sup>.</p></div><div class=paragraph><p>To summarize, immutability may be not as ubiquitous in other paradigms as it is in FP, but it is certainly not an alien
+there. OOP programmers, in particular, are well familiar with the concept and understand its benefits (and its price!)
+very well.</p></div></div><div class=sect2><h3 id=_avoiding_inheritance>Avoiding inheritance</h3><div class=paragraph><p>In one of his blog posts John A De Goes says<sup class=footnote>[<a id=_footnoteref_6 class=footnote href=#_footnotedef_6 title="View footnote.">6</a>]</sup>, that</p></div><div class=quoteblock><blockquote><div class=paragraph><p>object-oriented programming—by which I mean inheritance hierarchies (typified by the Scala collections inheritance
+hierarchy) and subtyping (beyond its use for modeling sum types, modules, and type classes)—isn’t useful.</p></div></blockquote></div><div class=paragraph><p>I can&#8217;t come up with an example where subtyping is useful on top of those that Mr. De Goes lists. But I want to
+highlight, that the target of his claim is inheritance, not, strictly speaking, OOP. Yes, many books say, that
+inheritance is one of the pillars of OOP, but some don&#8217;t.</p></div><div class=paragraph><p>Alan Kay, who is considered the inventor of OOP, starts his (quite hard to grok, to be honest) response about inheritance
+with this<sup class=footnote>[<a id=_footnoteref_7 class=footnote href=#_footnotedef_7 title="View footnote.">7</a>]</sup>:</p></div><div class=quoteblock><blockquote><div class=paragraph><p>I initially liked the idea — it could be useful — but soon realized that something that would be “mathematically
+binding” was really needed because the mechanism itself let too many semantically different things to be “done” (aka
+“kluged”) by the programmer.</p></div></blockquote></div><div class=paragraph><p>Polemics about definitions are rarely productive, let&#8217;s see what happens in practice. Joshua&nbsp;Bloch argued for
+composition and delegation over inheritance almost 20 years ago too<sup class=footnote>[<a id=_footnoteref_8 class=footnote href=#_footnotedef_8 title="View footnote.">8</a>]</sup>. And maybe, 10 years ago I would still occasionally see 7 levels of inheritance in the new
+code. But people don&#8217;t do this anymore. I&#8217;ve seen Java projects, where programmers preferred code duplication over
+inheritance, and they believed they were doing OOP. Modern non-FP languages (Go, Rust) do not even offer this design
+facility. Inheritance just proved itself practically inconvenient in <em>many</em> cases, and this is not unique to FP.</p></div></div></div></div><div class=sect1><h2 id=_oop_patterns_that_converge_to_fp>OOP Patterns that converge to FP</h2><div class=sectionbody><div class=paragraph><p>Let&#8217;s consider the unfamous <em>Factory</em> pattern. It is useful when in our program we have to construct an object from
+some data, but the data is scattered among different points in runtime. So we first feed some part of data to the
+factory and then some other part of data when it becomes available:</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">class FooFactory {
+    FooFactory(int datum1, int datum2) { ...  }
+
+    Foo buildFoo(int datum3) { ... }
+}
+
+FooFactory ff = FooFactory(1, 2);
+...
+Foo foo = ff.buildFoo(3);</code></pre></div></div><div class=paragraph><p>This is of course just a curried function. Or, saying it differently:</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=scala class="language-scala hljs">val buildFoo: (Int, Int) =&gt; Int =&gt; Foo</code></pre></div></div><div class=paragraph><p>Ok, perhaps I&#8217;ll be obliterated for this<sup class=footnote>[<a id=_footnoteref_9 class=footnote href=#_footnotedef_9 title="View footnote.">9</a>]</sup>: one can even make a Factory, that produces a Factory, that produces a
+Factory&#8230;&#8203; There&#8217;s also <em>AbstractFactory</em>, which is <em>composed</em> of other factories, and this is&#8230;&#8203; a composition of
+higher-order functions!</p></div><div class=paragraph><p>Another example is <em>Strategy</em> pattern, and depending on how exactly it is used, it either resembles a catamorphism
+(<code>fold</code>) or a functor <code>map</code>:</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=scala class="language-scala hljs">class Aggregator {
+    &lt;I,O&gt; O aggregate(Iterable&lt;I&gt; input, AggregationStrategy&lt;T&gt; s)
+}</code></pre></div></div><div class=paragraph><p>My favorite would probably be <em>Command</em>. Here you have algebras, suspension of side-effects, representing programs as
+values and even quite decent composability.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">inteface Command {
+    void run();
+}
+class Action1Command implements Command { ... }
+class Action2Command implements Command { ... }
+
+class Dispatcher {
+    void execute(Command c);
+}
+class Service {
+    Command doAction1() {  ...; return new Action1Command(); }
+    Command doAction2() {  ...; return new Action2Command(); }
+    ...
+}</code></pre></div></div><div class=paragraph><p>My point is, there were real problems that had to be solved, and all those OOP patterns are perfectly valid solutions.
+I find it interesting, that although OOP abstractions are built using entirely different building blocks, solutions
+produced in the scope of this paradigm are well aligned with solutions that FP paradigm offers.</p></div><div class=paragraph><p>I guess my point is&#8230;&#8203;</p></div></div></div><div class=sect1><h2 id=_dont_make_fp_look_less_approachable_than_it_is>Don&#8217;t make FP look less approachable than it is</h2><div class=sectionbody><div class=paragraph><p>Writing programs using only pure function and immutable data structures may have some benefits. But it does not mean,
+that there&#8217;s nothing in between the side-effectfull mutable OOP and idealistic FP. When it comes to solving real-world
+problems with code, FP or OOP is a false dichotomy.</p></div><div class=paragraph><p>It is good to be influenced by FP and take the best of it, where it suits you. Already mentioned Rust and Go do not
+offer inheritance, allow higher-order functions, employ error propagation models that result in complete functions,
+Rust allows parametric polymorphism and offers many monadic structures in its standard library. Yet, both are for from
+pure FP. And yet, both are used successfully to solve real problems.</p></div><div class=paragraph><p>And if you have not tried FP but been curious (and you should always be), start small. You&#8217;d better learn FP using a
+language that helps you, but you don&#8217;t need to rewrite 10 years old legacy project at work in a new language to get
+benefits of FP. Techniques that you acquire through practicing FP may improve your unpure non-functional Java, Python
+or JavaScript code, and, as the title says, quite possibly they already did.</p></div></div></div><div id=footnotes><hr><div class=footnote id=_footnotedef_1><a href=#_footnoteref_1>1</a>. Joshua Bloch, <em>Effective Java</em>, Minimize mutability</div><div class=footnote id=_footnotedef_2><a href=#_footnoteref_2>2</a>. See Immutable in Guava collections — <a href=https://guava.dev/releases/23.0/api/docs/com/google/common/collect/package-summary.html class=bare>https://guava.dev/releases/23.0/api/docs/com/google/common/collect/package-summary.html</a></div><div class=footnote id=_footnotedef_3><a href=#_footnoteref_3>3</a>. Lombok <code>@Value</code> annotation — <a href=https://projectlombok.org/features/Value class=bare>https://projectlombok.org/features/Value</a></div><div class=footnote id=_footnotedef_4><a href=#_footnoteref_4>4</a>. Ilya Suzdalnitski , <em>Object-Oriented Programming — The Trillion Dollar Disaster</em> — <a href=https://medium.com/better-programming/object-oriented-programming-the-trillion-dollar-disaster-92a4b666c7c7 class=bare>https://medium.com/better-programming/object-oriented-programming-the-trillion-dollar-disaster-92a4b666c7c7</a></div><div class=footnote id=_footnotedef_5><a href=#_footnoteref_5>5</a>. Scale By The Bay 2018: Bill Venners, Frank Sommers, <em>Effective Scala</em>, 22:54 — <a href="https://youtu.be/OFuJ04LlE_A?t=1374" class=bare>https://youtu.be/OFuJ04LlE_A?t=1374</a></div><div class=footnote id=_footnotedef_6><a href=#_footnoteref_6>6</a>. John A. De Goez, <em>Data Modeling in FP vs OOP</em> — <a href=http://degoes.net/articles/fp-vs-oop-part1 class=bare>http://degoes.net/articles/fp-vs-oop-part1</a></div><div class=footnote id=_footnotedef_7><a href=#_footnoteref_7>7</a>. What does Alan Kay think about inheritance — <a href=https://www.quora.com/What-does-Alan-Kay-think-about-inheritance-in-object-oriented-programming class=bare>https://www.quora.com/What-does-Alan-Kay-think-about-inheritance-in-object-oriented-programming</a></div><div class=footnote id=_footnotedef_8><a href=#_footnoteref_8>8</a>. Joshua Bloch, <em>Effective Java</em>, Favor composition over inheritance</div><div class=footnote id=_footnotedef_9><a href=#_footnoteref_9>9</a>. I&#8217;m referring to the slide 15 in the presentation — <a href=https://fsharpforfunandprofit.com/fppatterns/ class=bare>https://fsharpforfunandprofit.com/fppatterns/</a></div></div></article></main><article class=comments><div id=disqus_thread></div><script>if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!==-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';}else{var disqus_config=function(){};(function(){var inIFrame=function(){var iframe=true;try{iframe=window.self!==window.top;}catch(e){}
+return iframe;};if(inIFrame())return;var disqus_js='//127001me.disqus.com/embed.js';var d=document,s=d.createElement('script');s.src=disqus_js;s.async=true;s.setAttribute('data-timestamp',+new Date());var b=false,l=function(){if(b)return;(d.head||d.body).appendChild(s);b=true;}
+var t=d.getElementById('disqus_thread');s.onerror=function(e){if(sessionStorage.getItem('failure-note'))return;t.innerText='Disqus failed to load';t.style.border='1px dashed';t.style.padding='.5em';t.style.background='lightyellow';sessionStorage.setItem('failure-note',true);};if(location.hash.match(/^#comment/))return l();var c=function(){if(b)return;var rect=t.getBoundingClientRect();if(rect.top<window.innerHeight&&rect.bottom>=0)l();};window.addEventListener('load',c);d.addEventListener('scroll',c);})();}</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></article><footer role=contentinfo><div class=footer-content><div class=footer-copyright-info><a href=https://creativecommons.org/licenses/by/4.0/ title="Except where otherwise noted, content on this site is licensed under CC-BY-4.0"><i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i></a>2020 Dmytro Kostiuchenko</div><div class=footer-social-buttons><a href=https://github.com/edio title=GitHub><i class="fa fa-github"></i></a><a href=https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14 title=Linkedin><i class="fa fa-linkedin-square"></i></a></div></div></footer></div><script src=/js/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
