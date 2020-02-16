@@ -43,7 +43,7 @@ point of view will persuade programmers to look into FP and to borrow new techni
   }
 }</code></pre></div></div><div class=paragraph><p>Even if we ignore verbose errors handling this code is horrible because it is hard to test. One could assign custom
 <code>PrintStream</code> to <code>System.err</code> and <code>System.out</code> to verify what program prints, but verifying exit code becomes super hard
-(on top of that, <code>System.exit()</code> will cause JVM running tests to exit).</p></div><div class=paragraph><p>A simple way around that is moving all the logic from <code>main</code> to some <code>run</code> method with a more testable signature, where
+(on top of that, <code>System.exit()</code> will cause the JVM running the tests to exit).</p></div><div class=paragraph><p>A simple way around that is moving all the logic from <code>main</code> to some <code>run</code> method with a more testable signature, where
 exit code is returned — <code>int run(String[] args)</code>. To avoid the global mutable state in our testing code (<code>System.out</code> and
 <code>System.err</code> values), we may want to pass <code>PrintStream</code> instances in our <code>run()</code>, and we&#8217;ll end up with this:</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">public class TravellingApp {
 
@@ -84,7 +84,7 @@ class DiService{
     this.dao = dao;
   }
 }</code></pre></div></div><div class=paragraph><p><code>service = new NonDiService()</code> and <code>service = new DiService(dao)</code> are manifestations of the same pattern we saw with
-<code>main(args)</code> and <code>run(args, out, err)</code>, and I hope it is obvious that DI converges to pure computations and may
+<code>main(args)</code> and <code>run(args, out, err)</code>, and I hope it is evident that DI converges to pure computations and may
 occasionally result in pure computations.</p></div><div class=paragraph><p>OOP does not require <em>pure</em> computations, it is usually enough to have a <em>testable</em> computation. The set of <em>testable</em>
 computations is a much broader category than the set of <em>pure</em> computations. But</p></div><div class="admonitionblock tip"><table><tr><td class=icon><i class="fa icon-tip" title=Tip></i></td><td class=content><em>testability</em>, like <em>pureness</em>, is achieved through eliminating side-effects, and occasionally pure computations
 happen in OOP code.</td></tr></table></div></div><div class=sect2><h3 id=_immutable_data_structures>Immutable data structures</h3><div class=paragraph><p>Immutable data structures are an inherent feature of FP. However, saying that you don&#8217;t have this in OOP would be just
@@ -165,48 +165,73 @@ class ShortestRouteStrategy implements NavigationStrategy {
   public Route navigate(Point origin, Point destination) { ... }
 }</code></pre></div></div><div class=paragraph><p>A strategy may be parameterized on creation. This makes it similar to <em>Factory</em> — it can be represented as 2 functions
 chained into a curried function.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">new UseWindForceStrategy(forecast, efficiency).navigate(from, to);</code></pre></div></div><div class=paragraph><p>However an OOP programmer wouldn&#8217;t use a factory where strategy is expected! OOP patterns differ not only by how the
-computation is performed, but also by the ways these computations can be composed with the rest of the code and the ways
-these computations are mapped to application&#8217;s business domain. <em>Adapter</em> or <em>Decorator</em> would immediately tell you, how
-it is composed with the rest of the code, and that it&#8217;s likely a technical artifact that can not be mapped to the
-business domain, unlike f.ex. <em>Strategy</em>.</p></div><div class="admonitionblock tip"><table><tr><td class=icon><i class="fa icon-tip" title=Tip></i></td><td class=content>OOP patterns convey a wide(r) set of meanings, and this is one of the reasons why there are so many of them.</td></tr></table></div></div><div class=sect2><h3 id=_command>Command</h3><div class=paragraph><p>My favorite would probably be <em>Command</em>. Here you have algebras, suspension of side-effects, representing programs as
-values and even quite decent composability.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">inteface Command {
+computation is performed, but also by the ways these computations can be combined with the rest of the code and the ways
+these computations are mapped to the application&#8217;s business domain. <em>Adapter</em> or <em>Decorator</em> would immediately tell you,
+how to use it and that it&#8217;s likely a technical artifact that can not be mapped to the business domain, unlike f.ex.
+<em>Strategy</em>.</p></div><div class="admonitionblock tip"><table><tr><td class=icon><i class="fa icon-tip" title=Tip></i></td><td class=content>OOP patterns convey a wide(r) set of meanings, and this is one of the reasons why there are so many of them.</td></tr></table></div></div><div class=sect2><h3 id=_command>Command</h3><div class=paragraph><p>My favorite example would probably be <em>Command</em> pattern<sup class=footnote>[<a id=_footnoteref_8 class=footnote href=#_footnotedef_8 title="View footnote.">8</a>]</sup>.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">inteface Command { <i class=conum data-value=1></i><b>(1)</b>
   void run();
 }
-class Action1Command implements Command { ... }
-class Action2Command implements Command { ... }
-
-class Dispatcher {
-  void execute(Command c) { ... }
+class HalfAheadCommand implements Command { <i class=conum data-value=2></i><b>(2)</b>
+  HalfAheadCommand(Engine engine) { ... }
+  public void run() {
+    engine.setDirection(Direction.FORWARD);
+    engine.setRevolutions(1500);
+  }
 }
-class Service {
-  Command doAction1() {  ...; return new Action1Command(); }
-  Command doAction2() {  ...; return new Action2Command(); }
-  ...
+class StopCommand implements Command {
+  FullStopCommand(Engine engine) { ... }
+  public void run() {
+    engine.setRevolutions(0);
+  }
+}
+class DropAnchorCommand implements Command {
+  DropAnchorCommand(AnchoringService anchoring) { ... }
+  public void run() {
+    anchoring.dropAnchor();
+  }
 }
 
-List&lt;Command&gt; commands = ...;
-Service srv = new Service();
-Service dispatcher = new Dispatcher();
+class ShipControlFacade {
+  List&lt;Command&gt; fullStop() {
+    Command stop = new StopCommand(this.engine); <i class=conum data-value=3></i><b>(3)</b>
+    Command dropAnchor = new DropAnchorCommand(this.anchoringService);
+    return Arrays.asList({stop, dropAnchor});
+  }
+}
+
+interface Dispatcher { <i class=conum data-value=4></i><b>(4)</b>
+  void execute(Command c);
+}
 
 ...
 
-commands.add(srv.doAction1());
-commands.add(srv.doAction2());
-
-...
-
-for (Command cmd: commands) {
+List&lt;Command&gt; commands = shipControlFacade.fullStop();
+for (Command cmd: commands) { <i class=conum data-value=5></i><b>(5)</b>
   dispatcher.execute(cmd);
-}</code></pre></div></div><div class=paragraph><p>There were real problems that had to be solved, and all those OOP patterns are perfectly valid solutions. I find it
-interesting, that although OOP abstractions are built using entirely different building blocks, solutions produced in
-the scope of this paradigm are well aligned with solutions that FP paradigm offers.</p></div><div class=paragraph><p>I guess my point is&#8230;&#8203;</p></div></div></div></div><div class=sect1><h2 id=_dont_make_fp_look_less_approachable_than_it_is>Don&#8217;t make FP look less approachable than it is</h2><div class=sectionbody><div class=paragraph><p>Writing programs using only pure function and immutable data structures may have some benefits. But it does not mean,
-that there&#8217;s nothing in between the side-effectfull mutable OOP and idealistic FP. When it comes to solving real-world
-problems with code, FP or OOP is a false dichotomy.</p></div><div class=paragraph><p>It is good to be influenced by FP and take the best of it, where it suits you. Already mentioned Rust and Go do not
-offer inheritance, allow higher-order functions, employ error propagation models that result in complete functions, Rust
-allows parametric polymorphism and offers many monadic structures in its standard library. Both are far from pure FP,
-and yet, both are used successfully to solve real problems.</p></div><div class=paragraph><p>And if you have not tried FP but been curious (and you should always be), start small. You&#8217;d better learn FP using a
-language that helps you, but you don&#8217;t need to rewrite 10 years old legacy project at work in a new language to get
-benefits of FP. Techniques that you acquire through practicing FP may improve your unpure non-functional Java, Python
-or JavaScript code, and, as the title says, quite possibly they already did.</p></div></div></div><div id=footnotes><hr><div class=footnote id=_footnotedef_1><a href=#_footnoteref_1>1</a>. Joshua Bloch, <em>Effective Java</em>, Minimize mutability</div><div class=footnote id=_footnotedef_2><a href=#_footnoteref_2>2</a>. Lombok <code>@Value</code> annotation — <a href=https://projectlombok.org/features/Value class=bare>https://projectlombok.org/features/Value</a></div><div class=footnote id=_footnotedef_3><a href=#_footnoteref_3>3</a>. John A. De Goez, <em>Data Modeling in FP vs OOP</em> — <a href=http://degoes.net/articles/fp-vs-oop-part1 class=bare>http://degoes.net/articles/fp-vs-oop-part1</a></div><div class=footnote id=_footnotedef_4><a href=#_footnoteref_4>4</a>. What does Alan Kay think about inheritance — <a href=https://www.quora.com/What-does-Alan-Kay-think-about-inheritance-in-object-oriented-programming class=bare>https://www.quora.com/What-does-Alan-Kay-think-about-inheritance-in-object-oriented-programming</a></div><div class=footnote id=_footnotedef_5><a href=#_footnoteref_5>5</a>. Joshua Bloch, <em>Effective Java</em>, Favor composition over inheritance</div><div class=footnote id=_footnotedef_6><a href=#_footnoteref_6>6</a>. <a href=https://en.wikipedia.org/wiki/Abstract_factory_pattern class=bare>https://en.wikipedia.org/wiki/Abstract_factory_pattern</a></div><div class=footnote id=_footnotedef_7><a href=#_footnoteref_7>7</a>. <a href=https://en.wikipedia.org/wiki/Strategy_pattern class=bare>https://en.wikipedia.org/wiki/Strategy_pattern</a></div></div></article></main><article class=comments><div id=disqus_thread></div><script>if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!==-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';}else{var disqus_config=function(){};(function(){var inIFrame=function(){var iframe=true;try{iframe=window.self!==window.top;}catch(e){}
+}</code></pre></div></div><div class=paragraph><p><code>Command</code> interface <i class=conum data-value=1>&#8203;</i> represents a sub-program and lets a calling side to invoke arbitrary sub-program by
+calling <code>run()</code> method on it. The <code>run()</code> method may return something if needed or accept arguments. That interface may
+have anonymous ad-hoc implementations or its implementations may form a union (GADT) <i class=conum data-value=2>&#8203;</i>.</p></div><div class=paragraph><p>Complex actions in the program are combined from small simple commands <i class=conum data-value=3>&#8203;</i>. The pattern does not prescribe
+whether commands should be combined using collections or custom combinators, whether they should be chained passing
+results of execution to each other or whether they should be isolated. It&#8217;s important, that sub-programs these commands
+represent are not executed immediately, i.e. side-effects are <em>suspended</em>.</p></div><div class=paragraph><p>Commands are then passed <i class=conum data-value=5>&#8203;</i> to a <code>Dispatcher</code> <i class=conum data-value=4>&#8203;</i>, which executes passed commands, but may also
+perform some actions before or after every command, may decide to execute commands concurrently or, on the contrary,
+serialize concurrent access&#8230;&#8203; This the point in the program when suspended side-effects are finally executed.</p></div><div class=paragraph><p>As with previously examined patterns, commands are just function pointers, but in FP there&#8217;s a special name for functions
+that are used to suspend side-effects — <em>IO</em>, or more often <em>IO Monad</em> because that construct does have monadic
+properties. <em>IO Monad</em> implementation together with all the infrastructure forms an <em>effect system</em>. In some languages,
+like Haskell, <em>effect system</em> is baked in the language, in others, like Scala, <em>effect system</em> is shipped as a library,
+and in the latter case resemblance with the command pattern is just striking, especially if you rename <code>Dispatcher</code> to
+<code>Runtime</code> and <code>Command</code> to <code>IO</code>.</p></div><div class=paragraph><p>Of course, <em>Command</em> pattern in its original definition is not as powerful and flexible as, say, modern effect systems
+for Scala, but I&#8217;ve seen very sophisticated implementations of this pattern in object-oriented Java code, with commands
+being monads and all that.</p></div></div></div></div><div class=sect1><h2 id=_takeaways>Takeaways</h2><div class=sectionbody><div class=paragraph><p>Indeed, the basic unit of abstraction in FP — a pure function — is arguably better than some others. It is easier to
+build higher-level abstractions with pure functions, keeping the code clean and semantics easy to understand. But it
+does not mean, that there&#8217;s nothing in between the side-effectfull mutable OOP and idealistic FP.</p></div><div class="admonitionblock tip"><table><tr><td class=icon><i class="fa icon-tip" title=Tip></i></td><td class=content>When it comes to solving real-world problems with code, FP or OOP, mutability or immutability, etc. are all false
+dichotomies<sup class=footnote>[<a id=_footnoteref_9 class=footnote href=#_footnotedef_9 title="View footnote.">9</a>]</sup>.</td></tr></table></div><div class=paragraph><p>FP, like any other programming paradigm really, can be seen as a collection of techniques. It is good to be influenced
+by it, to make the best of it, but it&#8217;s not mandatory to dive into it fully. Java and C++ borrowed some concepts from FP
+recently. Already mentioned Rust and Go do not offer inheritance, allow higher-order functions, employ error propagation
+models that result in complete functions, Rust allows parametric polymorphism and offers many monadic structures in its
+standard library. All those languages are far from idealistic FP, and yet, they are used successfully to solve real
+problems.</p></div><div class=paragraph><p>Your 10 years old legacy project at work doesn&#8217;t need to be rewritten in a new language to benefit from immutability or
+pure functions. Quite possibly, as the title of this post says, your project already benefits from some techniques which
+are traditionally attributed to FP.</p></div><div class=paragraph><p>Let&#8217;s not make FP less approachable than it is.</p></div></div></div><div id=footnotes><hr><div class=footnote id=_footnotedef_1><a href=#_footnoteref_1>1</a>. Joshua Bloch, <em>Effective Java</em>, Minimize mutability</div><div class=footnote id=_footnotedef_2><a href=#_footnoteref_2>2</a>. Lombok <code>@Value</code> annotation — <a href=https://projectlombok.org/features/Value class=bare>https://projectlombok.org/features/Value</a></div><div class=footnote id=_footnotedef_3><a href=#_footnoteref_3>3</a>. John A. De Goez, <em>Data Modeling in FP vs OOP</em> — <a href=http://degoes.net/articles/fp-vs-oop-part1 class=bare>http://degoes.net/articles/fp-vs-oop-part1</a></div><div class=footnote id=_footnotedef_4><a href=#_footnoteref_4>4</a>. What does Alan Kay think about inheritance — <a href=https://www.quora.com/What-does-Alan-Kay-think-about-inheritance-in-object-oriented-programming class=bare>https://www.quora.com/What-does-Alan-Kay-think-about-inheritance-in-object-oriented-programming</a></div><div class=footnote id=_footnotedef_5><a href=#_footnoteref_5>5</a>. Joshua Bloch, <em>Effective Java</em>, Favor composition over inheritance</div><div class=footnote id=_footnotedef_6><a href=#_footnoteref_6>6</a>. <a href=https://en.wikipedia.org/wiki/Abstract_factory_pattern class=bare>https://en.wikipedia.org/wiki/Abstract_factory_pattern</a></div><div class=footnote id=_footnotedef_7><a href=#_footnoteref_7>7</a>. <a href=https://en.wikipedia.org/wiki/Strategy_pattern class=bare>https://en.wikipedia.org/wiki/Strategy_pattern</a></div><div class=footnote id=_footnotedef_8><a href=#_footnoteref_8>8</a>. <a href=https://en.wikipedia.org/wiki/Command_pattern class=bare>https://en.wikipedia.org/wiki/Command_pattern</a></div><div class=footnote id=_footnotedef_9><a href=#_footnoteref_9>9</a>. Scale By The Bay 2018: Bill Venners, Frank Sommers, <em>Effective Scala</em>, 22:54 — <a href="https://youtu.be/OFuJ04LlE_A?t=1374" class=bare>https://youtu.be/OFuJ04LlE_A?t=1374</a></div></div></article></main><article class=comments><div id=disqus_thread></div><script>if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!==-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';}else{var disqus_config=function(){};(function(){var inIFrame=function(){var iframe=true;try{iframe=window.self!==window.top;}catch(e){}
 return iframe;};if(inIFrame())return;var disqus_js='//127001me.disqus.com/embed.js';var d=document,s=d.createElement('script');s.src=disqus_js;s.async=true;s.setAttribute('data-timestamp',+new Date());var b=false,l=function(){if(b)return;(d.head||d.body).appendChild(s);b=true;}
 var t=d.getElementById('disqus_thread');s.onerror=function(e){if(sessionStorage.getItem('failure-note'))return;t.innerText='Disqus failed to load';t.style.border='1px dashed';t.style.padding='.5em';t.style.background='lightyellow';sessionStorage.setItem('failure-note',true);};if(location.hash.match(/^#comment/))return l();var c=function(){if(b)return;var rect=t.getBoundingClientRect();if(rect.top<window.innerHeight&&rect.bottom>=0)l();};window.addEventListener('load',c);d.addEventListener('scroll',c);})();}</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></article><footer role=contentinfo><div class=footer-content><div class=footer-copyright-info><a href=https://creativecommons.org/licenses/by/4.0/ title="Except where otherwise noted, content on this site is licensed under CC-BY-4.0"><i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i></a>2020 Dmytro Kostiuchenko</div><div class=footer-social-buttons><a href=https://github.com/edio title=GitHub><i class="fa fa-github"></i></a><a href=https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14 title=Linkedin><i class="fa fa-linkedin-square"></i></a></div></div></footer></div><script src=/js/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
