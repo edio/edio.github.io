@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>software engineering on 127.0.0.1</title><link>http://127001.me/category/software-engineering/</link><description>Recent content in software engineering on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Dmytro Kostiuchenko</copyright><lastBuildDate>Mon, 10 Feb 2020 22:59:08 -0500</lastBuildDate><atom:link href="http://127001.me/category/software-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>You may be doing FP already</title><link>http://127001.me/post/you-may-be-doing-fp-already/</link><pubDate>Mon, 10 Feb 2020 22:59:08 -0500</pubDate><guid>http://127001.me/post/you-may-be-doing-fp-already/</guid><description>&lt;div class="paragraph">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>software engineering on 127.0.0.1</title><link>https://127001.me/category/software-engineering/</link><description>Recent content in software engineering on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Dmytro Kostiuchenko</copyright><lastBuildDate>Mon, 10 Feb 2020 22:59:08 -0500</lastBuildDate><atom:link href="https://127001.me/category/software-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>You may be doing FP already</title><link>https://127001.me/post/you-may-be-doing-fp-already/</link><pubDate>Mon, 10 Feb 2020 22:59:08 -0500</pubDate><guid>https://127001.me/post/you-may-be-doing-fp-already/</guid><description>&lt;div class="paragraph">
 &lt;p>Functional programming (FP) has been a somewhat hot topic in recent years in my surroundings. Although in my &lt;em>close&lt;/em>
 surroundings people are usually not very zealous or overly excited, I do notice sometimes talks, discussions and vocally
 expressed opinions where &lt;em>tremendous&lt;/em> benefits of FP over other paradigms are claimed, through presenting FP as a
@@ -15,7 +15,7 @@ some definition of FP is better than some definition of OOP?&lt;/p>
 &lt;p>With this post, I hope to show that FP can be seen as an evolutionary step, a generalization over practices we already
 consider the best in OOP paradigm. And if viewed like this, it can be useful even when adopted gradually. I hope this
 point of view will persuade programmers to look into FP and to borrow new techniques from it to improve non-FP code.&lt;/p>
-&lt;/div></description></item><item><title>Filtering ScalaTest tests by tags in sbt</title><link>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</link><pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate><guid>http://127001.me/post/filter-scalatests-by-tags-in-sbt/</guid><description>&lt;div class="paragraph">
+&lt;/div></description></item><item><title>Filtering ScalaTest tests by tags in sbt</title><link>https://127001.me/post/filter-scalatests-by-tags-in-sbt/</link><pubDate>Mon, 08 Jul 2019 11:00:00 -0400</pubDate><guid>https://127001.me/post/filter-scalatests-by-tags-in-sbt/</guid><description>&lt;div class="paragraph">
 &lt;p>&lt;em>ScalaTest&lt;/em> lets you tagging your tests with arbitrary tags and then filtering
 by tags when executing tests.&lt;/p>
 &lt;/div>
@@ -24,7 +24,7 @@ by tags when executing tests.&lt;/p>
 I couldn&amp;#8217;t find an answer on the very first page in Google or StackOverflow,
 and I remember myself looking for a complete solution for quite a while, so
 here it is.&lt;/p>
-&lt;/div></description></item><item><title>Overloading that is not permitted or Java bridge methods</title><link>http://127001.me/post/java-bridge-methods/</link><pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate><guid>http://127001.me/post/java-bridge-methods/</guid><description>&lt;div class="paragraph">
+&lt;/div></description></item><item><title>Overloading that is not permitted or Java bridge methods</title><link>https://127001.me/post/java-bridge-methods/</link><pubDate>Mon, 09 May 2016 00:59:08 +0200</pubDate><guid>https://127001.me/post/java-bridge-methods/</guid><description>&lt;div class="paragraph">
 &lt;p>Most of my technical interviews for Java developer position include a puzzle, where candidate should implement 2 very
 similar interfaces in a single class:&lt;/p>
 &lt;/div>
@@ -53,7 +53,7 @@ interface V {
 void m(int i);
 }&lt;/code>&lt;/pre>
 &lt;/div>
-&lt;/div></description></item><item><title>How Java logging frameworks determine caller class and method name</title><link>http://127001.me/post/java-logging-caller-class-and-method/</link><pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate><guid>http://127001.me/post/java-logging-caller-class-and-method/</guid><description>&lt;div class="paragraph">
+&lt;/div></description></item><item><title>How Java logging frameworks determine caller class and method name</title><link>https://127001.me/post/java-logging-caller-class-and-method/</link><pubDate>Tue, 08 Apr 2014 23:54:49 +0200</pubDate><guid>https://127001.me/post/java-logging-caller-class-and-method/</guid><description>&lt;div class="paragraph">
 &lt;p>This post describes how java logging frameworks (&lt;em>log4j&lt;/em>, for example) know a point (concrete class and method name), where logging statement has been invoked.&lt;/p>
 &lt;/div>
 &lt;div class="paragraph">

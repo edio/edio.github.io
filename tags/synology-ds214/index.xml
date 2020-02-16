@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>synology ds214 on 127.0.0.1</title><link>http://127001.me/tags/synology-ds214/</link><description>Recent content in synology ds214 on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Dmytro Kostiuchenko</copyright><lastBuildDate>Tue, 16 Aug 2016 21:00:00 +0100</lastBuildDate><atom:link href="http://127001.me/tags/synology-ds214/index.xml" rel="self" type="application/rss+xml"/><item><title>Turning Synology NAS into a geeky media server: PulseAudio</title><link>http://127001.me/post/synology/mediaserver-p2/</link><pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate><guid>http://127001.me/post/synology/mediaserver-p2/</guid><description>&lt;div class="admonitionblock warning">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>synology ds214 on 127.0.0.1</title><link>https://127001.me/tags/synology-ds214/</link><description>Recent content in synology ds214 on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Dmytro Kostiuchenko</copyright><lastBuildDate>Tue, 16 Aug 2016 21:00:00 +0100</lastBuildDate><atom:link href="https://127001.me/tags/synology-ds214/index.xml" rel="self" type="application/rss+xml"/><item><title>Turning Synology NAS into a geeky media server: PulseAudio</title><link>https://127001.me/post/synology/mediaserver-p2/</link><pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate><guid>https://127001.me/post/synology/mediaserver-p2/</guid><description>&lt;div class="admonitionblock warning">
 &lt;table>
 &lt;tr>
 &lt;td class="icon">
@@ -30,12 +30,12 @@ Required files can be downloaded from &lt;a href="https://github.com/edio/synolo
 &lt;/table>
 &lt;/div>
 &lt;div class="paragraph">
-&lt;p>&lt;a href="http://127001.me/post/synology/mediaserver-p1">Previously&lt;/a> we&amp;#8217;ve covered ALSA setup and Debian chroot.&lt;/p>
+&lt;p>&lt;a href="https://127001.me/post/synology/mediaserver-p1">Previously&lt;/a> we&amp;#8217;ve covered ALSA setup and Debian chroot.&lt;/p>
 &lt;/div>
 &lt;div class="paragraph">
 &lt;p>In this post I&amp;#8217;ll describe how to set up PulseAudio in Debian chroot, so that it&amp;#8217;s possible to stream any sound from
 linux-powered pc to a sound card connected to Synology NAS.&lt;/p>
-&lt;/div></description></item><item><title>Turning Synology NAS into a geeky media server</title><link>http://127001.me/post/synology/mediaserver-p1/</link><pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate><guid>http://127001.me/post/synology/mediaserver-p1/</guid><description>&lt;div class="admonitionblock warning">
+&lt;/div></description></item><item><title>Turning Synology NAS into a geeky media server</title><link>https://127001.me/post/synology/mediaserver-p1/</link><pubDate>Wed, 06 Jan 2016 01:51:40 +0100</pubDate><guid>https://127001.me/post/synology/mediaserver-p1/</guid><description>&lt;div class="admonitionblock warning">
 &lt;table>
 &lt;tr>
 &lt;td class="icon">
