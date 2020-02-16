@@ -2,7 +2,7 @@
 <a href=/tags/java>#java</a>&nbsp;
 <a href=/tags/oop>#oop</a>&nbsp;
 <a href=/tags/scala>#scala</a>&nbsp;</div></div></div></div><article><div class=paragraph><p>Functional programming (FP) has been a somewhat hot topic in recent years in my surroundings. Although in my <em>close</em>
-surroundings people are usually not very zealous or overly excited, I do notice sometimes talks, discussions and vocally
+surroundings people are usually not zealous or overly excited, I do notice sometimes talks, discussions and vocally
 expressed opinions where <em>tremendous</em> benefits of FP over other paradigms are claimed, through presenting FP as a
 fundamentally new approach to writing code, opposite to, say, OOP. Some go as far as saying, that one must fully ditch
 OOP and all related experience because it&#8217;s all just a mistake.</p></div><div class=paragraph><p>Such extreme claims are rarely challenged. When a person with an OOP background gets involved in any FP-related
@@ -73,7 +73,7 @@ strings to be printed to <em>out</em> and <em>err</em> streams. But I believe, a
 a stricter requirement, of course, in OOP code you&#8217;d see many more testable functions than pure functions (or if you
 wish <em>computations</em>). But pure computations do happen in the OOP code.</p></div><div class=paragraph><p>It is interesting, that <em>testability</em> lies in the heart of an extremely popular technique among OOP programmers —
 dependency injection (DI). I still occasionally meet people, who associate DI with magical frameworks like Spring and
-Guice. It is, however, a very simple technique: <em>inject all dependencies needed for your computation, do not let your
+Guice. It is, however, a simple technique: <em>inject all dependencies needed for your computation, do not let your
 computations produce those dependencies</em>.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">class NonDiService {
   Dao dao = new Dao();
 }
@@ -163,8 +163,8 @@ class UseWindForceStrategy implements NavigationStrategy {
 class ShortestRouteStrategy implements NavigationStrategy {
   ShortestRouteStrategy() { ... }
   public Route navigate(Point origin, Point destination) { ... }
-}</code></pre></div></div><div class=paragraph><p>A strategy may be parameterized on creation. This makes it very similar to <em>Factory</em> — it can be represented as 2
-functions chained into a curried function.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">new UseWindForceStrategy(forecast, efficiency).navigate(from, to);</code></pre></div></div><div class=paragraph><p>However an OOP programmer wouldn&#8217;t use a factory where strategy is expected! OOP patterns differ not only by how the
+}</code></pre></div></div><div class=paragraph><p>A strategy may be parameterized on creation. This makes it similar to <em>Factory</em> — it can be represented as 2 functions
+chained into a curried function.</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=java class="language-java hljs">new UseWindForceStrategy(forecast, efficiency).navigate(from, to);</code></pre></div></div><div class=paragraph><p>However an OOP programmer wouldn&#8217;t use a factory where strategy is expected! OOP patterns differ not only by how the
 computation is performed, but also by the ways these computations can be composed with the rest of the code and the ways
 these computations are mapped to application&#8217;s business domain. <em>Adapter</em> or <em>Decorator</em> would immediately tell you, how
 it is composed with the rest of the code, and that it&#8217;s likely a technical artifact that can not be mapped to the

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 127.0.0.1</title><link>https://127001.me/post/</link><description>Recent content in Posts on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Dmytro Kostiuchenko</copyright><lastBuildDate>Mon, 10 Feb 2020 22:59:08 -0500</lastBuildDate><atom:link href="https://127001.me/post/index.xml" rel="self" type="application/rss+xml"/><item><title>You may be doing FP already</title><link>https://127001.me/post/you-may-be-doing-fp-already/</link><pubDate>Mon, 10 Feb 2020 22:59:08 -0500</pubDate><guid>https://127001.me/post/you-may-be-doing-fp-already/</guid><description>&lt;div class="paragraph">
 &lt;p>Functional programming (FP) has been a somewhat hot topic in recent years in my surroundings. Although in my &lt;em>close&lt;/em>
-surroundings people are usually not very zealous or overly excited, I do notice sometimes talks, discussions and vocally
+surroundings people are usually not zealous or overly excited, I do notice sometimes talks, discussions and vocally
 expressed opinions where &lt;em>tremendous&lt;/em> benefits of FP over other paradigms are claimed, through presenting FP as a
 fundamentally new approach to writing code, opposite to, say, OOP. Some go as far as saying, that one must fully ditch
 OOP and all related experience because it&amp;#8217;s all just a mistake.&lt;/p>
