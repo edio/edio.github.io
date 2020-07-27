@@ -1,4 +1,31 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 127.0.0.1</title><link>https://127001.me/tags/linux/</link><description>Recent content in linux on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Dmytro Kostiuchenko</copyright><lastBuildDate>Tue, 16 Aug 2016 21:00:00 +0100</lastBuildDate><atom:link href="https://127001.me/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Turning Synology NAS into a geeky media server: PulseAudio</title><link>https://127001.me/post/synology/mediaserver-p2/</link><pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate><guid>https://127001.me/post/synology/mediaserver-p2/</guid><description>&lt;div class="admonitionblock warning">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 127.0.0.1</title><link>https://127001.me/tags/linux/</link><description>Recent content in linux on 127.0.0.1</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Dmytro Kostiuchenko</copyright><lastBuildDate>Sun, 26 Jul 2020 22:30:00 -0400</lastBuildDate><atom:link href="https://127001.me/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Eliminate backlight flicker with Intel i915</title><link>https://127001.me/post/eliminate-backlight-flicker-with-i915/</link><pubDate>Sun, 26 Jul 2020 22:30:00 -0400</pubDate><guid>https://127001.me/post/eliminate-backlight-flicker-with-i915/</guid><description>&lt;div class="admonitionblock note">
+&lt;table>
+&lt;tr>
+&lt;td class="icon">
+&lt;i class="fa icon-note" title="Note">&lt;/i>
+&lt;/td>
+&lt;td class="content">
+&lt;div class="paragraph">
+&lt;p>This is a revised version of my post from 2013 previously published at
+&lt;a href="http://devbraindom.blogspot.com/2013/03/eliminate-led-screen-flicker-with-intel.html" class="bare">http://devbraindom.blogspot.com/2013/03/eliminate-led-screen-flicker-with-intel.html&lt;/a>.&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>Although still popular, that post was full of factual mistakes.&lt;/p>
+&lt;/div>
+&lt;/td>
+&lt;/tr>
+&lt;/table>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>The brightness of LED backlight in TFT displays is sometimes controlled using a technique called PWM or &lt;em>pulse width
+modulation&lt;/em>. If implemented incorrectly, particularly if PWM frequency is too low, it can introduce distracting visual
+effects and induce eye strain, headaches, and even dizziness in some
+people&lt;sup class="footnote">[&lt;a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1&lt;/a>]&lt;/sup>.&lt;/p>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>Many older laptops set PWM frequency for their backlight too low. Luckly, in laptops equipped with Intel i915 GPU, the
+PWM frequency is often controlled by the GPU and thus can be adjusted by a software.&lt;/p>
+&lt;/div></description></item><item><title>Turning Synology NAS into a geeky media server: PulseAudio</title><link>https://127001.me/post/synology/mediaserver-p2/</link><pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate><guid>https://127001.me/post/synology/mediaserver-p2/</guid><description>&lt;div class="admonitionblock warning">
 &lt;table>
 &lt;tr>
 &lt;td class="icon">

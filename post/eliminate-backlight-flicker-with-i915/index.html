@@ -1,0 +1,68 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><title>Eliminate backlight flicker with Intel i915 | 127.0.0.1</title><meta name=viewport content="width=device-width,user-scalable=yes,maximum-scale=1.5,initial-scale=1"><link rel=canonical href=https://127001.me/post/eliminate-backlight-flicker-with-i915/><link rel=apple-touch-icon-precomposed sizes=144x144 href=/favicon144.png><link rel="shortcut icon" href=/favicon.png><link rel=stylesheet href=https://127001.me/css/bundle.min.css><link href=https://127001.me/index.xml rel=alternate type=application/rss+xml title=127.0.0.1><link href=https://127001.me/index.xml rel=feed type=application/rss+xml title=127.0.0.1><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-82090130-1','auto');ga('send','pageview');</script></head><div class=container><header role=banner><div class=title-block><span class=title-span><a class=title href=https://127001.me/><span class=user>me</span>@<span class=host>127.0.0.1</span>:<span class=cwd>~</span><span class=prompt>$</span> <span class=cursor>_</span></a></span></div></header><main id=single role=main><div class=post-title-wrapper><div style=display:flex><div style=flex:1><div class=post-category><a href=/category/localhost>/localhost/</a></div></div><div class=post-date>Jul 26, 2020</div></div><h1>Eliminate backlight flicker with Intel i915</h1><div style=display:flex><div style=flex:1><div class=post-tags-list><a href=/tags/i915>#i915</a>&nbsp;
+<a href=/tags/linux>#linux</a>&nbsp;</div></div></div></div><article><div class="admonitionblock note"><table><tr><td class=icon><i class="fa icon-note" title=Note></i></td><td class=content><div class=paragraph><p>This is a revised version of my post from 2013 previously published at
+<a href=http://devbraindom.blogspot.com/2013/03/eliminate-led-screen-flicker-with-intel.html class=bare>http://devbraindom.blogspot.com/2013/03/eliminate-led-screen-flicker-with-intel.html</a>.</p></div><div class=paragraph><p>Although still popular, that post was full of factual mistakes.</p></div></td></tr></table></div><div class=paragraph><p>The brightness of LED backlight in TFT displays is sometimes controlled using a technique called PWM or <em>pulse width
+modulation</em>. If implemented incorrectly, particularly if PWM frequency is too low, it can introduce distracting visual
+effects and induce eye strain, headaches, and even dizziness in some
+people<sup class=footnote>[<a id=_footnoteref_1 class=footnote href=#_footnotedef_1 title="View footnote.">1</a>]</sup>.</p></div><div class=paragraph><p>Many older laptops set PWM frequency for their backlight too low. Luckly, in laptops equipped with Intel i915 GPU, the
+PWM frequency is often controlled by the GPU and thus can be adjusted by a software.</p></div><div id=cut class=paragraph><p>According to the manual<sup class=footnote>[<a id=_footnoteref_2 class=footnote href=#_footnotedef_2 title="View footnote.">2</a>]</sup>, in i915 (or
+at least, in Sandy Bridge) PWM frequency is controlled by a value of the 4 upper bytes of the register <code>0xC8254</code>; the
+value of these 4 bytes</p></div><div class=quoteblock><blockquote><div class=paragraph><p>represents the period of the PWM stream in <em>PCH display raw clocks</em> multiplied by 128</p></div></blockquote></div><div class=paragraph><p><em>PCH display raw clocks</em> is held in another register, <code>0xC6204</code>, and it is PCH frequency in MHz. So if the value is
+<code>0x7D</code> it means, that PCH frequency is <em>125 MHz</em>.</p></div><div class=paragraph><p>Resulting PWM frequency in Hz can be calculated by the formula:</p></div><div class="admonitionblock note"><table><tr><td class=icon><i class="fa icon-note" title=Note></i></td><td class=content>f<sub>pwm</sub> = ( reg<sub><code>0xC6204</code></sub> × 1,000,000 ) / 128 / reg<sub><code>0xC8254[7..4]</code></sub></td></tr></table></div><div class=paragraph><p>This means, that to increase PWM frequency of LED backlight we have to decrease the value stored in 4 upper bytes of
+the register <code>0xC8254</code>.</p></div><div class=paragraph><p>An application called <code>intel_reg</code> from the
+<em>intel-gpu-tools</em><sup class=footnote>[<a id=_footnoteref_3 class=footnote href=#_footnotedef_3 title="View footnote.">3</a>]</sup> package lets reading and writing
+i915 registers, and thus the formula can be implemented as a simple shell script (if we ignore some defensive
+boilerplate):</p></div><div class="admonitionblock warning"><table><tr><td class=icon><i class="fa icon-warning" title=Warning></i></td><td class=content>Although precautions have been taken, executing this script may cause damage to your system or even hardware</td></tr></table></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code data-lang=bash class="language-bash hljs">#!/usr/bin/env bash
+
+function usage() {
+  cat &lt;&lt; EOF
+intelpwm FREQ [PCH_RAWCLK_FREQ_REG [BLC_PWM_PCH_CTL2_REG]]
+
+  FREQ                  desired PWM frequency in Hz
+  PCH_RAWCLK_FREQ_REG   PCH raw clock register name or offset
+  BLC_PWM_PCH_CTL2_REG  backlight control register name or offset
+EOF
+}
+
+function reg_check() {
+  # If the register is a mnemonic name and not an offset, make sure that it is
+  # known to intel_reg utility. Unknown mnemonic likely means, that we are on a
+  # different generation of hardware that may have different registers layout
+  printf "%d" "$1" 1&gt;/dev/null 2&gt;&amp;1  || \
+    intel_reg list | grep "$1" 1&gt;/dev/null 2&gt;&amp;1 || \
+      (&gt;&amp;2 echo "Register $1 is not defined on this hardware" &amp;&amp; false)
+}
+
+function reg_read() {
+  # this assumes fixed position of the value in intel_reg output
+  # so far this has been the case though
+  intel_reg  read "$1" | cut -c51-60
+}
+
+FREQ=$1
+PCH_RAWCLK_FREQ_REG=${2:-PCH_RAWCLK_FREQ}
+BLC_PWM_PCH_CTL2_REG=${3:-BLC_PWM_PCH_CTL2}
+
+if [ -z "$FREQ" ]; then
+  usage
+  exit 1
+fi
+
+reg_check "${PCH_RAWCLK_FREQ_REG}" || exit 1
+reg_check "${BLC_PWM_PCH_CTL2_REG}" || exit 1
+
+PCH_FREQ="$(reg_read ${PCH_RAWCLK_FREQ_REG})" <i class=conum data-value=1></i><b>(1)</b>
+BLC_CTL2="$(reg_read ${BLC_PWM_PCH_CTL2_REG})"
+CYCLE="${BLC_CTL2:6:4}"
+HEX=$(printf "0x%08x" $((1000000*PCH_FREQ/128/FREQ)))
+PERIOD="${HEX:6:9}"
+
+&gt;&amp;2 echo "Writing 0x${PERIOD}${CYCLE} to register ${BLC_PWM_PCH_CTL2_REG}"
+intel_reg write "${BLC_PWM_PCH_CTL2_REG}" "0x${PERIOD}${CYCLE}"</code></pre></div></div><div class="colist arabic"><table><tr><td><i class=conum data-value=1></i><b>1</b></td><td>boilerplate ends here, and actual formula implementation starts</td></tr></table></div><div class=paragraph><p>And then, to set PWM frequency to some reasonable 800 Hz we would do</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code class="language-none hljs"># intelpwm 800</code></pre></div></div><div class=paragraph><p>Since the value we wrote to the register is not permanent, we have to write it again every time the power is cycled for
+the GPU or the backlight (screen is turned off, laptop suspended, etc.). This is easy to do with udev:</p></div><div class=listingblock><div class=content><pre class="highlightjs highlight"><code class="language-none hljs">KERNEL!="intel_backlight", SUBSYSTEM!="backlight", ACTION!="change", GOTO="backlight_pwm_rules_end"
+
+RUN="intelpwm 800"
+
+LABEL="backlight_pwm_rules_end"</code></pre></div></div><div class=paragraph><p>The script, slightly modified to receive values from a config file, and the corresponding udev rule are published on my
+github as <em>intelpwm-udev</em><sup class=footnote>[<a id=_footnoteref_4 class=footnote href=#_footnotedef_4 title="View footnote.">4</a>]</sup>.</p></div><div id=footnotes><hr><div class=footnote id=_footnotedef_1><a href=#_footnoteref_1>1</a>. <a href=https://www.tftcentral.co.uk/articles/pulse_width_modulation.htm class=bare>https://www.tftcentral.co.uk/articles/pulse_width_modulation.htm</a></div><div class=footnote id=_footnotedef_2><a href=#_footnoteref_2>2</a>. Intel HD Graphics programmer&#8217;s reference manual - <a href=https://01.org/linuxgraphics/sites/default/files/documentation/snb_ihd_os_vol3_part3.pdf class=bare>https://01.org/linuxgraphics/sites/default/files/documentation/snb_ihd_os_vol3_part3.pdf</a></div><div class=footnote id=_footnotedef_3><a href=#_footnoteref_3>3</a>. <a href=http://cgit.freedesktop.org/xorg/app/intel-gpu-tools/ class=bare>http://cgit.freedesktop.org/xorg/app/intel-gpu-tools/</a></div><div class=footnote id=_footnotedef_4><a href=#_footnoteref_4>4</a>. <a href=https://github.com/edio/intelpwm-udev class=bare>https://github.com/edio/intelpwm-udev</a></div></div></article></main><article class=comments><div id=disqus_thread></div><script>if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!==-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';}else{var disqus_config=function(){};(function(){var inIFrame=function(){var iframe=true;try{iframe=window.self!==window.top;}catch(e){}
+return iframe;};if(inIFrame())return;var disqus_js='//127001me.disqus.com/embed.js';var d=document,s=d.createElement('script');s.src=disqus_js;s.async=true;s.setAttribute('data-timestamp',+new Date());var b=false,l=function(){if(b)return;(d.head||d.body).appendChild(s);b=true;}
+var t=d.getElementById('disqus_thread');s.onerror=function(e){if(sessionStorage.getItem('failure-note'))return;t.innerText='Disqus failed to load';t.style.border='1px dashed';t.style.padding='.5em';t.style.background='lightyellow';sessionStorage.setItem('failure-note',true);};if(location.hash.match(/^#comment/))return l();var c=function(){if(b)return;var rect=t.getBoundingClientRect();if(rect.top<window.innerHeight&&rect.bottom>=0)l();};window.addEventListener('load',c);d.addEventListener('scroll',c);})();}</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></article><footer role=contentinfo><div class=footer-content><div class=footer-copyright-info><a href=https://creativecommons.org/licenses/by/4.0/ title="Except where otherwise noted, content on this site is licensed under CC-BY-4.0"><i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i></a>2020 Dmytro Kostiuchenko</div><div class=footer-social-buttons><a href=https://github.com/edio title=GitHub><i class="fa fa-github"></i></a><a href=https://ua.linkedin.com/in/dmytro-kostiuchenko-7b046b14 title=Linkedin><i class="fa fa-linkedin-square"></i></a></div></div></footer></div><script src=/js/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
