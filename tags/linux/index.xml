@@ -23,7 +23,7 @@ effects and induce eye strain, headaches, and even dizziness in some
 people&lt;sup class="footnote">[&lt;a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1&lt;/a>]&lt;/sup>.&lt;/p>
 &lt;/div>
 &lt;div class="paragraph">
-&lt;p>Many older laptops set PWM frequency for their backlight too low. Luckly, in laptops equipped with Intel i915 GPU, the
+&lt;p>Many older laptops set PWM frequency for their backlight too low. Luckily, in laptops equipped with Intel i915 GPU the
 PWM frequency is often controlled by the GPU and thus can be adjusted by a software.&lt;/p>
 &lt;/div></description></item><item><title>Turning Synology NAS into a geeky media server: PulseAudio</title><link>https://127001.me/post/synology/mediaserver-p2/</link><pubDate>Tue, 16 Aug 2016 21:00:00 +0100</pubDate><guid>https://127001.me/post/synology/mediaserver-p2/</guid><description>&lt;div class="admonitionblock warning">
 &lt;table>
